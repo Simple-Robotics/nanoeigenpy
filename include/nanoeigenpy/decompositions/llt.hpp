@@ -21,4 +21,4 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
   addEigenBaseFeatures(cl);
 }
 
-} // namespace nanoeigenpy
+}  // namespace nanoeigenpy

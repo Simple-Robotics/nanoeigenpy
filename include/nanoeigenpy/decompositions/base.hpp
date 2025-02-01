@@ -4,7 +4,7 @@
 #include <nanobind/nanobind.h>
 
 namespace nanoeigenpy {
-  namespace nb = nanobind;
+namespace nb = nanobind;
 
 template <typename T, typename... Ts>
 void addEigenBaseFeatures(nb::class_<T, Ts...> &cl) {
@@ -13,4 +13,4 @@ void addEigenBaseFeatures(nb::class_<T, Ts...> &cl) {
       .def_prop_ro("size", &T::size);
 }
 
-} // namespace nanoeigenpy
+}  // namespace nanoeigenpy
