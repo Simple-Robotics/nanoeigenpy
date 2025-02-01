@@ -35,5 +35,9 @@ execute_process(
 find_package(nanobind CONFIG REQUIRED)
 
 set(nanoeigenpy_SOURCES src/nanoeigenpy/module.cpp)
-nanobind_add_module(nanoeigenpy ${nanoeigenpy_SOURCES})
+nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES})
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
+
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif()

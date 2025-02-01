@@ -1,3 +1,4 @@
+/// Copyright 2025 INRIA
 #pragma once
 #include "base.hpp"
 #include <Eigen/Cholesky>
