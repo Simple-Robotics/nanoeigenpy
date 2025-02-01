@@ -1,7 +1,7 @@
 #include <nanobind/nanobind.h>
 
-#include "decompositions/ldlt.hpp"
-#include "decompositions/llt.hpp"
+#include "nanoeigenpy/decompositions/ldlt.hpp"
+#include "nanoeigenpy/decompositions/llt.hpp"
 
 using namespace nanoeigenpy;
 
