@@ -14,6 +14,7 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
   auto cl = nb::class_<Solver>(m, name)
                 .def(nb::init<const MatrixType &>(), nb::arg("matrix"))
                 .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"))
+                .def(EigenBaseVisitor())
                 .def("isNegative", &Solver::isNegative)
                 .def("isPositive", &Solver::isPositive)
                 .def("matrixL",
@@ -30,7 +31,6 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
                       return c.rankUpdate(w, sigma);
                     },
                     nb::arg("w"), nb::arg("sigma"));
-  addEigenBaseFeatures(cl);
 }
 
 }  // namespace nanoeigenpy

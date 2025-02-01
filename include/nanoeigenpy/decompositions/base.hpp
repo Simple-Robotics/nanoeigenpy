@@ -6,11 +6,15 @@
 namespace nanoeigenpy {
 namespace nb = nanobind;
 
-template <typename T, typename... Ts>
-void addEigenBaseFeatures(nb::class_<T, Ts...> &cl) {
-  cl.def_prop_ro("cols", &T::cols)
-      .def_prop_ro("rows", &T::rows)
-      .def_prop_ro("size", &T::size);
-}
+struct EigenBaseVisitor : nb::def_visitor<EigenBaseVisitor> {
+  template <typename Derived, typename... Ts>
+  void execute(nb::class_<Derived, Ts...> &cl) {
+    using EigenBase = Eigen::EigenBase<Derived>;
+    static_assert(std::is_base_of_v<EigenBase, Derived>);
+    cl.def_prop_ro("cols", &Derived::cols)
+        .def_prop_ro("rows", &Derived::rows)
+        .def_prop_ro("size", &Derived::size);
+  }
+};
 
 }  // namespace nanoeigenpy
