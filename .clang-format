@@ -1,0 +1,4 @@
+Language: Cpp
+BasedOnStyle: Google
+SortIncludes: false
+Standard: c++17
