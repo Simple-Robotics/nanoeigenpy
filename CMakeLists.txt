@@ -10,6 +10,8 @@ include(cmake/base.cmake)
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+
 find_package(Eigen3 REQUIRED)
 
 add_library(nanoeigenpy_headers INTERFACE)
@@ -34,7 +36,7 @@ execute_process(
 )
 find_package(nanobind CONFIG REQUIRED)
 
-set(nanoeigenpy_SOURCES src/nanoeigenpy/module.cpp)
+file(GLOB nanoeigenpy_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES})
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
