@@ -21,5 +21,4 @@ NB_MODULE(nanoeigenpy, m) {
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
   QuaternionVisitor<Quaternion>::expose(m, "Quaternion");
-  Eigen::Vector4d q;
 }
