@@ -4,6 +4,7 @@ set(PROJECT_NAME nanoeigenpy)
 set(PROJECT_URL https://github.com/ManifoldFR/nanoeigenpy)
 set(PROJECT_DESCRIPTION "Tools for using Eigen with nanobind")
 set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
+set(PROJECT_USE_CMAKE_EXPORT True)
 
 include(cmake/base.cmake)
 
@@ -15,7 +16,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 find_package(Eigen3 REQUIRED)
 
 add_library(nanoeigenpy_headers INTERFACE)
-target_include_directories(nanoeigenpy_headers INTERFACE ./src)
 target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development)
@@ -43,3 +43,22 @@ target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
+
+install(
+  TARGETS nanoeigenpy_headers
+  EXPORT ${TARGETS_EXPORT_NAME}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+  DIRECTORY include/nanoeigenpy
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING
+  PATTERN "*.hpp"
+)
+
+install(
+  TARGETS nanoeigenpy
+  EXPORT ${TARGETS_EXPORT_NAME}
+  LIBRARY DESTINATION ${Python_SITELIB}
+)
