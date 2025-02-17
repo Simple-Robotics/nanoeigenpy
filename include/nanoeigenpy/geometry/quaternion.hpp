@@ -1,9 +1,8 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#include <nanobind/eigen/dense.h>
+#include "detail/rotation-base.hpp"
 #include <nanobind/operators.h>
-#include <Eigen/Geometry>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
@@ -36,16 +35,24 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
         .def(nb::self * nb::self)
         .def(nb::self *= nb::self, nb::rv_policy::none)
         .def(nb::self * Vector3())
-        .def("__repr__", [](const Quaternion& self) {
-          std::stringstream ss;
-          ss << "[x,y,z,w] = " << self.coeffs().transpose();
-          return ss.str();
-        });
+        .def("__repr__",
+             [](const Quaternion& self) {
+               std::stringstream ss;
+               ss << "[x,y,z,w] = " << self.coeffs().transpose();
+               return ss.str();
+             })
+        .def(RotationBaseVisitor<Quaternion, 3>());
   }
 
   static void expose(nb::module_& m, const char* name) {
     nb::class_<Quaternion>(m, name).def(QuaternionVisitor());
   }
 };
+
+template <typename Scalar>
+void exposeQuaternion(nb::module_& m, const char* name) {
+  using Quaternion = Eigen::Quaternion<Scalar>;
+  QuaternionVisitor<Quaternion>::expose(m, name);
+}
 
 }  // namespace nanoeigenpy

@@ -4,7 +4,7 @@
 
 #include "nanoeigenpy/decompositions/ldlt.hpp"
 #include "nanoeigenpy/decompositions/llt.hpp"
-#include "nanoeigenpy/geometry/quaternion.hpp"
+#include "nanoeigenpy/geometry.hpp"
 
 using namespace nanoeigenpy;
 
@@ -20,5 +20,6 @@ NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
 NB_MODULE(nanoeigenpy, m) {
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
-  QuaternionVisitor<Quaternion>::expose(m, "Quaternion");
+  exposeQuaternion<Scalar>(m, "Quaternion");
+  exposeAngleAxis<double>(m, "AngleAxis");
 }
