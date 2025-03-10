@@ -23,6 +23,10 @@ NB_MODULE(nanoeigenpy, m) {
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
   exposeMINRESSolver<Matrix>(m, "MINRES");
+  // exposeHouseholderQRSolver<Matrix>(m, "HouseholderQR");
+  // exposeFullPivHouseholderQRSolver<Matrix>(m, "FullPivHouseholderQR")
+  // exposeColPivHouseholderQRSolver<Matrix>(m, "ColPivHouseholderQR")
+  // exposeCompleteOrthogonalDecompositionSolver<Matrix>(m, "CompleteOrthogonalDecomposition")
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");

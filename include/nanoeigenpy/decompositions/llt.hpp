@@ -132,3 +132,8 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 
 // Assertions for the solve method on vectors x_est and b
 // Expose is_approx for vectors too (exposed and tested for ùatrices only in eigenpy)
+
+// In general in the lib
+// Calls for MatrixXs, VectorXs insead of Matrix and Vector defined one more time ? 
+//   For the moment, my implem works, but the code is a bit dirty
+// Check if the rv_policy are well chosen (compare with the eigenpy code)
