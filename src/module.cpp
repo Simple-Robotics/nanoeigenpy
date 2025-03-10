@@ -22,6 +22,7 @@ NB_MODULE(nanoeigenpy, m) {
   // Decompositions
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
+  exposeMINRESSolver<Matrix>(m, "MINRES");
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");

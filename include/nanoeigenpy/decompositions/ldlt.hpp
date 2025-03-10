@@ -7,7 +7,9 @@ namespace nanoeigenpy {
 namespace nb = nanobind;
 
 template <typename MatrixType, typename MatrixOrVector>
-MatrixOrVector solve(const Eigen::LDLT<MatrixType> &c, const MatrixOrVector &vec) {
+MatrixOrVector solve(const Eigen::LDLT<MatrixType> &c, 
+                     const MatrixOrVector &vec) 
+{
      return c.solve(vec);
 }
 
