@@ -129,3 +129,4 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
 // Questions about eigenpy itself:
 // Relevant to have the reconstructedMatrix method ? (knowing that we are on LDLT, not LLT)
+// Review again the ways I use the Matrix... and Vector... in the using, .def(), etc (quite confusing)

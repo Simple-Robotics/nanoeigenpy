@@ -7,3 +7,4 @@
 #include "nanoeigenpy/decompositions/FullPivHouseholderQR.hpp"
 #include "nanoeigenpy/decompositions/ColPivHouseholderQR.hpp"
 #include "nanoeigenpy/decompositions/CompleteOrthogonalDecomposition.hpp"
+#include "nanoeigenpy/decompositions/EigenSolver.hpp"

@@ -170,6 +170,3 @@ void exposeMINRESSolver(nb::module_ m, const char *name) {
 // Ambiguity in the definition of info between LLT/LDLT and MINRES (still have to expose ComputationInfo)
 // In general, it seems that some methods are in some decomps, but not in others, while them seem to be quite general 
 // (eg some solve, init, etc methods)
-
-// Technical specificities
-// MINRES has a destructor ~MINRES, but not LLT and LDLT -> errors when make install -> adapt the code
