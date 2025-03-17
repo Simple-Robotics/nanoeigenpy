@@ -140,10 +140,10 @@ void exposeColPivHouseholderQRSolver(nb::module_ m, const char *name) {
                 .def("matrixQR", &Solver::matrixQR,
                 "Returns the matrix where the Householder QR decomposition is "
                 "stored in a LAPACK-compatible way.",
-                nb::rv_policy::reference_internal) 
+                nb::rv_policy::copy) 
                 .def("matrixR", &Solver::matrixR,
                 "Returns the matrix where the result Householder QR is stored.",
-                nb::rv_policy::reference_internal)    
+                nb::rv_policy::copy) 
 
                 .def("compute",                                                                 
                     [](Solver &c, VectorType const &matrix) {
@@ -177,12 +177,3 @@ void exposeColPivHouseholderQRSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-// All that is not the basics
-
-// Expose supplementary content:
-
-// Technical 

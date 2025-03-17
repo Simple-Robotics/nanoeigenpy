@@ -52,7 +52,8 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
                      [](Solver const &c) -> VectorType { return c.vectorD(); },
                      "Returns the coefficients of the diagonal matrix D.")
                 .def("matrixLDLT", &Solver::matrixLDLT,
-                     "Returns the LDLT decomposition matrix.",
+                     "Returns the LDLT decomposition matrix made of the lower matrix "
+                     "L, the diagonal D, then the remaining part that corresponds to A.",
                      nb::rv_policy::reference_internal)
 
                 .def("transpositionsP",
@@ -64,6 +65,7 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
                     [](Solver &c, VectorType const &w, Scalar sigma) {
                       return c.rankUpdate(w, sigma);
                     },
+                    "If LDL^* = A, then it becomes A + sigma * v v^*",
                     nb::arg("w"), nb::arg("sigma"))
 
 #if EIGEN_VERSION_AT_LEAST(3, 3, 0)
@@ -117,16 +119,3 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy: (+ those cited in llt.hpp)
-// setZero
-
-// Expose supplementary content:
-// setZero in LLT decomp too ? (not done in eigenpy)
-
-// Questions about eigenpy itself:
-// Relevant to have the reconstructedMatrix method ? (knowing that we are on LDLT, not LLT)
-// Review again the ways I use the Matrix... and Vector... in the using, .def(), etc (quite confusing)

@@ -25,9 +25,9 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
                 "Default constructor.")
                 .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"), 
                 "Default constructor with memory preallocation.")
-                .def(nb::init<const MatrixType &, std::optional<bool>>(),  
+                .def(nb::init<const MatrixType &, bool>(),  
                     nb::arg("matrix"), 
-                    nb::arg("compute_eigen_vectors") = std::nullopt,  
+                    nb::arg("compute_eigen_vectors") = true,  
                     "Computes eigendecomposition of given matrix")
 
                 .def("eigenvalues", &Solver::eigenvalues,
@@ -37,8 +37,8 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
                 "Returns the eigenvectors of given matrix.")  
 
                 .def("compute",                                                                        
-                     [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix) -> 
-                     Eigen::EigenBase<MatrixType> { return compute_proxy(c, matrix); },
+                     [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix) -> Solver& 
+                     { return compute_proxy(c, matrix); },
                      nb::arg("matrix"),
                      "Computes the eigendecomposition of given matrix.",
                      nb::rv_policy::reference)
@@ -75,15 +75,3 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy: (+ those cited in llt.hpp)
-// 
-
-// Expose supplementary content:
-
-// Questions about eigenpy itself:
-// init with matrix: In their test, they init like with other decomps, but here in the .def,they add a second argument
-//    Check if my implem is correct

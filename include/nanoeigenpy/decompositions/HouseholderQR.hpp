@@ -64,10 +64,15 @@ void exposeHouseholderQRSolver(nb::module_ m, const char *name) {
                 "work around the risk of overflow/underflow that's inherent to "
                 "determinant computation.")  
 
+                .def("householderQ", &Solver::matrixQR,
+                "Returns the matrix where the Householder QR decomposition is "
+                "stored in a LAPACK-compatible way.",
+                nb::rv_policy::copy) 
+
                 .def("matrixQR", &Solver::matrixQR,
                 "Returns the matrix where the Householder QR decomposition is "
                 "stored in a LAPACK-compatible way.",
-                nb::rv_policy::reference_internal)    
+                nb::rv_policy::copy) 
 
                 .def("compute",                                                                 
                     [](Solver &c, VectorType const &matrix) {
@@ -96,16 +101,3 @@ void exposeHouseholderQRSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-
-// Expose supplementary content:
-// init with mem prealoc with the sizes: check why it is different from the others with one arg instead of 2
-// No EigenBaseVisitor ? 
-// Add others ? Like info, or specific methods ? 
-
-// Technical 
-// See exactly what rv_policy I should use according to different cases (eg for matrixQR and others)

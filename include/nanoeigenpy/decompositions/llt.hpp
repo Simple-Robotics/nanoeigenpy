@@ -47,7 +47,8 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
                      [](Chol const &c) -> MatrixType { return c.matrixU(); },
                      "Returns the upper triangular matrix U.")
                 .def("matrixLLT", &Chol::matrixLLT,                                             
-                     "Returns the LLT decomposition matrix.",
+                     "Returns the LLT decomposition matrix made of the lower matrix "
+                     "L, plus the remaining part that corresponds to A.",
                      nb::rv_policy::reference_internal)
 
 #if EIGEN_VERSION_AT_LEAST(3, 3, 90)               
@@ -55,6 +56,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
                     [](Chol &c, VectorType const &w, Scalar sigma) {
                       return c.rankUpdate(w, sigma);
                     },
+                    "If LL^* = A, then it becomes A + sigma * v v^*",
                     nb::arg("w"), nb::arg("sigma"),                          
                     nb::rv_policy::reference)
 #else
@@ -62,6 +64,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
                     [](Chol &c, VectorType const &w, Scalar sigma) {
                       return c.rankUpdate(w, sigma);
                     },
+                    "If LL^* = A, then it becomes A + sigma * v v^*",
                     nb::arg("w"), nb::arg("sigma"))
 #endif
 
@@ -113,27 +116,3 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-// Default constructor
-// Default constructor with memory preallocation
-// matrixLLT
-// rankUpdate
-// adjoint
-// compute
-// rcond
-// reconstructedMatrix
-
-// Expose supplementary content:
-// Expose ComputationInfo to test info
-
-// Assertions for the solve method on vectors x_est and b
-// Expose is_approx for vectors too (exposed and tested for ùatrices only in eigenpy)
-
-// In general in the lib
-// Calls for MatrixXs, VectorXs insead of Matrix and Vector defined one more time ? 
-//   For the moment, my implem works, but the code is a bit dirty
-// Check if the rv_policy are well chosen (compare with the eigenpy code)

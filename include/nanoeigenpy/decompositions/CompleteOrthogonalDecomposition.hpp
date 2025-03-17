@@ -147,14 +147,13 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m, const char *name
                 .def("matrixQTZ", &Solver::matrixQTZ,
                 "Returns the matrix where the complete orthogonal decomposition "
                 "is stored.",
-                nb::rv_policy::reference_internal) 
+                nb::rv_policy::copy) 
                 .def("matrixT", &Solver::matrixT,
                 "Returns the matrix where the complete orthogonal decomposition "
                 "is stored.",
-                nb::rv_policy::reference_internal) 
+                nb::rv_policy::copy) 
                 .def("matrixZ", &Solver::matrixZ,
-                "Returns the matrix Z.",
-                nb::rv_policy::reference_internal)    
+                "Returns the matrix Z.")
 
                 .def("compute",                                                                 
                     [](Solver &c, VectorType const &matrix) {

@@ -5,6 +5,7 @@
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
+#include "nanoeigenpy/computation-info.hpp"
 
 using namespace nanoeigenpy;
 
@@ -30,7 +31,7 @@ NB_MODULE(nanoeigenpy, m) {
   exposeFullPivHouseholderQRSolver<Matrix>(m, "FullPivHouseholderQR");
   exposeColPivHouseholderQRSolver<Matrix>(m, "ColPivHouseholderQR");
   exposeCompleteOrthogonalDecompositionSolver<Matrix>(m, "CompleteOrthogonalDecomposition");
-  exposeEigenSolver<Matrix>(m, "exposeEigenSolver");
+  exposeEigenSolver<Matrix>(m, "EigenSolver");
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");
@@ -39,21 +40,6 @@ NB_MODULE(nanoeigenpy, m) {
   // Utils
   exposeIsApprox<double>(m);
   exposeIsApprox<std::complex<double>>(m);
+
+  exposeComputationInfo(m);
 }
-
-
-// Meeting Mar 11 - About nanoeigenpy
-
-// In eigenpy, there are decompositions, solvers, geometry stuff, etc
-// -> I focused on some decompositions first: LLT, LDLT, MINRES, QR, EigenSolver
-
-// What I did:
-// 1. Translated the Bosst.Python classes of visitors into nanobind classes in expose functions
-// 2. Passed the same tests as those in eigenpy
-
-// TODO: 
-// 1. Finish to expose decompositions and geometry stuff
-// 2. Upgrade the unit tests to all the methods (defined in .def() so that they are more complete)
-// 3. Additional content from eigenpy (eg the diferent solvers, etc)
-// (2 <-> 3 ?)
-

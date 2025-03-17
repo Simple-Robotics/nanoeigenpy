@@ -136,7 +136,7 @@ void exposeFullPivHouseholderQRSolver(nb::module_ m, const char *name) {
                 .def("matrixQR", &Solver::matrixQR,
                 "Returns the matrix where the Householder QR decomposition is "
                 "stored in a LAPACK-compatible way.",
-                nb::rv_policy::reference_internal)    
+                nb::rv_policy::copy) 
 
                 .def("compute",                                                                 
                     [](Solver &c, VectorType const &matrix) {
@@ -170,14 +170,3 @@ void exposeFullPivHouseholderQRSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-// All that is not the basics
-
-// Expose supplementary content:
-// info ? exposed in colPivHouseholder par eg
-
-// Technical 
-// Why to repeat the .inverse() method ? Because in eigenpy, we litterally do function = function...

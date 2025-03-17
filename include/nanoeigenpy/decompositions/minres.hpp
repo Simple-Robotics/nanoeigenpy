@@ -164,9 +164,5 @@ void exposeMINRESSolver(nb::module_ m, const char *name) {
 // solve for vector and matrix
 // solveWithGuess for vector and matrix
 
-// Expose supplementary content:
-// Do the init with size argument ?
-// Do EigenBaseVisitor ? 
-// Ambiguity in the definition of info between LLT/LDLT and MINRES (still have to expose ComputationInfo)
-// In general, it seems that some methods are in some decomps, but not in others, while them seem to be quite general 
-// (eg some solve, init, etc methods)
+// Error
+// solve test do not pass

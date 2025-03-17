@@ -6,6 +6,7 @@ seed = 5
 rng = np.random.default_rng(seed)
 
 A = np.eye(dim)
+print("A :", A)
 minres = nanoeigenpy.MINRES(A)
 
 
