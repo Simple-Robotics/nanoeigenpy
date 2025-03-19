@@ -15,6 +15,7 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
   template <typename SimplicialDerived, typename... Ts>
   void execute(nb::class_<SimplicialDerived, Ts...> &cl) {
     using Solver = SimplicialDerived;
+    static_assert(std::is_base_of_v<Eigen::SparseSolverBase<Solver>, Solver>);
     using MatrixType = typename SimplicialDerived::MatrixType;
     using Scalar = typename MatrixType::Scalar;
     using DenseVectorXs =
