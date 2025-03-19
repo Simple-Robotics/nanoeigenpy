@@ -3,7 +3,6 @@
 #include <nanobind/stl/string.h>
 
 #include "nanoeigenpy/decompositions.hpp"
-#include "nanoeigenpy/decompositions/sparse/ldlt.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 #include "nanoeigenpy/computation-info.hpp"
