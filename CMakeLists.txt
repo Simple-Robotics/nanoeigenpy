@@ -10,6 +10,14 @@ set(PROJECT_DESCRIPTION "Tools for using Eigen with nanobind")
 set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
 set(PROJECT_USE_CMAKE_EXPORT True)
 
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+  set(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
+endif()
+if(POLICY CMP0177)
+  cmake_policy(SET CMP0177 NEW)
+  set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
+endif()
 include(cmake/base.cmake)
 include(cmake/ide.cmake)
 
@@ -38,15 +46,7 @@ execute_process(
 find_package(nanobind CONFIG REQUIRED)
 
 # Setup main targets
-set(
-  ${PROJECT_NAME}_HEADERS
-  include/nanoeigenpy/computation-info.hpp
-  include/nanoeigenpy/computation-info.hpp
-  include/nanoeigenpy/decompositions.hpp
-  include/nanoeigenpy/eigen-typedef.hpp
-  include/nanoeigenpy/fwd.hpp
-  include/nanoeigenpy/geometry.hpp
-)
+file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS include/nanoeigenpy/*.hpp)
 
 add_library(nanoeigenpy_headers INTERFACE)
 target_include_directories(
@@ -58,13 +58,8 @@ target_include_directories(
 )
 target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
-set(PROJECT_HEADERS_FULL_PATH)
-foreach(header ${${PROJECT_NAME}_HEADERS})
-  list(APPEND PROJECT_HEADERS_FULL_PATH ${PROJECT_SOURCE_DIR}/${header})
-endforeach()
-
 file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
-nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${PROJECT_HEADERS_FULL_PATH})
+nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
 if(BUILD_TESTING)
