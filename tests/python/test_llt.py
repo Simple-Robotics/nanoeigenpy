@@ -34,16 +34,16 @@ assert nanoeigenpy.is_approx(A.dot(X_est), B)
 x = rng.random(dim)
 b = A.dot(x)
 x_est = llt.solve(b)
-assert nanoeigenpy.is_approx(x, x_est)            
-assert nanoeigenpy.is_approx(A.dot(x_est), b)   
+assert nanoeigenpy.is_approx(x, x_est)
+assert nanoeigenpy.is_approx(A.dot(x_est), b)
 
 # Test matrixLLT
 LLT = llt.matrixLLT()
 LLT_lower = np.tril(LLT)
 assert nanoeigenpy.is_approx(LLT_lower, L)
 
-A_upper = np.triu(A, k=1)  
-LLT_upper = np.triu(LLT, k=1)  
+A_upper = np.triu(A, k=1)
+LLT_upper = np.triu(LLT, k=1)
 assert nanoeigenpy.is_approx(A_upper, LLT_upper)
 
 # Test reconstructedMatrix

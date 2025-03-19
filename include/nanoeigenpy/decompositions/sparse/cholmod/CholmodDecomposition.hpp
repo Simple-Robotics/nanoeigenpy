@@ -5,18 +5,16 @@
 
 namespace nanoeigenpy {
 
-struct CholmodDecompositionVisitor : nb::def_visitor<CholmodDecompositionVisitor> {
+struct CholmodDecompositionVisitor
+    : nb::def_visitor<CholmodDecompositionVisitor> {
   template <typename SimplicialDerived, typename... Ts>
   void execute(nb::class_<SimplicialDerived, Ts...> &cl) {
-
     using Solver = SimplicialDerived;
 
     cl.def(CholmodBaseVisitor())
 
-       .def("setMode", &Solver::setMode,     
-            nb::arg("mode"),                                                  
-            "Set the mode for the Cholesky decomposition.")
-       ;
+        .def("setMode", &Solver::setMode, nb::arg("mode"),
+             "Set the mode for the Cholesky decomposition.");
   }
 };
 

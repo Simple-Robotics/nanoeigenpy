@@ -45,8 +45,8 @@ assert nanoeigenpy.is_approx(A.dot(X_est), B)
 x = rng.random(dim)
 b = A.dot(x)
 x_est = ldlt.solve(b)
-assert nanoeigenpy.is_approx(x, x_est)            
-assert nanoeigenpy.is_approx(A.dot(x_est), b)    
+assert nanoeigenpy.is_approx(x, x_est)
+assert nanoeigenpy.is_approx(A.dot(x_est), b)
 
 # Test reconstructedMatrix
 A_reconstructed = ldlt.reconstructedMatrix()
@@ -71,8 +71,8 @@ LDLT_lower_without_diag = np.tril(LDLT, k=-1)
 L_lower_without_diag = np.tril(L, k=-1)
 assert nanoeigenpy.is_approx(LDLT_lower_without_diag, L_lower_without_diag)
 
-A_upper_without_diag = np.triu(A, k=1)  
-LLT_upper_without_diag = np.triu(LDLT, k=1)  
+A_upper_without_diag = np.triu(A, k=1)
+LLT_upper_without_diag = np.triu(LDLT, k=1)
 assert nanoeigenpy.is_approx(A_upper_without_diag, LLT_upper_without_diag)
 
 LDLT_diag = np.diagonal(LDLT)

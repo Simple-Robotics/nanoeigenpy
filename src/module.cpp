@@ -31,7 +31,8 @@ NB_MODULE(nanoeigenpy, m) {
   exposeHouseholderQRSolver<Matrix>(m, "HouseholderQR");
   exposeFullPivHouseholderQRSolver<Matrix>(m, "FullPivHouseholderQR");
   exposeColPivHouseholderQRSolver<Matrix>(m, "ColPivHouseholderQR");
-  exposeCompleteOrthogonalDecompositionSolver<Matrix>(m, "CompleteOrthogonalDecomposition");
+  exposeCompleteOrthogonalDecompositionSolver<Matrix>(
+      m, "CompleteOrthogonalDecomposition");
   exposeEigenSolver<Matrix>(m, "EigenSolver");
 
   exposeSimplicialLLT<Matrix>(m, "SimplicialLLT");
