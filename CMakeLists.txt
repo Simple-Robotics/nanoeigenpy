@@ -1,14 +1,18 @@
+#
+# Copyright 2025 INRIA
+#
+
 cmake_minimum_required(VERSION 3.18)
 
 set(PROJECT_NAME nanoeigenpy)
-set(PROJECT_URL https://github.com/ManifoldFR/nanoeigenpy)
+set(PROJECT_URL https://github.com/Simple-Robotics/nanoeigenpy)
 set(PROJECT_DESCRIPTION "Tools for using Eigen with nanobind")
 set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
 set(PROJECT_USE_CMAKE_EXPORT True)
 
 include(cmake/base.cmake)
 
-compute_project_args(PROJECT_ARGS LANGUAGES CXX)
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
