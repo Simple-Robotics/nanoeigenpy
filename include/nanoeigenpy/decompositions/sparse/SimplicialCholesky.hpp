@@ -1,7 +1,6 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#include "nanoeigenpy/decompositions/base.hpp"
 #include "nanoeigenpy/decompositions/sparse/SparseSolverBase.hpp"
 
 #include <Eigen/SparseCholesky>
@@ -27,7 +26,6 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
            "This function is particularly useful when solving for several "
            "problems having the same structure.")
 
-        .def(EigenBaseVisitor())
         .def(SparseSolverBaseVisitor())
 
         .def(
@@ -58,6 +56,8 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
              "which the symbolic decomposition has been performed.\n"
              "See also analyzePattern().")
 
+        .def("rows", &Solver::rows)
+        .def("cols", &Solver::cols)
         .def("info", &Solver::info,
              "NumericalIssue if the input contains INF or NaN values or "
              "overflow occured. Returns Success otherwise.")
