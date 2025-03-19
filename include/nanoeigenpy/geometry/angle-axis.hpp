@@ -1,6 +1,7 @@
 #pragma once
 
 #include "detail/rotation-base.hpp"
+#include <nanobind/operators.h>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
@@ -17,7 +18,7 @@ template <typename Scalar>
 void exposeAngleAxis(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using AngleAxis = Eigen::AngleAxis<Scalar>;
-  using Quat = typename AngleAxis::QuaternionType;
+  using Quaternion = typename Eigen::Quaternion<Scalar, 0>;
   using Vector3 = typename AngleAxis::Vector3;
   using Matrix3 = typename AngleAxis::Matrix3;
 
@@ -32,7 +33,7 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
             .def(nb::init<Matrix3>(), 
             nb::arg("R"),
             "Initialize from a rotation matrix.")
-            .def(nb::init<Quat>(), 
+            .def(nb::init<Quaternion>(), 
             nb::arg("quaternion"),
             "Initialize from a quaternion.")
             .def(nb::init<AngleAxis>(), 
@@ -64,7 +65,21 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
                 "Returns true if *this is approximately equal to other, "
                 "within the precision determined by prec.")
 
-            .def(nb::self * nb::other<Vector3>());
+            .def(nb::self * nb::self)
+
+            ;
 }
 
 }  // namespace nanoeigenpy
+
+
+// TODO
+
+// Differences between angle-axis and decompositions files:
+// Remove the isApprox and make it clean
+// bp::implicitly_convertible -> Let it for later (eventually Justin work)
+// Manage the overload of isApprox (cf the macro in eigenpy) (try with quaternion implemented too, add if needed (probably))
+// angle and axis functions: check if correct from eigenpy (probably not)
+// See if clean to factorize with RotationBaseVisitor
+// How to define the operators
+

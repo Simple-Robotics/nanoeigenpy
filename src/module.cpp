@@ -3,6 +3,7 @@
 #include <nanobind/stl/string.h>
 
 #include "nanoeigenpy/decompositions.hpp"
+#include "nanoeigenpy/decompositions/sparse/ldlt.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 #include "nanoeigenpy/computation-info.hpp"
@@ -33,9 +34,12 @@ NB_MODULE(nanoeigenpy, m) {
   exposeCompleteOrthogonalDecompositionSolver<Matrix>(m, "CompleteOrthogonalDecomposition");
   exposeEigenSolver<Matrix>(m, "EigenSolver");
 
+  exposeSimplicialLLT<Matrix>(m, "SimplicialLLT");
+  exposeSimplicialLDLT<Matrix>(m, "SimplicialLDLT");
+
   // Geometry
-  exposeQuaternion<Scalar>(m, "Quaternion");
-  exposeAngleAxis<double>(m, "AngleAxis");
+  // exposeQuaternion<Scalar>(m, "Quaternion");
+  // exposeAngleAxis<double>(m, "AngleAxis");
 
   // Utils
   exposeIsApprox<double>(m);

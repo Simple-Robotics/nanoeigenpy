@@ -9,3 +9,6 @@
 #include "nanoeigenpy/decompositions/ColPivHouseholderQR.hpp"
 #include "nanoeigenpy/decompositions/CompleteOrthogonalDecomposition.hpp"
 #include "nanoeigenpy/decompositions/EigenSolver.hpp"
+
+#include "nanoeigenpy/decompositions/sparse/llt.hpp"
+#include "nanoeigenpy/decompositions/sparse/ldlt.hpp"

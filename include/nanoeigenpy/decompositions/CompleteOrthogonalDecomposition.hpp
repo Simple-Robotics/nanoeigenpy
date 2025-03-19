@@ -188,12 +188,3 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m, const char *name
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-// All that is not the basics
-
-// Expose supplementary content:
-
-// Technical 
