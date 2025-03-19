@@ -12,6 +12,8 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
   template <typename SimplicialDerived, typename... Ts>
   void execute(nb::class_<SimplicialDerived, Ts...> &cl) {
     using Solver = SimplicialDerived;
+    using Base = Eigen::SimplicialCholeskyBase<Solver>;
+    static_assert(std::is_base_of_v<Base, Solver>);
     using MatrixType = typename SimplicialDerived::MatrixType;
     // using Scalar = typename MatrixType::Scalar;
     using RealScalar = typename MatrixType::RealScalar;
