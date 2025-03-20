@@ -46,7 +46,11 @@ execute_process(
 find_package(nanobind CONFIG REQUIRED)
 
 # Setup main targets
-file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS include/nanoeigenpy/*.hpp)
+file(
+  GLOB_RECURSE ${PROJECT_NAME}_HEADERS
+  CONFIGURE_DEPENDS
+  include/nanoeigenpy/*.hpp
+)
 
 add_library(nanoeigenpy_headers INTERFACE)
 target_include_directories(
