@@ -38,8 +38,8 @@ NB_MODULE(nanoeigenpy, m) {
   exposeSimplicialLDLT<Matrix>(m, "SimplicialLDLT");
 
   // Geometry
-  // exposeQuaternion<Scalar>(m, "Quaternion");
-  // exposeAngleAxis<double>(m, "AngleAxis");
+  exposeQuaternion<Scalar>(m, "Quaternion");
+  exposeAngleAxis<Scalar>(m, "AngleAxis");
 
   // Utils
   exposeIsApprox<double>(m);
