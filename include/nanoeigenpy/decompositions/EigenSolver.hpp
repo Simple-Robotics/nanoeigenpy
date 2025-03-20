@@ -1,10 +1,8 @@
 /// Copyright 2025 INRIA
 #pragma once
 #include "nanoeigenpy/eigen-base.hpp"
-// #include "nanoeigenpy/eigen-to-python.hpp"
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
-#include <optional>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
@@ -30,10 +28,11 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
                "Computes eigendecomposition of given matrix")
 
           .def("eigenvalues", &Solver::eigenvalues,
-               "Returns the eigenvalues of given matrix.",
+               "Returns the eigenvalues of the matrix.",
                nb::rv_policy::reference_internal)
           .def("eigenvectors", &Solver::eigenvectors,
-               "Returns the eigenvectors of given matrix.")
+               "Returns the eigenvectors of the matrix.",
+               nb::rv_policy::reference_internal)
 
           .def(
               "compute",
