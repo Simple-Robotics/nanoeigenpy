@@ -14,6 +14,7 @@ static constexpr int Options = Eigen::ColMajor;
 using Matrix = Eigen::Matrix<Scalar, -1, -1, Options>;
 using Vector = Eigen::Matrix<Scalar, -1, 1>;
 using Quaternion = Eigen::Quaternion<Scalar, Options>;
+using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
@@ -34,8 +35,8 @@ NB_MODULE(nanoeigenpy, m) {
       m, "CompleteOrthogonalDecomposition");
   exposeEigenSolver<Matrix>(m, "EigenSolver");
 
-  exposeSimplicialLLT<Matrix>(m, "SimplicialLLT");
-  exposeSimplicialLDLT<Matrix>(m, "SimplicialLDLT");
+  exposeSimplicialLLT<SparseMatrix>(m, "SimplicialLLT");
+  exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");
