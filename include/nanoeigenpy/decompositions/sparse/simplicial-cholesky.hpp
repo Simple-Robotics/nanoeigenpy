@@ -1,8 +1,8 @@
 /// Copyright 2025 INRIA
+
 #pragma once
 
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
-
 #include <Eigen/SparseCholesky>
 
 namespace nanoeigenpy {

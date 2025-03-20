@@ -1,12 +1,13 @@
 /// Copyright 2025 INRIA
+
 #pragma once
+
+#include "nanoeigenpy/eigen-typedef.hpp"
+#include "nanoeigenpy/fwd.hpp"
 
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 #include <nanobind/nanobind.h>
-
-#include "nanoeigenpy/eigen-typedef.hpp"
-#include "nanoeigenpy/fwd.hpp"
 
 namespace nanoeigenpy {
 

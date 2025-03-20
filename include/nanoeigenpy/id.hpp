@@ -1,5 +1,7 @@
 /// Copyright 2025 INRIA
+
 #pragma once
+
 #include <nanobind/eigen/dense.h>
 #include <nanobind/nanobind.h>
 

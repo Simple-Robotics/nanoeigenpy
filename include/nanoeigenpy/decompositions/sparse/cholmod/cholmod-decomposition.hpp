@@ -1,4 +1,5 @@
 /// Copyright 2025 INRIA
+
 #pragma once
 
 #include "nanoeigenpy/decompositions/sparse/cholmod/cholmod-base.hpp"

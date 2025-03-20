@@ -1,4 +1,5 @@
 /// Copyright 2025 INRIA
+
 #pragma once
 
 #include <nanobind/nanobind.h>
