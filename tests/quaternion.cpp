@@ -1,7 +1,7 @@
 /// Copyright 2025 INRIA
 
-#include <nanoeigenpy/geometry/angle-axis.hpp>
-#include <nanoeigenpy/geometry/quaternion.hpp>
+#include "nanoeigenpy/geometry/angle-axis.hpp"
+#include "nanoeigenpy/geometry/quaternion.hpp"
 
 namespace nb = nanobind;
 using namespace nb::literals;
