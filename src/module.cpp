@@ -46,4 +46,6 @@ NB_MODULE(nanoeigenpy, m) {
   exposeIsApprox<std::complex<double>>(m);
 
   exposeComputationInfo(m);
+
+  m.attr("__version__") = NANOEIGENPY_VERSION;
 }

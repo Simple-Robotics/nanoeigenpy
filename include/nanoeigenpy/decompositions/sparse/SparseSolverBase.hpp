@@ -1,6 +1,7 @@
 /// Copyright 2025 INRIA
 #pragma once
 
+#include "nanoeigenpy/fwd.hpp"
 #include <Eigen/SparseCholesky>
 
 namespace nanoeigenpy {

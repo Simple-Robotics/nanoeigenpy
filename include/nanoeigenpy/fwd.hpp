@@ -1,6 +1,24 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#define NANOEIGENPY_UNUSED_VARIABLE(var) (void)(var)
-#define NANOEIGENPY_UNUSED_TYPE(type) \
-  NANOEIGENPY_UNUSED_VARIABLE((type *)(NULL))
+#if defined(__clang__)
+#define NANOEIGENPY_CLANG_COMPILER
+#elif defined(__GNUC__)
+#define NANOEIGENPY_GCC_COMPILER
+#elif defined(_MSC_VER)
+#define NANOEIGENPY_MSVC_COMPILER
+#endif
+
+#if (__cplusplus >= 202002L || (defined(_MSVC_LAG) && _MSVC_LANG >= 202002L))
+#define NANOEIGENPY_WITH_CXX20_SUPPORT
+#endif
+
+#define NANOEIGENPY_UNUSED_TYPE(Type) (Type*)(NULL)
+
+#include "nanoeigenpy/config.hpp"
+
+#include <nanobind/nanobind.h>
+
+namespace nanoeigenpy {
+namespace nb = nanobind;
+}
