@@ -1,7 +1,6 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#include "nanoeigenpy/decompositions/base.hpp"
 #include <Eigen/SparseCholesky>
 
 namespace nanoeigenpy {

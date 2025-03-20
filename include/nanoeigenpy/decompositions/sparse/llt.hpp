@@ -4,7 +4,6 @@
 #include "nanoeigenpy/decompositions/sparse/SimplicialCholesky.hpp"
 
 namespace nanoeigenpy {
-namespace nb = nanobind;
 
 template <
     typename MatrixType, int UpLo = Eigen::Lower,

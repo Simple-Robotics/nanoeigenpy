@@ -1,6 +1,6 @@
 /// Copyright 2025 INRIA
 #pragma once
-#include "base.hpp"
+#include "nanoeigenpy/eigen-base.hpp"
 #include <unsupported/Eigen/IterativeSolvers>
 
 namespace nanoeigenpy {

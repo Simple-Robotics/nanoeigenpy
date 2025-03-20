@@ -39,7 +39,7 @@ NB_MODULE(nanoeigenpy, m) {
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");
-  exposeAngleAxis<Scalar>(m, "AngleAxis");
+  // exposeAngleAxis<Scalar>(m, "AngleAxis");
 
   // Utils
   exposeIsApprox<double>(m);
