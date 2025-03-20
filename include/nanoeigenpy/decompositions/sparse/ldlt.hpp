@@ -1,7 +1,7 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#include "nanoeigenpy/decompositions/sparse/SimplicialCholesky.hpp"
+#include "nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp"
 
 namespace nanoeigenpy {
 namespace nb = nanobind;

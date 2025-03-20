@@ -1,7 +1,7 @@
 /// Copyright 2025 INRIA
 #pragma once
 
-#include "nanoeigenpy/decompositions/sparse/SparseSolverBase.hpp"
+#include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 #include <Eigen/CholmodSupport>
 
 namespace nanoeigenpy {
