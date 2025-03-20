@@ -10,13 +10,6 @@ namespace nanoeigenpy {
 namespace nb = nanobind;
 
 template <typename MatrixType>
-Eigen::EigenSolver<MatrixType> &compute_proxy(
-    Eigen::EigenSolver<MatrixType> &c,
-    const Eigen::EigenBase<MatrixType> &matrix) {
-  return c.compute(matrix);
-}
-
-template <typename MatrixType>
 void exposeEigenSolver(nb::module_ m, const char *name) {
   using Solver = Eigen::EigenSolver<MatrixType>;
   auto cl =
@@ -39,7 +32,7 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
           .def(
               "compute",
               [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix)
-                  -> Solver & { return compute_proxy(c, matrix); },
+                  -> Solver & { return c.compute(matrix); },
               nb::arg("matrix"),
               "Computes the eigendecomposition of given matrix.",
               nb::rv_policy::reference)
