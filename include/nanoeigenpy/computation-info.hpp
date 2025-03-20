@@ -17,7 +17,6 @@ inline void exposeComputationInfo(nb::module_ m) {
       .value("InvalidInput", Eigen::InvalidInput,
              "The inputs are invalid, or the algorithm has been improperly "
              "called. "
-             "When assertions are enabled, such errors trigger an assert.")
-      .export_values();
+             "When assertions are enabled, such errors trigger an assert.");
 }
 }  // namespace nanoeigenpy
