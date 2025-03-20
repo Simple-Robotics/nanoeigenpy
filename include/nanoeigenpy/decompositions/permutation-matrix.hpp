@@ -37,7 +37,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
 
           .def(
               "indices",
-              [](const PermutationMatrix &self) {
+              [](const PermutationMatrix &self) -> const auto & {
                 return VectorIndex(self.indices());
               },
               "The stored array representing the permutation.")

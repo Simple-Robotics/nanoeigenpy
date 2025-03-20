@@ -39,7 +39,7 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
           .def(
               "compute",
               [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix,
-                 bool compute_eigen_vectors) {
+                 bool compute_eigen_vectors) -> Solver & {
                 return c.compute(matrix, compute_eigen_vectors);
               },
               nb::arg("matrix"), nb::arg("compute_eigen_vectors"),

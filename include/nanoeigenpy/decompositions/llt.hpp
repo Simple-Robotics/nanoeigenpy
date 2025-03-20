@@ -56,7 +56,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 #if EIGEN_VERSION_AT_LEAST(3, 3, 90)
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) {
+          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
           "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
@@ -64,7 +64,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 #else
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) {
+          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
           "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
@@ -80,7 +80,9 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Chol &c, VectorType const &matrix) { return c.compute(matrix); },
+          [](Chol &c, VectorType const &matrix) -> Chol & {
+            return c.compute(matrix);
+          },
           nb::arg("matrix"), "Computes the LDLT of given matrix.",
           nb::rv_policy::reference)
       .def("info", &Chol::info,

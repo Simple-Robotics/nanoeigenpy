@@ -76,7 +76,7 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
           .def(
               "rankUpdate",
-              [](Solver &c, VectorType const &w, Scalar sigma) {
+              [](Solver &c, VectorType const &w, Scalar sigma) -> Solver & {
                 return c.rankUpdate(w, sigma);
               },
               "If LDL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
@@ -91,7 +91,7 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) {
+              [](Solver &c, VectorType const &matrix) -> Solver & {
                 return c.compute(matrix);
               },
               nb::arg("matrix"), "Computes the LDLT of given matrix.",

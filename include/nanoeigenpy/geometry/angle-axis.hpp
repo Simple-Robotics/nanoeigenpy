@@ -34,7 +34,7 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
       .def(nb::init<const AngleAxis &>(), "copy"_a, "Copy constructor.")
 
       .def_prop_rw(
-          "angle", [](const AngleAxis &aa) { return aa.angle(); },
+          "angle", [](const AngleAxis &aa) -> Scalar { return aa.angle(); },
           [](AngleAxis &aa, Scalar a) { aa.angle() = a; },
           "The rotation angle.")
       .def_prop_rw(

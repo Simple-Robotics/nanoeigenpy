@@ -27,7 +27,7 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
 
         .def(
             "compute",
-            [](Solver &self, MatrixType const &matrix) {
+            [](Solver &self, MatrixType const &matrix) -> decltype(auto) {
               return self.compute(matrix);
             },
             nb::arg("matrix"),

@@ -159,7 +159,7 @@ void exposeColPivHouseholderQRSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) {
+              [](Solver &c, VectorType const &matrix) -> Solver & {
                 return c.compute(matrix);
               },
               nb::arg("matrix"),
