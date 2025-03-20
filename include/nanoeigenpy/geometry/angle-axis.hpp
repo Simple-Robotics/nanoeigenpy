@@ -17,7 +17,7 @@ template <typename Scalar>
 void exposeAngleAxis(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using AngleAxis = Eigen::AngleAxis<Scalar>;
-  using Quaternion = typename Eigen::Quaternion<Scalar, 0>;
+  using Quaternion = typename AngleAxis::QuaternionType;
   using Vector3 = typename AngleAxis::Vector3;
   using Matrix3 = typename AngleAxis::Matrix3;
 
