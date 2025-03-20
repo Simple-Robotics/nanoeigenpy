@@ -23,6 +23,13 @@ NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ColPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd>)
 
+std::string printEigenVersion(const char* delim = ".") {
+  std::ostringstream oss;
+  oss << EIGEN_WORLD_VERSION << delim << EIGEN_MAJOR_VERSION << delim
+      << EIGEN_MINOR_VERSION;
+  return oss.str();
+}
+
 NB_MODULE(nanoeigenpy, m) {
   // Decompositions
   exposeLLTSolver<Matrix>(m, "LLT");
@@ -49,4 +56,9 @@ NB_MODULE(nanoeigenpy, m) {
   exposeComputationInfo(m);
 
   m.attr("__version__") = NANOEIGENPY_VERSION;
+  m.attr("__eigen_version__") = printEigenVersion();
+
+  m.def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
+        "Get the set of SIMD instructions used in Eigen when this module was "
+        "compiled.");
 }
