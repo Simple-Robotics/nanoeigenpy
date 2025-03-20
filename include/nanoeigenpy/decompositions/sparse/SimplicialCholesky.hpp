@@ -39,7 +39,7 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
 
         .def(
             "compute",
-            [](Solver &self, MatrixType const &matrix) {
+            [](Solver &self, MatrixType const &matrix) -> decltype(auto) {
               return self.compute(matrix);
             },
             nb::arg("matrix"),
