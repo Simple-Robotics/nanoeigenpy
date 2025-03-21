@@ -2,6 +2,10 @@
 
 #pragma once
 
+#include "nanoeigenpy/config.hpp"
+#include "nanoeigenpy/id.hpp"
+#include <nanobind/nanobind.h>
+
 #if defined(__clang__)
 #define NANOEIGENPY_CLANG_COMPILER
 #elif defined(__GNUC__)
@@ -15,10 +19,6 @@
 #endif
 
 #define NANOEIGENPY_UNUSED_TYPE(Type) (Type*)(NULL)
-
-#include "nanoeigenpy/config.hpp"
-
-#include <nanobind/nanobind.h>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;

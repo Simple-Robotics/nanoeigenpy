@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp"
 
 namespace nanoeigenpy {
@@ -11,11 +12,6 @@ template <
     typename Ordering = Eigen::AMDOrdering<typename MatrixType::StorageIndex>>
 void exposeSimplicialLLT(nb::module_ m, const char *name) {
   using Solver = Eigen::SimplicialLLT<MatrixType>;
-  //   using Scalar = typename MatrixType::Scalar;
-  //   using DenseVectorXs = Eigen::Matrix<Scalar, Eigen::Dynamic, 1,
-  //   MatrixType::Options>; using DenseMatrixXs = Eigen::Matrix<Scalar,
-  //   Eigen::Dynamic, Eigen::Dynamic,
-  //                         MatrixType::Options>;
 
   auto cl =
       nb::class_<Solver>(
@@ -37,13 +33,7 @@ void exposeSimplicialLLT(nb::module_ m, const char *name) {
 
           .def(SimplicialCholeskyVisitor())
 
-          .def(
-              "id",
-              [](Solver const &self) -> int64_t {
-                return reinterpret_cast<int64_t>(&self);
-              },
-              "Returns the unique identity of an object.\n"
-              "For objects held in C++, it corresponds to its memory address.");
+          .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy

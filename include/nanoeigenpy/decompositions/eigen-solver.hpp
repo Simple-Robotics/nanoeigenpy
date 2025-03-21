@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/eigen-base.hpp"
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
@@ -63,13 +64,7 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
                "NumericalIssue if the input contains INF or NaN values or "
                "overflow occured. Returns Success otherwise.")
 
-          .def(
-              "id",
-              [](Solver const &c) -> int64_t {
-                return reinterpret_cast<int64_t>(&c);
-              },
-              "Returns the unique identity of an object.\n"
-              "For objects held in C++, it corresponds to its memory address.");
+          .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy

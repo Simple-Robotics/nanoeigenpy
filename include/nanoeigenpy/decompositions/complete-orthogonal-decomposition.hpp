@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/eigen-base.hpp"
 #include <Eigen/QR>
 
@@ -202,13 +203,7 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
               "Returns the solution X of A X = B using the current "
               "decomposition of A where B is a right hand side matrix.")
 
-          .def(
-              "id",
-              [](Solver const &c) -> int64_t {
-                return reinterpret_cast<int64_t>(&c);
-              },
-              "Returns the unique identity of an object.\n"
-              "For objects held in C++, it corresponds to its memory address.");
+          .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/decompositions/sparse/cholmod/cholmod-base.hpp"
 
 namespace nanoeigenpy {

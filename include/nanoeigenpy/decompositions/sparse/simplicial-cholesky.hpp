@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 #include <Eigen/SparseCholesky>
 
@@ -14,12 +15,7 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
     using Base = Eigen::SimplicialCholeskyBase<Solver>;
     static_assert(std::is_base_of_v<Base, Solver>);
     using MatrixType = typename SimplicialDerived::MatrixType;
-    // using Scalar = typename MatrixType::Scalar;
     using RealScalar = typename MatrixType::RealScalar;
-    // using DenseVectorXs = Eigen::Matrix<Scalar, Eigen::Dynamic, 1,
-    // MatrixType::Options>; using DenseMatrixXs = Eigen::Matrix<Scalar,
-    // Eigen::Dynamic, Eigen::Dynamic,
-    //                       MatrixType::Options>;
 
     cl.def("analyzePattern", &Solver::analyzePattern,
            "Performs a symbolic decomposition on the sparcity of matrix.\n"

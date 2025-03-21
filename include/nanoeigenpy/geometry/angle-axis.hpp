@@ -16,6 +16,26 @@ bool isApprox(
 }
 
 template <typename Scalar>
+std::string print(const Eigen::AngleAxis<Scalar> &aa) {
+  std::stringstream ss;
+  ss << "angle: " << aa.angle() << std::endl;
+  ss << "axis: " << aa.axis().transpose() << std::endl;
+  return ss.str();
+}
+
+template <typename Scalar>
+bool operator==(const Eigen::AngleAxis<Scalar> &a,
+                const Eigen::AngleAxis<Scalar> &b) {
+  return a.angle() == b.angle() && a.axis() == b.axis();
+}
+
+template <typename Scalar>
+bool operator!=(const Eigen::AngleAxis<Scalar> &a,
+                const Eigen::AngleAxis<Scalar> &b) {
+  return !(a == b);
+}
+
+template <typename Scalar>
 void exposeAngleAxis(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using AngleAxis = Eigen::AngleAxis<Scalar>;
@@ -45,7 +65,7 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
       .def(RotationBaseVisitor<AngleAxis, 3>())
       .def(
           "fromRotationMatrix",
-          [](AngleAxis &aa, const Matrix3 &mat) -> auto & {
+          [](AngleAxis &aa, const Matrix3 &mat) -> AngleAxis & {
             return aa.fromRotationMatrix(mat);
           },
           "mat"_a, "Sets *this from a 3x3 rotation matrix",
@@ -59,7 +79,18 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
           "within the precision determined by prec.")
 
       .def(nb::self * nb::self)
-      .def(nb::self * Quaternion());
+      .def(nb::self * Quaternion())
+      .def(nb::self * Vector3())
+      .def("__eq__",
+           [](const AngleAxis &a, const AngleAxis &b) { return a == b; })
+      .def("__ne__",
+           [](const AngleAxis &a, const AngleAxis &b) { return a != b; })
+      .def("__str__",
+           [](const AngleAxis &aa) -> std::string { return print(aa); })
+      .def("__repr__",
+           [](const AngleAxis &aa) -> std::string { return print(aa); })
+
+      ;
 }
 
 }  // namespace nanoeigenpy
@@ -70,6 +101,5 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
 // Remove the isApprox and make it clean
 // bp::implicitly_convertible -> Let it for later (eventually Justin work)
 // Manage the overload of isApprox (cf the macro in eigenpy) (try with
-// quaternion implemented too, add if needed (probably)) angle and axis
-// functions: check if correct from eigenpy (probably not) See if clean to
-// factorize with RotationBaseVisitor How to define the operators
+// quaternion implemented too, add if needed (probably)) See if clean to
+// factorize with RotationBaseVisitor

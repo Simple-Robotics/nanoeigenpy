@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "nanoeigenpy/eigen-base.hpp"
 #include <nanobind/operators.h>
 
@@ -37,7 +38,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
 
           .def(
               "indices",
-              [](const PermutationMatrix &self) -> const auto & {
+              [](const PermutationMatrix &self) {
                 return VectorIndex(self.indices());
               },
               "The stored array representing the permutation.")
@@ -86,13 +87,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
           .def(nb::self * nb::self)
           .def(EigenBaseVisitor())
 
-          .def(
-              "id",
-              [](PermutationMatrix const &self) -> int64_t {
-                return reinterpret_cast<int64_t>(&self);
-              },
-              "Returns the unique identity of an object.\n"
-              "For objects held in C++, it corresponds to its memory address.");
+          .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy
