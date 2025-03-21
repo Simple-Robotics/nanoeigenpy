@@ -10,8 +10,9 @@
 namespace nanoeigenpy {
 namespace nb = nanobind;
 
-template <typename MatrixType>
+template <typename _MatrixType>
 void exposeEigenSolver(nb::module_ m, const char *name) {
+  using MatrixType = _MatrixType;
   using Solver = Eigen::EigenSolver<MatrixType>;
   auto cl =
       nb::class_<Solver>(m, name, "Eigen solver.")

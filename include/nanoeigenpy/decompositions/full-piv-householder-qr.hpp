@@ -20,8 +20,9 @@ MatrixType inverse(const Eigen::FullPivHouseholderQR<MatrixType> &c) {
   return c.inverse();
 }
 
-template <typename MatrixType>
+template <typename _MatrixType>
 void exposeFullPivHouseholderQRSolver(nb::module_ m, const char *name) {
+  using MatrixType = _MatrixType;
   using Solver = Eigen::FullPivHouseholderQR<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;

@@ -40,6 +40,7 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using AngleAxis = Eigen::AngleAxis<Scalar>;
   using Quaternion = typename AngleAxis::QuaternionType;
+  using RotationBase = Eigen::RotationBase<AngleAxis, 3>;
   using Vector3 = typename AngleAxis::Vector3;
   using Matrix3 = typename AngleAxis::Matrix3;
 
@@ -88,18 +89,16 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
       .def("__str__",
            [](const AngleAxis &aa) -> std::string { return print(aa); })
       .def("__repr__",
-           [](const AngleAxis &aa) -> std::string { return print(aa); })
+           [](const AngleAxis &aa) -> std::string { return print(aa); });
 
-      ;
+  // Cast to Eigen::RotationBase
+  nb::implicitly_convertible<AngleAxis, RotationBase>();
 }
 
 }  // namespace nanoeigenpy
 
 // TODO
 
-// Differences between angle-axis and decompositions files:
-// Remove the isApprox and make it clean
-// bp::implicitly_convertible -> Let it for later (eventually Justin work)
+// Remove the isApprox (?) and make it clean
 // Manage the overload of isApprox (cf the macro in eigenpy) (try with
-// quaternion implemented too, add if needed (probably)) See if clean to
-// factorize with RotationBaseVisitor
+// quaternion implemented too, add if needed (probably))

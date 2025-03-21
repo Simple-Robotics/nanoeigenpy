@@ -91,7 +91,3 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Manage the _ in the typenames, why and how ?

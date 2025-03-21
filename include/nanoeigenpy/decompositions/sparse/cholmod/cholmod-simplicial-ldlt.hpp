@@ -8,9 +8,10 @@
 namespace nanoeigenpy {
 namespace nb = nanobind;
 
-template <typename MatrixType, int UpLo = Eigen::Lower>
+template <typename _MatrixType, int _UpLo = Eigen::Lower>
 void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
-  using Solver = Eigen::CholmodSimplicialLDLT<MatrixType, UpLo>;
+  using MatrixType = _MatrixType;
+  using Solver = Eigen::CholmodSimplicialLDLT<_MatrixType, _UpLo>;
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
   auto cl =

@@ -15,8 +15,9 @@ MatrixOrVector solve(const Eigen::LLT<MatrixType> &c,
   return c.solve(vec);
 }
 
-template <typename MatrixType>
+template <typename _MatrixType>
 void exposeLLTSolver(nb::module_ m, const char *name) {
+  using MatrixType = _MatrixType;
   using Chol = Eigen::LLT<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;

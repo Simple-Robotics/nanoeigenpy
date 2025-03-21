@@ -15,8 +15,9 @@ MatrixOrVector solve(const Eigen::HouseholderQR<MatrixType> &c,
   return c.solve(vec);
 }
 
-template <typename MatrixType>
+template <typename _MatrixType>
 void exposeHouseholderQRSolver(nb::module_ m, const char *name) {
+  using MatrixType = _MatrixType;
   using Solver = Eigen::HouseholderQR<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;

@@ -9,9 +9,10 @@ namespace nanoeigenpy {
 namespace nb = nanobind;
 
 template <
-    typename MatrixType, int UpLo = Eigen::Lower,
-    typename Ordering = Eigen::AMDOrdering<typename MatrixType::StorageIndex>>
+    typename _MatrixType, int _UpLo = Eigen::Lower,
+    typename _Ordering = Eigen::AMDOrdering<typename _MatrixType::StorageIndex>>
 void exposeSimplicialLDLT(nb::module_ m, const char *name) {
+  using MatrixType = _MatrixType;
   using Solver = Eigen::SimplicialLDLT<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using DenseVectorXs =

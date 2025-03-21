@@ -22,9 +22,10 @@ MatrixType pseudoInverse(
   return c.pseudoInverse();
 }
 
-template <typename MatrixType>
+template <typename _MatrixType>
 void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
                                                  const char *name) {
+  using MatrixType = _MatrixType;
   using Solver = Eigen::CompleteOrthogonalDecomposition<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;

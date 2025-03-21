@@ -8,9 +8,10 @@
 namespace nanoeigenpy {
 namespace nb = nanobind;
 
-template <typename MatrixType, int UpLo = Eigen::Lower>
+template <typename _MatrixType, int _UpLo = Eigen::Lower>
 void exposeCholmodSupernodalLLT(nb::module_ m, const char *name) {
-  using Solver = Eigen::CholmodSupernodalLLT<MatrixType, UpLo>;
+  using MatrixType = _MatrixType;
+  using Solver = Eigen::CholmodSupernodalLLT<_MatrixType, _UpLo>;
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
   auto cl =
