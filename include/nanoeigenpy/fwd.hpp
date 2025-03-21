@@ -6,6 +6,10 @@
 #include "nanoeigenpy/id.hpp"
 #include <nanobind/nanobind.h>
 
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <Eigen/Geometry>
+
 #if defined(__clang__)
 #define NANOEIGENPY_CLANG_COMPILER
 #elif defined(__GNUC__)

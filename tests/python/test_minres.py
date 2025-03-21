@@ -2,22 +2,23 @@ import nanoeigenpy
 import numpy as np
 
 dim = 2
-seed = 5
+seed = 6
 rng = np.random.default_rng(seed)
 
 A = np.eye(dim)
 print("A :", A)
 minres = nanoeigenpy.MINRES(A)
 
-
 X = rng.random((dim, 2))
+print("X :", X)
 B = A.dot(X)
+print("B :", B)
 
 X_est = minres.solve(B)
-print("X :", X)
+
 print("X_est :", X_est)
 print("A.dot(X_est) :", A.dot(X_est))
-print("B :", B)
+
 # # assert nanoeigenpy.is_approx(X, X_est, 1e-6)
 # # assert nanoeigenpy.is_approx(A.dot(X_est), B, 1e-6)
 

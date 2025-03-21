@@ -20,22 +20,16 @@ struct IterativeSolverBaseVisitor
     using VectorXs =
         Eigen::Matrix<Scalar, Eigen::Dynamic, 1, MatrixType::Options>;
 
-    cl.def(nb::init<>(), "Default constructor.")
-        .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
-             "Initialize the solver with matrix A for further Ax=b solving.\n"
-             "This constructor is a shortcut for the default constructor "
-             "followed by a call to compute().")
-
-        .def(
-            "analyzePattern",
-            [](Solver &c, MatrixType const &matrix) -> Solver & {
-              return c.analyzePattern(matrix);
-            },
-            nb::arg("matrix"),
-            "Initializes the iterative solver for the sparsity pattern of "
-            "the "
-            "matrix A for further solving Ax=b problems.",
-            nb::rv_policy::reference)
+    cl.def(
+          "analyzePattern",
+          [](Solver &c, MatrixType const &matrix) -> Solver & {
+            return c.analyzePattern(matrix);
+          },
+          nb::arg("matrix"),
+          "Initializes the iterative solver for the sparsity pattern of "
+          "the "
+          "matrix A for further solving Ax=b problems.",
+          nb::rv_policy::reference)
         .def(
             "factorize",
             [](Solver &c, MatrixType const &matrix) -> Solver & {
@@ -163,6 +157,12 @@ void exposeMINRESSolver(nb::module_ m, const char *name) {
           "The "
           "defaults are the size of the problem for the maximal number of "
           "iterations and NumTraits<Scalar>::epsilon() for the tolerance.\n")
+
+          .def(nb::init<>(), "Default constructor.")
+          .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+               "Initialize the solver with matrix A for further Ax=b solving.\n"
+               "This constructor is a shortcut for the default constructor "
+               "followed by a call to compute().")
 
           .def(IterativeSolverBaseVisitor())
           .def(IdVisitor());
