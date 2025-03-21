@@ -47,6 +47,8 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
 
   static void expose(nb::module_& m, const char* name) {
     nb::class_<Quaternion>(m, name).def(QuaternionVisitor());
+    nb::class_<QuaternionBase>(m, "QuaternionBase")
+        .def(nb::init_implicit<Quaternion>());
   }
 };
 
@@ -57,3 +59,9 @@ void exposeQuaternion(nb::module_& m, const char* name) {
 }
 
 }  // namespace nanoeigenpy
+
+// TODO
+
+// Debug the implicit conversion from Quaternion to QuaternionBase
+
+// Choose a similar structure to angle-axis ?

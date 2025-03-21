@@ -93,9 +93,8 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) -> Solver & {
-                return c.compute(matrix);
-              },
+              [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix)
+                  -> Solver & { return c.compute(matrix); },
               nb::arg("matrix"), "Computes the LDLT of given matrix.",
               nb::rv_policy::reference)
           .def("info", &Solver::info,
@@ -137,6 +136,3 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO: Review the signatures of the functions rank update, compute, etc -> Put
-// Eigen::EigenBase<MatrixType> instead of VectorType ? (probably an error)

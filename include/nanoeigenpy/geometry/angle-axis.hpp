@@ -92,7 +92,8 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
            [](const AngleAxis &aa) -> std::string { return print(aa); });
 
   // Cast to Eigen::RotationBase
-  nb::implicitly_convertible<AngleAxis, RotationBase>();
+  nb::class_<RotationBase>(m, "RotationBase")
+      .def(nb::init_implicit<AngleAxis>());
 }
 
 }  // namespace nanoeigenpy
