@@ -47,7 +47,7 @@ NB_MODULE(nanoeigenpy, m) {
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
 
   // Geometry
-  exposeQuaternion<Scalar>(m, "Quaternion");
+  // exposeQuaternion<Scalar>(m, "Quaternion");
   exposeAngleAxis<Scalar>(m, "AngleAxis");
 
   // Utils

@@ -33,15 +33,15 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix)
-                  -> Solver & { return c.compute(matrix); },
+              [](Solver &c, MatrixType const &matrix) -> Solver & {
+                return c.compute(matrix);
+              },
               nb::arg("matrix"),
               "Computes the eigendecomposition of given matrix.",
               nb::rv_policy::reference)
           .def(
               "compute",
-              [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix,
-                 int options) -> Solver & {
+              [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
                 return c.compute(matrix, options);
               },
               nb::arg("matrix"), nb::arg("options"),

@@ -63,7 +63,7 @@ estimated_r_cond_num = ldlt_cond.rcond()
 assert abs(estimated_r_cond_num - 1) <= 1e-9
 
 # Test compute
-# Done implicitly at init
+ldlt_compute = ldlt.compute(A)
 
 # Test matrixLDLT
 LDLT = ldlt.matrixLDLT()

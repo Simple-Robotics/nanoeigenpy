@@ -86,7 +86,7 @@ void exposeHouseholderQRSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) -> Solver & {
+              [](Solver &c, MatrixType const &matrix) -> Solver & {
                 return c.compute(matrix);
               },
               nb::arg("matrix"),

@@ -52,8 +52,3 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
 };
 
 }  // namespace nanoeigenpy
-
-// TODO:
-
-// Understand the "Ts", keep it ?
-// See if I should use def_prop_ro, def, or another

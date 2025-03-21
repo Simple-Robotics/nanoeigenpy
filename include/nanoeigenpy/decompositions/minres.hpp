@@ -73,7 +73,7 @@ void exposeMINRESSolver(nb::module_ m, const char *name) {
               nb::rv_policy::reference)
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) -> Solver & {
+              [](Solver &c, MatrixType const &matrix) -> Solver & {
                 return c.compute(matrix);
               },
               nb::arg("matrix"),

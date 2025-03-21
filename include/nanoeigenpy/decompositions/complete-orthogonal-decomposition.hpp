@@ -173,7 +173,7 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
 
           .def(
               "compute",
-              [](Solver &c, VectorType const &matrix) {
+              [](Solver &c, MatrixType const &matrix) {
                 return c.compute(matrix);
               },
               nb::arg("matrix"),

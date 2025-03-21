@@ -80,7 +80,3 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
 };
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Put the DenseMatrixXs and DenseVectorXs, even if seem non used ?

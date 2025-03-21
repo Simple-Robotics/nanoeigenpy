@@ -93,8 +93,9 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
           .def(
               "compute",
-              [](Solver &c, Eigen::EigenBase<MatrixType> const &matrix)
-                  -> Solver & { return c.compute(matrix); },
+              [](Solver &c, MatrixType const &matrix) -> Solver & {
+                return c.compute(matrix);
+              },
               nb::arg("matrix"), "Computes the LDLT of given matrix.",
               nb::rv_policy::reference)
           .def("info", &Solver::info,

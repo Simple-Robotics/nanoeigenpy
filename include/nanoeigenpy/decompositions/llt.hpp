@@ -82,7 +82,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Chol &c, VectorType const &matrix) -> Chol & {
+          [](Chol &c, MatrixType const &matrix) -> Chol & {
             return c.compute(matrix);
           },
           nb::arg("matrix"), "Computes the LDLT of given matrix.",
