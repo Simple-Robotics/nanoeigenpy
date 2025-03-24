@@ -7,10 +7,31 @@ platforms = ["linux-64", "osx-arm64", "osx-64"]
 version = "0.1.0"
 
 [tasks]
+configure = { cmd = [
+  "CXXFLAGS=$NANOEIGENPY_CXX_FLAGS",
+  "cmake",
+  "-G",
+  "Ninja",
+  "-B",
+  "build",
+  "-S",
+  ".",
+  "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
+  "-DCMAKE_BUILD_TYPE=$NANOEIGENPY_BUILD_TYPE",
+] }
+build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
+clean = { cmd = "rm -rf build" }
 
 [dependencies]
 python = ">=3.9"
 eigen = ">=3.3.1"
+
+[feature.python-latest.dependencies]
+python = "3.13.*"
+
+[feature.python-oldest.dependencies]
+python = "3.9.*"
+
 
 [build-dependencies]
 nanobind = ">=2.5.0,<3"
@@ -21,3 +42,7 @@ ninja = ">=1.12.1"
 pkg-config = ">=0.29.2"
 git = ">=2.49.0"
 doxygen = ">=1.13.2,<2"
+
+[environments]
+default = ["python-latest"]
+python-oldest = ["python-oldest"]
