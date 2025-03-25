@@ -65,7 +65,6 @@ set(
   test_minres
   test_permutation_matrix
   test_qr
-  test_quaternion
   test_self_adjoint_eigen_solver
   test_simplicial_llt
 )

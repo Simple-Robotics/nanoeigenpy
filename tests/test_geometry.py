@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import cos
 import nanoeigenpy
+import quaternion
 
 verbose = True
 
@@ -54,6 +55,10 @@ try:
 except IndexError as e:
     if verbose:
         print("As expected, caught exception: ", e)
+
+# Test struct owning quaternion, constructed from quaternion
+x = quaternion.X(q)
+assert x.a == q
 
 # --- Angle Vector ------------------------------------------------
 r = nanoeigenpy.AngleAxis(0.1, np.array([1, 0, 0], np.double))
