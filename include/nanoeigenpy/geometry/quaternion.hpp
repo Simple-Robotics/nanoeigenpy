@@ -268,8 +268,3 @@ void exposeQuaternion(nb::module_& m, const char* name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Did the inits well ?
-// Fix the == seg fault bug

@@ -91,13 +91,3 @@ NB_MODULE(nanoeigenpy, m) {
         "Get the set of SIMD instructions used in Eigen when this module was "
         "compiled.");
 }
-
-// TODO:
-
-// Check if necessary to put NB_MAKE_OPAQUE everwhere
-// Check if better to expose on m or &m
-// See if relevant to expose for all preconditioners (bfgs, and limited are
-// often skipped) Add the noncopyable option with is_final() Understand when we
-// call the visitor in the expose function
-
-// Tests (that are not in eigenpy) for solvers and preconditioners

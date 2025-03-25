@@ -103,9 +103,3 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Remove the isApprox (?) and make it clean
-// Manage the overload of isApprox (cf the macro in eigenpy) (try with
-// quaternion implemented too, add if needed (probably))

@@ -39,11 +39,3 @@ void exposeCholmodSimplicialLLT(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO:
-
-// Wilson used to define the inetrmediate structures (eg EigenBaseVisitor) ->
-// check if it works well here as I defined, to be sure that ir is the
-// appropriate solver that is called
-
-// Add the option noncopyable in

@@ -39,9 +39,3 @@ void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Seems to have a mistake in eigenpy (CholmodBaseVisitor instead of
-// CholmodDecompositionVisitor in file cholmod-simplicial-ldlt.hpp) (elsewhere
-// the file cholmod-decomposition.hpp is useless)

@@ -158,25 +158,3 @@ void exposeMINRESSolver(nb::module_ m, const char *name) {
 }
 
 }  // namespace nanoeigenpy
-
-// TODO
-
-// Tests that were not done in eigenpy that we could add in nanoeigenpy:
-// analysePattern
-// factorize
-// compute
-// rows
-// cols
-// tolerance
-// setTolerance
-// preconditioner
-// maxIterations
-// setMaxIterations
-// iterations
-// error
-// info
-// solve for vector and matrix
-// solveWithGuess for vector and matrix
-
-// Error
-// solve test do not pass
