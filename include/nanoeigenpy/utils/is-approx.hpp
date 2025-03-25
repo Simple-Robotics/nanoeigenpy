@@ -46,25 +46,24 @@ namespace nb = nanobind;
 
 template <typename Scalar>
 void exposeIsApprox(nb::module_ m) {
-    enum { Options = 0 };
-    NANOEIGENPY_MAKE_TYPEDEFS(Scalar, Options, s, Eigen::Dynamic, X);
-    NANOEIGENPY_UNUSED_TYPE(VectorXs);
-    NANOEIGENPY_UNUSED_TYPE(RowVectorXs);
-    typedef typename MatrixXs::RealScalar RealScalar;
+  enum { Options = 0 };
+  NANOEIGENPY_MAKE_TYPEDEFS(Scalar, Options, s, Eigen::Dynamic, X);
+  NANOEIGENPY_UNUSED_TYPE(VectorXs);
+  NANOEIGENPY_UNUSED_TYPE(RowVectorXs);
+  typedef typename MatrixXs::RealScalar RealScalar;
 
-    using namespace Eigen;
-    const RealScalar dummy_precision =
-        Eigen::NumTraits<RealScalar>::dummy_precision();
+  using namespace Eigen;
+  const RealScalar dummy_precision =
+      Eigen::NumTraits<RealScalar>::dummy_precision();
 
-    // Exposition de la fonction is_approx pour matrices denses
-    m.def("is_approx",
-          [](const MatrixXs& mat1, const MatrixXs& mat2, RealScalar precision) {
-              return is_approx(mat1, mat2, precision);
-          },
-          nb::arg("mat1"), nb::arg("mat2"),
-          nb::arg("precision") = dummy_precision,
-          "Check if two dense matrices are approximately equal.");
+  // Exposition de la fonction is_approx pour matrices denses
+  m.def(
+      "is_approx",
+      [](const MatrixXs& mat1, const MatrixXs& mat2, RealScalar precision) {
+        return is_approx(mat1, mat2, precision);
+      },
+      nb::arg("mat1"), nb::arg("mat2"), nb::arg("precision") = dummy_precision,
+      "Check if two dense matrices are approximately equal.");
 }
 
 }  // namespace nanoeigenpy
-
