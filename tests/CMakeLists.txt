@@ -6,9 +6,10 @@ function(add_tests_cpp_extension name)
   add_dependencies(build_tests ${name})
 
   add_test(
-    NAME ${name}
+    NAME "${PROJECT_NAME}-import-${name}"
     COMMAND ${Python_EXECUTABLE} -c "import ${name}"
-    WORKING_DIRECTORY $<TARGET_FILE_DIR:${name}>)
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:${name}>
+  )
 endfunction()
 
 # Add Python test module
@@ -23,6 +24,12 @@ function(add_tests_py_module name)
 endfunction()
 
 add_dependencies(build_tests nanoeigenpy)
+
+add_test(
+  NAME "${PROJECT_NAME}-import-extension"
+  COMMAND ${Python_EXECUTABLE} -c "import ${PROJECT_NAME}"
+  WORKING_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
 
 add_tests_cpp_extension(quaternion)
 add_tests_py_module(test_quaternion)
