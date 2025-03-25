@@ -25,6 +25,7 @@ clean = { cmd = "rm -rf build" }
 python = ">=3.9"
 eigen = ">=3.3.1"
 numpy = ">=1.22"
+scipy = ">=1.10.0"
 
 [feature.python-latest.dependencies]
 python = "3.13.*"
