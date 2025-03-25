@@ -1,0 +1,86 @@
+name: CI - MacOS/Linux/Windows via Pixi
+
+on:
+  push:
+    paths-ignore:
+      - .gitlab-ci.yml
+      - .gitignore
+      - '*.md'
+      - CITATION.*
+      - LICENSE
+      - colcon.pkg
+      - .pre-commit-config.yaml
+      - CHANGELOG.md
+      - development/*.md
+  pull_request:
+    paths-ignore:
+      - .gitlab-ci.yml
+      - .gitignore
+      - '*.md'
+      - CITATION.*
+      - LICENSE
+      - colcon.pkg
+      - .pre-commit-config.yaml
+      - CHANGELOG.md
+      - development/*.md
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  nanoeigenpy-pixi:
+    name: ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
+    runs-on: ${{ matrix.os }}
+    env:
+      CCACHE_BASEDIR: "${GITHUB_WORKSPACE}"
+      CCACHE_DIR: "${GITHUB_WORKSPACE}/.ccache"
+      CCACHE_COMPRESS: true
+      CCACHE_COMPRESSLEVEL: 6
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
+        environment: [default, python-oldest]
+        build_type: [Release, Debug]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - uses: actions/cache@v4
+      with:
+        path: .ccache
+        key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
+        restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-
+
+    - uses: prefix-dev/setup-pixi@v0.8.3
+      with:
+        cache: true
+        environments: ${{ matrix.environment }}
+
+    - name: Build nanoeigenpy [MacOS/Linux/Windows]
+      env:
+        NANOEIGENPY_BUILD_TYPE: ${{ matrix.build_type }}
+      run: |
+        pixi run -e ${{ matrix.environment }} build
+
+    - name: Test nanoeigenpy [MacOS/Linux/Windows]
+      run: |
+        pixi run -e ${{ matrix.environment }} ctest --test-dir build --output-on-failure
+
+  check:
+    if: always()
+    name: check-macos-linux-windows-pixi
+
+    needs:
+    - nanoeigenpy-pixi
+
+    runs-on: Ubuntu-latest
+
+    steps:
+    - name: Decide whether the needed jobs succeeded or failed
+      uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}

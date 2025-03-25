@@ -1,0 +1,53 @@
+[workspace]
+authors = ["ManifoldFR"]
+channels = ["conda-forge"]
+name = "nanoeigenpy"
+description = "A support library for bindings between Eigen/C++ and Python, based on nanobind"
+platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
+version = "0.1.0"
+
+[tasks]
+configure = { cmd = [
+  "cmake",
+  "-G",
+  "Ninja",
+  "-B",
+  "build",
+  "-S",
+  ".",
+  "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
+  "-DCMAKE_BUILD_TYPE=$NANOEIGENPY_BUILD_TYPE",
+] }
+build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
+clean = { cmd = "rm -rf build" }
+
+[dependencies]
+python = ">=3.9"
+eigen = ">=3.3.1"
+numpy = ">=1.22"
+
+[feature.python-latest.dependencies]
+python = "3.13.*"
+
+[feature.python-oldest.dependencies]
+python = "3.9.*"
+
+[activation]
+scripts = ["development/scripts/pixi/activation.sh"]
+
+[target.win-64.activation]
+scripts = ["development/scripts/pixi/activation.bat"]
+
+[build-dependencies]
+nanobind = ">=2.5.0,<3"
+cmake = ">=3.15"
+cxx-compiler = ">=1.7"
+ccache = ">=4.11.2"
+ninja = ">=1.12.1"
+pkg-config = ">=0.29.2"
+git = ">=2.49.0"
+doxygen = ">=1.13.2,<2"
+
+[environments]
+default = ["python-latest"]
+python-oldest = ["python-oldest"]
