@@ -5,10 +5,12 @@
 
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
+#include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 #include "nanoeigenpy/computation-info.hpp"
 
 using namespace nanoeigenpy;
+namespace nb = nanobind;
 
 using Scalar = double;
 static constexpr int Options = Eigen::ColMajor;
@@ -19,10 +21,12 @@ using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::MINRES<Eigen::MatrixXd>)  // necessary ?
 NB_MAKE_OPAQUE(Eigen::HouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ColPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::EigenSolver<Eigen::MatrixXd>)  // necessary ?
 
 std::string printEigenVersion(const char* delim = ".") {
   std::ostringstream oss;
@@ -47,8 +51,32 @@ NB_MODULE(nanoeigenpy, m) {
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
 
   // Geometry
-  // exposeQuaternion<Scalar>(m, "Quaternion");
+  exposeQuaternion<Scalar>(m, "Quaternion");
   exposeAngleAxis<Scalar>(m, "AngleAxis");
+
+  // Preconditioners (and solvers)
+  nb::module_ solvers = m.def_submodule("solvers", "Solvers in Eigen.");
+
+  exposeIdentityPreconditioner<Scalar>(solvers, "IdentityPreconditioner");
+  exposeDiagonalPreconditioner<Scalar>(solvers, "DiagonalPreconditioner");
+#if EIGEN_VERSION_AT_LEAST(3, 3, 5)
+  exposeLeastSquareDiagonalPreconditioner<Scalar>(
+      solvers, "LeastSquareDiagonalPreconditioner");
+#endif
+
+  // // Solvers
+  using namespace Eigen;
+  using ConjugateGradient = ConjugateGradient<MatrixXd, Lower | Upper>;
+  exposeConjugateGradient<ConjugateGradient>(solvers, "ConjugateGradient");
+  using LeastSquaresConjugateGradient = LeastSquaresConjugateGradient<
+      MatrixXd, LeastSquareDiagonalPreconditioner<MatrixXd::Scalar>>;
+  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient>(
+      solvers, "LeastSquaresConjugateGradient");
+
+  using IdentityConjugateGradient =
+      Eigen::ConjugateGradient<MatrixXd, Lower | Upper, IdentityPreconditioner>;
+  exposeConjugateGradient<IdentityConjugateGradient>(
+      solvers, "IdentityConjugateGradient");
 
   // Utils
   exposeIsApprox<double>(m);
@@ -63,3 +91,13 @@ NB_MODULE(nanoeigenpy, m) {
         "Get the set of SIMD instructions used in Eigen when this module was "
         "compiled.");
 }
+
+// TODO:
+
+// Check if necessary to put NB_MAKE_OPAQUE everwhere
+// Check if better to expose on m or &m
+// See if relevant to expose for all preconditioners (bfgs, and limited are
+// often skipped) Add the noncopyable option with is_final() Understand when we
+// call the visitor in the expose function
+
+// Tests (that are not in eigenpy) for solvers and preconditioners

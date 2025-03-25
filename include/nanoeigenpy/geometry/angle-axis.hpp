@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "nanoeigenpy/nanoeigenpy.hpp"
 #include "detail/rotation-base.hpp"
 #include <nanobind/operators.h>
 
@@ -40,7 +41,6 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using AngleAxis = Eigen::AngleAxis<Scalar>;
   using Quaternion = typename AngleAxis::QuaternionType;
-  using RotationBase = Eigen::RotationBase<AngleAxis, 3>;
   using Vector3 = typename AngleAxis::Vector3;
   using Matrix3 = typename AngleAxis::Matrix3;
 
@@ -75,7 +75,15 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
           "isApprox",
           [](const AngleAxis &aa, const AngleAxis &other,
              const Scalar &prec) -> bool { return isApprox(aa, other, prec); },
-          "other"_a, "rec"_a,
+          "other"_a, "prec"_a,
+          "Returns true if *this is approximately equal to other, "
+          "within the precision determined by prec.")
+      .def(
+          "isApprox",
+          [](const AngleAxis &aa, const AngleAxis &other) -> bool {
+            return isApprox(aa, other);
+          },
+          "other"_a,
           "Returns true if *this is approximately equal to other, "
           "within the precision determined by prec.")
 
@@ -89,11 +97,9 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
       .def("__str__",
            [](const AngleAxis &aa) -> std::string { return print(aa); })
       .def("__repr__",
-           [](const AngleAxis &aa) -> std::string { return print(aa); });
+           [](const AngleAxis &aa) -> std::string { return print(aa); })
 
-  // Cast to Eigen::RotationBase
-  nb::class_<RotationBase>(m, "RotationBase")
-      .def(nb::init_implicit<AngleAxis>());
+      .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy

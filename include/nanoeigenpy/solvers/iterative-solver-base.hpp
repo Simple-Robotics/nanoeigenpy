@@ -70,10 +70,14 @@ struct IterativeSolverVisitor
         .def("solveWithGuess", &solveWithGuess, "b"_a, "x_0"_a,
              "Returns the solution x of Ax = b using the current decomposition "
              "of A and x0 as an initial solution.")
-        .def("preconditioner", &IterativeSolver::preconditioner,
-             "Returns a read-write reference to the preconditioner for custom "
-             "configuration.",
-             nb::rv_policy::reference_internal);
+        .def(
+            "preconditioner",
+            [](IterativeSolver& self) -> Preconditioner& {
+              return const_cast<Preconditioner&>(self.preconditioner());
+            },
+            nb::rv_policy::reference_internal,
+            "Returns a read-write reference to the preconditioner for custom "
+            "configuration.");
   }
 
  private:

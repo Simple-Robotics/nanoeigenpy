@@ -46,7 +46,7 @@ struct PreconditionerBaseVisitor
 
 template <typename Scalar>
 struct DiagonalPreconditionerVisitor
-    : nb::def_visitor<DiagonalPreconditionerVisitor<Scalar>> {
+    : PreconditionerBaseVisitor<DiagonalPreconditionerVisitor<Scalar>> {
   using Preconditioner = Eigen::DiagonalPreconditioner<Scalar>;
 
   template <typename... Ts>
@@ -72,16 +72,21 @@ void exposeDiagonalPreconditioner(nb::module_& m, const char* name) {
 #if EIGEN_VERSION_AT_LEAST(3, 3, 5)
 template <typename Scalar>
 struct LeastSquareDiagonalPreconditionerVisitor
-    : nb::def_visitor<LeastSquareDiagonalPreconditionerVisitor<Scalar>> {
+    : PreconditionerBaseVisitor<
+          LeastSquareDiagonalPreconditionerVisitor<Scalar>> {
   using Preconditioner = Eigen::LeastSquareDiagonalPreconditioner<Scalar>;
 
   template <typename... Ts>
-  void execute(nb::class_<Scalar, Ts...>&) {}
+  void execute(nb::class_<Scalar, Ts...>& cl) {
+    cl.def(PreconditionerBaseVisitor<Preconditioner>())
+        .def("rows", &Preconditioner::rows,
+             "Returns the number of rows in the preconditioner.")
+        .def("cols", &Preconditioner::rows,
+             "Returns the number of cols in the preconditioner.");
+  }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Preconditioner>(m, name)
-        .def(DiagonalPreconditionerVisitor<Scalar>())
-        .def(IdVisitor());
+    nb::class_<Preconditioner>(m, name).def(IdVisitor());
   }
 };
 
