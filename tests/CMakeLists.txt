@@ -1,8 +1,31 @@
+# Create a shared nanobind library for testing
+set(NANOBIND_TESTING_TARGET nanobind-testing)
+nanobind_build_library(${NANOBIND_TESTING_TARGET} SHARED)
+
+# On Win32, shared DLL libs are sent to RUNTIME_OUTPUT_DIRECTORY, *but*
+# we really need to send it to the lib dir so
+if(WIN32)
+  set_target_properties(
+    ${NANOBIND_TESTING_TARGET}
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+  )
+endif()
+
 # Add a C++ extension module for tests
 function(add_tests_cpp_extension name)
   set(filename ${name}.cpp)
-  nanobind_add_module(${name} NB_SHARED NB_SUPPRESS_WARNINGS ${filename})
-  target_link_libraries(${name} PRIVATE nanoeigenpy_headers)
+  add_library(${name} MODULE ${filename})
+  target_link_libraries(
+    ${name}
+    PRIVATE ${NANOBIND_TESTING_TARGET} nanoeigenpy_headers
+  )
+  # Use nanobind low-level interface to set properties
+  nanobind_set_visibility(${name})
+  nanobind_strip(${name})
+  nanobind_extension(${name})
+  nanobind_compile_options(${name})
+  nanobind_link_options(${name})
+
   add_dependencies(build_tests ${name})
 
   add_test(
