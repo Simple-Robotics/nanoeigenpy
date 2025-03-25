@@ -6,4 +6,12 @@ namespace nb = nanobind;
 using namespace nb::literals;
 using namespace nanoeigenpy;
 
-NB_MODULE(quaternion, m) {}
+struct X {
+  Eigen::Quaterniond a;
+};
+
+NB_MODULE(quaternion, m) {
+  nb::class_<X>(m, "X")
+      .def(nb::init<Eigen::Quaterniond>(), "a"_a)
+      .def_rw("a", &X::a);
+}
