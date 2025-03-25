@@ -14,4 +14,4 @@ print(aa.axis)
 
 x = quaternion.X(quat)
 # Implement and expose operator== first
-# assert x.a == quat
+assert x.a == quat
