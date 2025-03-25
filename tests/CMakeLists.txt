@@ -55,4 +55,21 @@ add_test(
 )
 
 add_tests_cpp_extension(quaternion)
-add_tests_py_module(test_quaternion)
+
+set(
+  TEST_NAMES
+  test_eigen_solver
+  test_geometry
+  test_ldlt
+  test_llt
+  test_minres
+  test_permutation_matrix
+  test_qr
+  test_quaternion
+  test_self_adjoint_eigen_solver
+  test_simplicial_llt
+)
+
+foreach(test_name ${TEST_NAMES})
+  add_tests_py_module(${test_name})
+endforeach()
