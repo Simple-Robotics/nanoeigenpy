@@ -11,9 +11,20 @@ Support for many library features initially present in Boost, and which were add
 
 These features were finally added to eigenpy with a lot of developer effort. This created additional need for supporting these additional features ourselves, including many downstream consumers (mainly in the robotics community).
 
-## Installaton
+## Features
+
+- bindings for Eigen's [Geometry module](https://libeigen.gitlab.io/docs/group__Geometry__Module.html) - quaternions, angle-axis representations...
+- bindings for Eigen's matrix dense and sparse decompositions and solvers
+
+## Installation
 
 ### Dependencies
 
-- the Eigen C++ template library - [conda-forge](https://anaconda.org/conda-forge/eigen) / [GitLab](https://gitlab.com/libeigen/eigen/)
-- [nanobind](https://github.com/wjakob/nanobind)
+- the Eigen C++ template library - [conda-forge](https://anaconda.org/conda-forge/eigen) | [repo](https://gitlab.com/libeigen/eigen/)
+- nanobind - [conda-forge](https://anaconda.org/conda-forge/nanobind) | [repo](https://github.com/wjakob/nanobind)
+
+#### Conda
+
+```bash
+conda install -c conda-forge nanobind eigen  # or mamba install
+```
