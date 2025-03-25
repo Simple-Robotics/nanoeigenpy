@@ -67,7 +67,6 @@ jobs:
         pixi run -e ${{ matrix.environment }} build
 
     - name: Test nanoeigenpy [MacOS/Linux/Windows]
-      if: ${{ ! (contains(matrix.os, 'windows') && matrix.build_type == 'Debug') }}
       run: |
         pixi run -e ${{ matrix.environment }} ctest --test-dir build --output-on-failure
 
