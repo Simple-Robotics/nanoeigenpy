@@ -1,10 +1,9 @@
 /// Copyright 2025 INRIA
-#include <nanoeigenpy/geometry/angle-axis.hpp>
-#include <nanoeigenpy/geometry/quaternion.hpp>
+#include <Eigen/Geometry>
+#include <nanobind/nanobind.h>
 
 namespace nb = nanobind;
 using namespace nb::literals;
-using namespace nanoeigenpy;
 
 struct X {
   Eigen::Quaterniond a;
