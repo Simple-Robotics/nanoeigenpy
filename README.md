@@ -13,8 +13,78 @@ These features were finally added to eigenpy with a lot of developer effort. Thi
 
 ## Features
 
+**nanoeigenpy** provides the following features for helping you bind features from Eigen to Python:
+
 - bindings for Eigen's [Geometry module](https://libeigen.gitlab.io/docs/group__Geometry__Module.html) - quaternions, angle-axis representations...
 - bindings for Eigen's matrix dense and sparse decompositions and solvers
+
+## Example usage
+
+The features included in **nanoeigenpy** are distributed in a Python module which can be imported, or through standalone headers which can be included in your own Python bindings code using a CMake target.
+
+### Using the nanoeigenpy headers (with CMake)
+
+To directly use the tools in **nanoeigenpy**'s headers, link to it in CMake (or whichever build tool you have, but only CMake support is planned so far).
+
+```cmake
+# look for the nanoeigenpy CMake package
+find_package(nanoeigenpy REQUIRED)
+
+nanobind_add_module(my_ext NB_STATIC my_ext.cpp)
+target_link_libraries(my_ext PRIVATE nanoeigenpy::nanoeigenpy_headers)
+```
+
+Then, in your C++ extension module code, include the relevant headers and call functions to expose the required type:
+
+```cpp
+#include <nanoeigenpy/geometry/quaternion.hpp>
+
+namespace nb = nanobind;
+
+void f(const Eigen::Quaterniond &quat) {
+    // ...
+}
+
+NB_MODULE(my_ext, m) {
+    nanoeigenpy::exposeQuaternion<double>(m, "Quaternion");
+    m.def("f", f, nb::arg("quat"));
+}
+```
+
+### Using the compiled Python module
+
+In the case above, **nanoeigenpy**'s Python extension module already includes bindings for `Eigen::Quaternion` with the `double` scalar type (AKA `Eigen::Quaterniond`). Then, we can simply get nanobind to import it in our extension module:
+
+```cpp
+#include <Eigen/Geometry>
+
+namespace nb = nanobind;
+
+void f(const Eigen::Quaterniond &quat) {
+    // ...
+}
+
+NB_MODULE(my_ext, m) {
+    // import nanoeigenpy's module **here**
+    nb::module_::import_("nanoeigenpy");
+    m.def("f", f, nb::arg("quat"));
+}
+```
+
+Alternatively, Python code which uses our extension `my_ext` can also bring in **nanoeigenpy**:
+
+```python
+import nanoeigenpy
+from nanoeigenpy import Quaternion
+from my_ext import f
+
+quat = Quaternion(0., 1., 0., 0.)
+f(quat)
+```
+
+> [!NOTE]
+> If you have a specific scalar type (e.g. `float16`) with which you want to use `Eigen::Quaternion`, or matrix solvers, or other features in **nanoeigenpy**, you should refer to the first approach and use **nanoeigenpy** from C++ directly.
+
 
 ## Installation
 
@@ -27,4 +97,12 @@ These features were finally added to eigenpy with a lot of developer effort. Thi
 
 ```bash
 conda install -c conda-forge nanobind eigen  # or mamba install
+```
+
+#### Building
+
+```bash
+cmake -S . -B build/ -DCMAKE_INSTALL_PREFIX=<your-prefix>  # prefix can be e.g. $CONDA_PREFIX
+cd build/
+cmake --build . --target install
 ```
