@@ -8,7 +8,6 @@ version = "0.1.0"
 
 [tasks]
 configure = { cmd = [
-  "CXXFLAGS=$NANOEIGENPY_CXX_FLAGS",
   "cmake",
   "-G",
   "Ninja",

@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   nanoeigenpy-pixi:
-    name: ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }} ${{ matrix.cxx_options }}
+    name: ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.os }}
     env:
       CCACHE_BASEDIR: "${GITHUB_WORKSPACE}"
@@ -43,12 +43,6 @@ jobs:
         os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
         environment: [default, python-oldest]
         build_type: [Release, Debug]
-        cxx_options: ['', '-mavx2']
-        exclude:
-          - os: macos-latest
-            cxx_options: '-mavx2'
-          - os: macos-13
-            cxx_options: '-mavx2'
 
     steps:
     - uses: actions/checkout@v4
@@ -58,8 +52,8 @@ jobs:
     - uses: actions/cache@v4
       with:
         path: .ccache
-        key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cxx_options }}-${{ matrix.environment }}-${{ github.sha }}
-        restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.cxx_options }}-${{ matrix.environment }}-
+        key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
+        restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-
 
     - uses: prefix-dev/setup-pixi@v0.8.3
       with:
@@ -68,9 +62,7 @@ jobs:
 
     - name: Build nanoeigenpy [MacOS/Linux/Windows]
       env:
-        CMAKE_BUILD_PARALLEL_LEVEL: 2
         NANOEIGENPY_BUILD_TYPE: ${{ matrix.build_type }}
-        NANOEIGENPY_CXX_FLAGS: ${{ matrix.cxx_options }}
       run: |
         pixi run -e ${{ matrix.environment }} build
 
