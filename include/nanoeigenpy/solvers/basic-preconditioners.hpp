@@ -19,10 +19,8 @@ struct PreconditionerBaseVisitor
     using namespace nb::literals;
     cl.def(nb::init<>())
         .def(nb::init<MatrixType>(), "A"_a)
-#if EIGEN_VERSION_AT_LEAST(3, 3, 0)
         .def("info", &Preconditioner::info,
              "Returns success if the Preconditioner has been well initialized.")
-#endif
         .def("solve", &solve, nb::arg("b"),
              "Returns the solution A * z = b where the preconditioner is an "
              "estimate of A^-1.")

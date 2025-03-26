@@ -142,30 +142,29 @@ struct IterativeSolverBaseVisitor
 template <typename MatrixType>
 void exposeMINRESSolver(nb::module_ m, const char *name) {
   using Solver = Eigen::MINRES<MatrixType>;
-  auto cl =
-      nb::class_<Solver>(
-          m, name,
-          "A minimal residual solver for sparse symmetric problems.\n"
-          "This class allows to solve for A.x = b sparse linear problems using "
-          "the MINRES algorithm of Paige and Saunders (1975). The sparse "
-          "matrix "
-          "A must be symmetric (possibly indefinite). The vectors x and b can "
-          "be "
-          "either dense or sparse.\n"
-          "The maximal number of iterations and tolerance value can be "
-          "controlled via the setMaxIterations() and setTolerance() methods. "
-          "The "
-          "defaults are the size of the problem for the maximal number of "
-          "iterations and NumTraits<Scalar>::epsilon() for the tolerance.\n")
+  nb::class_<Solver>(
+      m, name,
+      "A minimal residual solver for sparse symmetric problems.\n"
+      "This class allows to solve for A.x = b sparse linear problems using "
+      "the MINRES algorithm of Paige and Saunders (1975). The sparse "
+      "matrix "
+      "A must be symmetric (possibly indefinite). The vectors x and b can "
+      "be "
+      "either dense or sparse.\n"
+      "The maximal number of iterations and tolerance value can be "
+      "controlled via the setMaxIterations() and setTolerance() methods. "
+      "The "
+      "defaults are the size of the problem for the maximal number of "
+      "iterations and NumTraits<Scalar>::epsilon() for the tolerance.\n")
 
-          .def(nb::init<>(), "Default constructor.")
-          .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
-               "Initialize the solver with matrix A for further Ax=b solving.\n"
-               "This constructor is a shortcut for the default constructor "
-               "followed by a call to compute().")
+      .def(nb::init<>(), "Default constructor.")
+      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+           "Initialize the solver with matrix A for further Ax=b solving.\n"
+           "This constructor is a shortcut for the default constructor "
+           "followed by a call to compute().")
 
-          .def(IterativeSolverBaseVisitor())
-          .def(IdVisitor());
+      .def(IterativeSolverBaseVisitor())
+      .def(IdVisitor());
 }
 
 }  // namespace nanoeigenpy

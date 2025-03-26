@@ -73,12 +73,10 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
           nb::arg("sigma"))
 #endif
 
-#if EIGEN_VERSION_AT_LEAST(3, 3, 0)
       .def("adjoint", &Chol::adjoint,
            "Returns the adjoint, that is, a reference to the decomposition "
            "itself as if the underlying matrix is self-adjoint.",
            nb::rv_policy::reference)
-#endif
 
       .def(
           "compute",
@@ -91,11 +89,9 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
            "NumericalIssue if the input contains INF or NaN values or "
            "overflow occured. Returns Success otherwise.")
 
-#if EIGEN_VERSION_AT_LEAST(3, 3, 0)
       .def("rcond", &Chol::rcond,
            "Returns an estimate of the reciprocal condition number of the "
            "matrix.")
-#endif
 
       .def("reconstructedMatrix", &Chol::reconstructedMatrix,
            "Returns the matrix represented by the decomposition, i.e., it "
