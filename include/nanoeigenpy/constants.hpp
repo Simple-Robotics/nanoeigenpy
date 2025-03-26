@@ -7,7 +7,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
-inline void exposeComputationInfo(nb::module_ m) {
+inline void exposeConstants(nb::module_ m) {
   nb::enum_<Eigen::ComputationInfo>(m, "ComputationInfo")
       .value("Success", Eigen::Success, "Computation was successful.")
       .value("NumericalIssue", Eigen::NumericalIssue,
@@ -18,5 +18,18 @@ inline void exposeComputationInfo(nb::module_ m) {
              "The inputs are invalid, or the algorithm has been improperly "
              "called. "
              "When assertions are enabled, such errors trigger an assert.");
+  using Eigen::DecompositionOptions;
+#define _c(name) value(#name, DecompositionOptions::name)
+  nb::enum_<DecompositionOptions>(m, "DecompositionOptions")
+      ._c(ComputeFullU)
+      ._c(ComputeThinU)
+      ._c(ComputeFullV)
+      ._c(ComputeThinV)
+      ._c(EigenvaluesOnly)
+      ._c(ComputeEigenvectors)
+      ._c(Ax_lBx)
+      ._c(ABx_lx)
+      ._c(BAx_lx);
+#undef _c
 }
 }  // namespace nanoeigenpy

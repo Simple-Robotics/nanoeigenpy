@@ -7,7 +7,7 @@
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
-#include "nanoeigenpy/computation-info.hpp"
+#include "nanoeigenpy/constants.hpp"
 
 using namespace nanoeigenpy;
 namespace nb = nanobind;
@@ -38,6 +38,8 @@ std::string printEigenVersion(const char* delim = ".") {
 void exposeSolvers(nb::module_& m);
 
 NB_MODULE(nanoeigenpy, m) {
+  exposeConstants(m);
+
   // Decompositions
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
@@ -65,8 +67,6 @@ NB_MODULE(nanoeigenpy, m) {
   // Utils
   exposeIsApprox<double>(m);
   exposeIsApprox<std::complex<double>>(m);
-
-  exposeComputationInfo(m);
 
   m.attr("__version__") = NANOEIGENPY_VERSION;
   m.attr("__eigen_version__") = printEigenVersion();
