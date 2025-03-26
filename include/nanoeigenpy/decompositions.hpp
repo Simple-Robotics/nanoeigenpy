@@ -13,5 +13,5 @@
 #include "nanoeigenpy/decompositions/self-adjoint-eigen-solver.hpp"
 #include "nanoeigenpy/decompositions/permutation-matrix.hpp"
 
-#include "nanoeigenpy/decompositions/sparse/llt.hpp"
-#include "nanoeigenpy/decompositions/sparse/ldlt.hpp"
+#include "nanoeigenpy/decompositions/sparse/simplicial-llt.hpp"
+#include "nanoeigenpy/decompositions/sparse/simplicial-ldlt.hpp"
