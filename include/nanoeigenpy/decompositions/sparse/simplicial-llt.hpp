@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp"
 
 namespace nanoeigenpy {
