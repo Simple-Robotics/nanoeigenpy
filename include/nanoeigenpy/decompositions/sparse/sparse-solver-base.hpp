@@ -7,11 +7,6 @@
 
 namespace nanoeigenpy {
 
-template <typename Solver, typename MatrixOrVector>
-MatrixOrVector solve(const Solver &self, const MatrixOrVector &vec) {
-  return self.solve(vec);
-}
-
 struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
   template <typename SimplicialDerived, typename... Ts>
   void execute(nb::class_<SimplicialDerived, Ts...> &cl) {
@@ -27,7 +22,7 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
     cl.def(
           "solve",
           [](Solver const &self, DenseVectorXs const &b) -> DenseVectorXs {
-            return solve(self, b);
+            return self.solve(b);
           },
           nb::arg("b"),
           "Returns the solution x of A x = b using the current "
@@ -35,7 +30,7 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
         .def(
             "solve",
             [](Solver const &self, DenseMatrixXs const &b) -> DenseMatrixXs {
-              return solve(self, b);
+              return self.solve(b);
             },
             nb::arg("b"),
             "Returns the solution X of A X = B using the current "
@@ -43,7 +38,7 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
         .def(
             "solve",
             [](Solver const &self, MatrixType const &B) -> MatrixType {
-              return solve(self, B);
+              return self.solve(B);
             },
             nb::arg("B"),
             "Returns the solution X of A X = B using the current "

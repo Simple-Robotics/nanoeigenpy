@@ -3,7 +3,6 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/solvers/sparse-solver-base.hpp"
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
@@ -19,7 +18,13 @@ struct IterativeSolverVisitor
   void execute(nb::class_<IterativeSolver, Ts...>& cl) {
     using IS = IterativeSolver;
     using namespace nb::literals;
-    cl.def(SparseSolverVisitor<IS>())
+    cl.def(
+          "solve",
+          [](const IS& self, const VectorType& vec) -> VectorType {
+            return self.solve(vec);
+          },
+          "Returns the solution x of Ax = b using the current decomposition of "
+          "A.")
         .def("error", &IS::error,
              "Returns the tolerance error reached during the last solve.\n"
              "It is a close approximation of the true relative residual error "

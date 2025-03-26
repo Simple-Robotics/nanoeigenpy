@@ -4,7 +4,6 @@
 
 #include "nanoeigenpy/solvers/basic-preconditioners.hpp"
 #include "nanoeigenpy/solvers/bfgs-preconditioners.hpp"
-#include "nanoeigenpy/solvers/sparse-solver-base.hpp"
 #include "nanoeigenpy/solvers/iterative-solver-base.hpp"
 #if EIGEN_VERSION_AT_LEAST(3, 3, 5)
 #include "nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp"
