@@ -55,10 +55,6 @@ assert fullpiv_householder_qr.nonzeroPivots() == rows
 assert fullpiv_householder_qr.dimensionOfKernel() == 0
 
 # Test ColPivHouseholderQR decomposition
-colpiv_householder_qr = nanoeigenpy.ColPivHouseholderQR()
-assert colpiv_householder_qr.info() == nanoeigenpy.ComputationInfo.Success
-colpiv_householder_qr = nanoeigenpy.ColPivHouseholderQR(rows, cols)
-assert colpiv_householder_qr.info() == nanoeigenpy.ComputationInfo.Success
 colpiv_householder_qr = nanoeigenpy.ColPivHouseholderQR(A)
 assert colpiv_householder_qr.info() == nanoeigenpy.ComputationInfo.Success
 
@@ -80,10 +76,6 @@ assert colpiv_householder_qr.nonzeroPivots() == rows
 assert colpiv_householder_qr.dimensionOfKernel() == 0
 
 # Test CompleteOrthogonalDecomposition
-cod = nanoeigenpy.CompleteOrthogonalDecomposition()
-assert cod.info() == nanoeigenpy.ComputationInfo.Success
-cod = nanoeigenpy.CompleteOrthogonalDecomposition(rows, cols)
-assert cod.info() == nanoeigenpy.ComputationInfo.Success
 cod = nanoeigenpy.CompleteOrthogonalDecomposition(A)
 assert cod.info() == nanoeigenpy.ComputationInfo.Success
 

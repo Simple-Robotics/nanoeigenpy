@@ -16,4 +16,5 @@ X_est = minres.solve(B)
 
 print("X_est :", X_est)
 
-# assert nanoeigenpy.is_approx(X, X_est, 1e-6)
+assert nanoeigenpy.is_approx(X, X_est, 1e-6)
+assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
