@@ -22,7 +22,7 @@
 #define NANOEIGENPY_WITH_CXX20_SUPPORT
 #endif
 
-#define NANOEIGENPY_UNUSED_TYPE(Type) (Type*)(NULL)
+#define NANOEIGENPY_UNUSED_TYPE(Type) (void)(Type*)(NULL)
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
