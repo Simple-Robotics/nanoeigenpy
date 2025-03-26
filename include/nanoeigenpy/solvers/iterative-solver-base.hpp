@@ -13,6 +13,8 @@ struct IterativeSolverVisitor
   using Scalar = typename MatrixType::Scalar;
   static constexpr int Options = MatrixType::Options;
   using Preconditioner = typename IterativeSolver::Preconditioner;
+  using DenseMatrix =
+      Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, Options>;
   using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1, Options>;
   static_assert(
       nb::is_base_of_template_v<IterativeSolver, Eigen::IterativeSolverBase>,
@@ -30,6 +32,12 @@ struct IterativeSolverVisitor
           },
           "Returns the solution x of Ax = b using the current decomposition of "
           "A.")
+        .def(
+            "solve",
+            [](const IS& self, Eigen::Ref<const DenseMatrix> vec)
+                -> DenseMatrix { return self.solve(vec); },
+            "Returns the solution x of Ax = b using the current decomposition "
+            "of A.")
         .def("error", &IS::error,
              "Returns the tolerance error reached during the last solve.\n"
              "It is a close approximation of the true relative residual error "
@@ -80,7 +88,7 @@ struct IterativeSolverVisitor
         .def("solveWithGuess", &solveWithGuess<VectorType>, "b"_a, "x_0"_a,
              "Returns the solution x of Ax = b using the current decomposition "
              "of A and x0 as an initial solution.")
-        .def("solveWithGuess", &solveWithGuess<MatrixType>, "b"_a, "x_0"_a,
+        .def("solveWithGuess", &solveWithGuess<DenseMatrix>, "b"_a, "x_0"_a,
              "Returns the solution x of Ax = b using the current decomposition "
              "of A and x0 as an initial solution.")
         .def(
