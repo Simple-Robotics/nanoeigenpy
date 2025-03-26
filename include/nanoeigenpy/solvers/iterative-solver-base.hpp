@@ -10,8 +10,14 @@ template <typename IterativeSolver>
 struct IterativeSolverVisitor
     : nb::def_visitor<IterativeSolverVisitor<IterativeSolver>> {
   using MatrixType = typename IterativeSolver::MatrixType;
+  using Scalar = typename MatrixType::Scalar;
+  static constexpr int Options = MatrixType::Options;
   using Preconditioner = typename IterativeSolver::Preconditioner;
-  using VectorType = Eigen::VectorXd;
+  using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1, Options>;
+  static_assert(
+      nb::is_base_of_template_v<IterativeSolver, Eigen::IterativeSolverBase>,
+      "IterativeSolver template type parameter must inherit from "
+      "IterativeSolverBase!");
 
   template <typename... Ts>
   void execute(nb::class_<IterativeSolver, Ts...>& cl) {
@@ -19,7 +25,7 @@ struct IterativeSolverVisitor
     using namespace nb::literals;
     cl.def(
           "solve",
-          [](const IS& self, const VectorType& vec) -> VectorType {
+          [](const IS& self, Eigen::Ref<const VectorType> vec) -> VectorType {
             return self.solve(vec);
           },
           "Returns the solution x of Ax = b using the current decomposition of "
@@ -71,13 +77,16 @@ struct IterativeSolverVisitor
              "In the future we might, for instance, implement column "
              "reordering for faster matrix vector products.",
              nb::rv_policy::reference)
-        .def("solveWithGuess", &solveWithGuess, "b"_a, "x_0"_a,
+        .def("solveWithGuess", &solveWithGuess<VectorType>, "b"_a, "x_0"_a,
+             "Returns the solution x of Ax = b using the current decomposition "
+             "of A and x0 as an initial solution.")
+        .def("solveWithGuess", &solveWithGuess<MatrixType>, "b"_a, "x_0"_a,
              "Returns the solution x of Ax = b using the current decomposition "
              "of A and x0 as an initial solution.")
         .def(
             "preconditioner",
             [](IterativeSolver& self) -> Preconditioner& {
-              return const_cast<Preconditioner&>(self.preconditioner());
+              return self.preconditioner();
             },
             nb::rv_policy::reference_internal,
             "Returns a read-write reference to the preconditioner for custom "
@@ -86,22 +95,23 @@ struct IterativeSolverVisitor
 
  private:
   static IterativeSolver& factorize(IterativeSolver& self,
-                                    const MatrixType& m) {
+                                    Eigen::Ref<const MatrixType> m) {
     return self.factorize(m);
   }
 
-  static IterativeSolver& compute(IterativeSolver& self, const MatrixType& m) {
+  static IterativeSolver& compute(IterativeSolver& self,
+                                  Eigen::Ref<const MatrixType> m) {
     return self.compute(m);
   }
 
   static IterativeSolver& analyzePattern(IterativeSolver& self,
-                                         const MatrixType& m) {
+                                         Eigen::Ref<const MatrixType> m) {
     return self.analyzePattern(m);
   }
 
-  static VectorType solveWithGuess(IterativeSolver& self,
-                                   const Eigen::VectorXd& b,
-                                   const Eigen::VectorXd& x0) {
+  template <typename T>
+  static T solveWithGuess(IterativeSolver& self, Eigen::Ref<const T> b,
+                          Eigen::Ref<const T> x0) {
     return self.solveWithGuess(b, x0);
   }
 };
