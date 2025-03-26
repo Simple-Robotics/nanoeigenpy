@@ -14,6 +14,8 @@ print(A)
 
 es = nanoeigenpy.SelfAdjointEigenSolver(A)
 
+assert es.info() == nanoeigenpy.ComputationInfo.Success
+
 V = es.eigenvectors()
 print("V")
 print(V)
@@ -21,10 +23,7 @@ D = es.eigenvalues()
 print("D")
 print(D)
 
-print("A.dot(V) :")
-print(A.dot(V))
+AdotV = A @ V
+VdotD = V @ np.diag(D)
 
-print("V.dot(np.diag(D))")
-print(V.dot(np.diag(D)))
-
-assert nanoeigenpy.is_approx(A.dot(V), V.dot(np.diag(D)), 1e-6)
+assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-10)

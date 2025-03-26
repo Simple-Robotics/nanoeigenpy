@@ -20,8 +20,8 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &, int>(), nb::arg("matrix"),
-           nb::arg("options") = 0,
+      .def(nb::init<const MatrixType &, Eigen::DecompositionOptions>(),
+           nb::arg("matrix"), nb::arg("options") = Eigen::ComputeEigenvectors,
            "Computes eigendecomposition of given matrix")
 
       .def("eigenvalues", &Solver::eigenvalues,
