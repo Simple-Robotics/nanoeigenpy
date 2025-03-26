@@ -27,16 +27,6 @@ dim = dim + 1
 perm.setIdentity(dim)
 assert perm.indices().all() == np.arange(dim).all()
 
-# Test toDenseMatrix
-
-# Test transpose
-
-# Test inverse
-
-# Test resize
-
-# Test *
-
 # Test nb::init<Eigen::DenseIndex>()
 # Test id
 dim_constructor = 3

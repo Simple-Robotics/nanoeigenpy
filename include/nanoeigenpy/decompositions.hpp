@@ -10,6 +10,8 @@
 #include "nanoeigenpy/decompositions/col-piv-householder-qr.hpp"
 #include "nanoeigenpy/decompositions/complete-orthogonal-decomposition.hpp"
 #include "nanoeigenpy/decompositions/eigen-solver.hpp"
+#include "nanoeigenpy/decompositions/self-adjoint-eigen-solver.hpp"
+#include "nanoeigenpy/decompositions/permutation-matrix.hpp"
 
 #include "nanoeigenpy/decompositions/sparse/llt.hpp"
 #include "nanoeigenpy/decompositions/sparse/ldlt.hpp"

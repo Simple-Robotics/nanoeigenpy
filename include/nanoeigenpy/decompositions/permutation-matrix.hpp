@@ -51,10 +51,10 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
            "Multiplies self by the transposition (ij) on the right.")
 
       .def(
-          "setThreshold", [](PermutationMatrix &self) { self.setIdentity(); },
+          "setIdentity", [](PermutationMatrix &self) { self.setIdentity(); },
           "Sets self to be the identity permutation matrix.")
       .def(
-          "setThreshold",
+          "setIdentity",
           [](PermutationMatrix &self, Eigen::DenseIndex size) {
             self.setIdentity(size);
           },

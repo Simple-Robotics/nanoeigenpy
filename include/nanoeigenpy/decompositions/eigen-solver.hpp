@@ -28,8 +28,7 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
            "Returns the eigenvalues of the matrix.",
            nb::rv_policy::reference_internal)
       .def("eigenvectors", &Solver::eigenvectors,
-           "Returns the eigenvectors of the matrix.",
-           nb::rv_policy::reference_internal)
+           "Returns the eigenvectors of the matrix.")
 
       .def(
           "compute",

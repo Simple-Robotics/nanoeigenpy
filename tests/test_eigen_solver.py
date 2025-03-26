@@ -11,11 +11,9 @@ print(A)
 
 # Tests init
 es = nanoeigenpy.EigenSolver()
-#assert es.info() == nanoeigenpy.ComputationInfo.Success
 es = nanoeigenpy.EigenSolver(dim)
-#assert es.info() == nanoeigenpy.ComputationInfo.Success
 es = nanoeigenpy.EigenSolver(A)
-#assert es.info() == nanoeigenpy.ComputationInfo.Success
+assert es.info() == nanoeigenpy.ComputationInfo.Success
 
 # Test eigenvectors
 # Test eigenvalues
@@ -24,13 +22,6 @@ D = es.eigenvalues()
 
 assert nanoeigenpy.is_approx(A.dot(V).real, V.dot(np.diag(D)).real)
 assert nanoeigenpy.is_approx(A.dot(V).imag, V.dot(np.diag(D)).imag)
-
-# Test compute
-# Done implicitly at init
-
-# Test pseudoEigenvalueMatrix
-print("es.pseudoEigenvalueMatrix()")
-print(es.pseudoEigenvalueMatrix())
 
 # Test nb::init<>()
 # Test id

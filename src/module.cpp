@@ -46,6 +46,8 @@ NB_MODULE(nanoeigenpy, m) {
   exposeCompleteOrthogonalDecompositionSolver<Matrix>(
       m, "CompleteOrthogonalDecomposition");
   exposeEigenSolver<Matrix>(m, "EigenSolver");
+  exposeSelfAdjointEigenSolver<Matrix>(m, "SelfAdjointEigenSolver");
+  exposePermutationMatrix<Eigen::Dynamic>(m, "PermutationMatrix");
 
   exposeSimplicialLLT<SparseMatrix>(m, "SimplicialLLT");
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
