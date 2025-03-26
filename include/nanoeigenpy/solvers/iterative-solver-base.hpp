@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "nanoeigenpy/nanoeigenpy.hpp"
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/solvers/sparse-solver-base.hpp"
 
 namespace nanoeigenpy {

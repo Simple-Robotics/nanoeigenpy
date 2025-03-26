@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "nanoeigenpy/nanoeigenpy.hpp"
+#include "nanoeigenpy/fwd.hpp"
 #include <Eigen/IterativeLinearSolvers>
 
 namespace nanoeigenpy {

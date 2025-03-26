@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "nanoeigenpy/nanoeigenpy.hpp"
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/eigen-base.hpp"
 #include <Eigen/Cholesky>
 

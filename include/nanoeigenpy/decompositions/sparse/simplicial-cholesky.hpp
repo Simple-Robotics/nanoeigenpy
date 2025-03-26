@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "nanoeigenpy/nanoeigenpy.hpp"
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 #include <Eigen/SparseCholesky>
 
