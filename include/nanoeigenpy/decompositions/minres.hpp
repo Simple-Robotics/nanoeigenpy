@@ -3,7 +3,6 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
 #include <unsupported/Eigen/IterativeSolvers>
 
 namespace nanoeigenpy {
@@ -16,8 +15,8 @@ struct IterativeSolverBaseVisitor
   using MatrixType = typename Solver::MatrixType;
   using Preconditioner = typename Solver::Preconditioner;
   using Scalar = typename Solver::Scalar;
-  using MatrixXs = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic,
-                                 MatrixType::Options>;
+  static constexpr int Options = MatrixType::Options;
+  NANOEIGENPY_MAKE_TYPEDEFS(Scalar, Options, s, Eigen::Dynamic, X)
 
  public:
   template <typename... Ts>
@@ -26,7 +25,7 @@ struct IterativeSolverBaseVisitor
 
     cl.def(
           "analyzePattern",
-          [](Solver& c, Eigen::EigenBase<MatrixType> const& matrix) -> Solver& {
+          [](Solver& c, MatrixType const& matrix) -> Solver& {
             return c.analyzePattern(matrix);
           },
           "matrix"_a,
@@ -35,8 +34,9 @@ struct IterativeSolverBaseVisitor
           nb::rv_policy::reference)
         .def(
             "factorize",
-            [](Solver& c, Eigen::EigenBase<MatrixType> const& matrix)
-                -> Solver& { return c.factorize(matrix); },
+            [](Solver& c, MatrixType const& matrix) -> Solver& {
+              return c.factorize(matrix);
+            },
             nb::arg("matrix"),
             "Initializes the iterative solver with the numerical values of "
             "the "
@@ -44,8 +44,9 @@ struct IterativeSolverBaseVisitor
             nb::rv_policy::reference)
         .def(
             "compute",
-            [](Solver& c, Eigen::EigenBase<MatrixType> const& matrix)
-                -> Solver& { return c.compute(matrix); },
+            [](Solver& c, MatrixType const& matrix) -> Solver& {
+              return c.compute(matrix);
+            },
             nb::arg("matrix"),
             "Initializes the iterative solver with the matrix A for further "
             "solving Ax=b problems.",
@@ -90,15 +91,23 @@ struct IterativeSolverBaseVisitor
              "Returns Success if the iterations converged, and NoConvergence "
              "otherwise.")
 
+        .def("solveWithGuess", &solveWithGuess<VectorXs, VectorXs>, "b"_a,
+             "x0"_a,
+             "Returns the solution x of A x = b using the current "
+             "decomposition of A and x0 as an initial solution.")
         .def("solveWithGuess", &solveWithGuess<MatrixXs, MatrixXs>, "b"_a,
              "x0"_a,
              "Returns the solution x of A x = b using the current "
              "decomposition of A and x0 as an initial solution.")
 
         .def(
+            "solve", &solve<VectorXs>, "b"_a,
+            "Returns the solution x of A x = b using the current decomposition "
+            "of A where b is a right hand side vector.")
+        .def(
             "solve", &solve<MatrixXs>, "b"_a,
             "Returns the solution x of A x = b using the current decomposition "
-            "of A where b is a right hand side matrix or vector.");
+            "of A where b is a right hand side matrix.");
   }
 
  private:
