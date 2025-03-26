@@ -51,12 +51,12 @@ namespace nb = nanobind;
 
 template <typename Scalar>
 void exposeIsApprox(nb::module_ m) {
-  enum { Options = 0 };
-  NANOEIGENPY_MAKE_TYPEDEFS(Scalar, Options, s, Eigen::Dynamic, X);
-  NANOEIGENPY_UNUSED_TYPE(RowVectorXs);
-  typedef typename MatrixXs::RealScalar RealScalar;
+  static constexpr int Options = 0;
+  using Eigen::Dynamic;
+  using MatrixXs = Eigen::Matrix<Scalar, Dynamic, Dynamic, Options>;
+  using VectorXs = Eigen::Matrix<Scalar, Dynamic, 1, Options>;
+  using RealScalar = typename MatrixXs::RealScalar;
 
-  using namespace Eigen;
   const RealScalar dummy_precision =
       Eigen::NumTraits<RealScalar>::dummy_precision();
 
