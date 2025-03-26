@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "nanoeigenpy/eigen-typedef.hpp"
 #include "nanoeigenpy/fwd.hpp"
 
 #include <Eigen/Core>

@@ -5,7 +5,6 @@
 #include "nanoeigenpy/fwd.hpp"
 
 namespace nanoeigenpy {
-namespace nb = nanobind;
 
 template <typename IterativeSolver>
 struct IterativeSolverVisitor

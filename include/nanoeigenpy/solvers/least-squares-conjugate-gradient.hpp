@@ -7,7 +7,6 @@
 #include <Eigen/IterativeLinearSolvers>
 
 namespace nanoeigenpy {
-namespace nb = nanobind;
 
 template <typename LeastSquaresConjugateGradient>
 struct LeastSquaresConjugateGradientVisitor
