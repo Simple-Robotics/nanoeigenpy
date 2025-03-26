@@ -35,6 +35,8 @@ std::string printEigenVersion(const char* delim = ".") {
   return oss.str();
 }
 
+void exposeSolvers(nb::module_& m);
+
 NB_MODULE(nanoeigenpy, m) {
   // Decompositions
   exposeLLTSolver<Matrix>(m, "LLT");
@@ -58,27 +60,7 @@ NB_MODULE(nanoeigenpy, m) {
 
   // Preconditioners (and solvers)
   nb::module_ solvers = m.def_submodule("solvers", "Solvers in Eigen.");
-
-  exposeIdentityPreconditioner<Scalar>(solvers, "IdentityPreconditioner");
-  exposeDiagonalPreconditioner<Scalar>(solvers, "DiagonalPreconditioner");
-#if EIGEN_VERSION_AT_LEAST(3, 3, 5)
-  exposeLeastSquareDiagonalPreconditioner<Scalar>(
-      solvers, "LeastSquareDiagonalPreconditioner");
-#endif
-
-  // // Solvers
-  using namespace Eigen;
-  using ConjugateGradient = ConjugateGradient<MatrixXd, Lower | Upper>;
-  exposeConjugateGradient<ConjugateGradient>(solvers, "ConjugateGradient");
-  using LeastSquaresConjugateGradient = LeastSquaresConjugateGradient<
-      MatrixXd, LeastSquareDiagonalPreconditioner<MatrixXd::Scalar>>;
-  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient>(
-      solvers, "LeastSquaresConjugateGradient");
-
-  using IdentityConjugateGradient =
-      Eigen::ConjugateGradient<MatrixXd, Lower | Upper, IdentityPreconditioner>;
-  exposeConjugateGradient<IdentityConjugateGradient>(
-      solvers, "IdentityConjugateGradient");
+  exposeSolvers(solvers);
 
   // Utils
   exposeIsApprox<double>(m);
@@ -92,4 +74,29 @@ NB_MODULE(nanoeigenpy, m) {
   m.def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
         "Get the set of SIMD instructions used in Eigen when this module was "
         "compiled.");
+}
+
+void exposeSolvers(nb::module_& m) {
+  exposeIdentityPreconditioner<Scalar>(m, "IdentityPreconditioner");
+  exposeDiagonalPreconditioner<Scalar>(m, "DiagonalPreconditioner");
+#if EIGEN_VERSION_AT_LEAST(3, 3, 5)
+  exposeLeastSquareDiagonalPreconditioner<Scalar>(
+      m, "LeastSquareDiagonalPreconditioner");
+#endif
+
+  // Solvers
+  using Eigen::Lower;
+  using Eigen::Upper;
+  using ConjugateGradient = Eigen::ConjugateGradient<Matrix, Lower | Upper>;
+  exposeConjugateGradient<ConjugateGradient>(m, "ConjugateGradient");
+  using LeastSquaresConjugateGradient = Eigen::LeastSquaresConjugateGradient<
+      Matrix, Eigen::LeastSquareDiagonalPreconditioner<Scalar>>;
+  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient>(
+      m, "LeastSquaresConjugateGradient");
+
+  using IdentityConjugateGradient =
+      Eigen::ConjugateGradient<Matrix, Lower | Upper,
+                               Eigen::IdentityPreconditioner>;
+  exposeConjugateGradient<IdentityConjugateGradient>(
+      m, "IdentityConjugateGradient");
 }
