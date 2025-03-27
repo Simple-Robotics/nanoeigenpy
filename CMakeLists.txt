@@ -74,7 +74,7 @@ target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
 file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
-target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
+target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers)
 
 # Detect the installed cholmod library and import it into CMake
 if(BUILD_WITH_CHOLMOD_SUPPORT)
@@ -88,10 +88,7 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
     STATUS
     "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
   )
-  target_compile_definitions(
-    nanoeigenpy_headers
-    INTERFACE -DNANOEIGENPY_WITH_CHOLMOD_SUPPORT
-  )
+  target_link_libraries(nanoeigenpy PRIVATE CHOLMOD::CHOLMOD)
 endif(BUILD_WITH_CHOLMOD_SUPPORT)
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
@@ -111,10 +108,6 @@ else()
     REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
   )
 endif(BUILD_WITH_CHOLMOD_SUPPORT)
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  target_link_libraries(nanoeigenpy_headers INTERFACE CHOLMOD::CHOLMOD)
-endif()
 
 if(BUILD_TESTING)
   add_subdirectory(tests)

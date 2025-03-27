@@ -56,7 +56,7 @@ NB_MODULE(nanoeigenpy, m) {
   exposeSimplicialLLT<SparseMatrix>(m, "SimplicialLLT");
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
 
-#ifdef NANOEIGENPY_WITH_CHOLMOD_SUPPORT
+#ifdef NANOEIGENPY_HAS_CHOLMOD
   exposeCholmodSimplicialLLT<SparseMatrix>(m, "CholmodSimplicialLLT");
   exposeCholmodSimplicialLDLT<SparseMatrix>(m, "CholmodSimplicialLDLT");
   exposeCholmodSupernodalLLT<SparseMatrix>(m, "CholmodSupernodalLLT");
