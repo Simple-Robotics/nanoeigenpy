@@ -26,11 +26,10 @@ struct MINRESSolverVisitor : nb::def_visitor<MINRESSolverVisitor<_MatrixType>> {
     using namespace nb::literals;
 
     cl.def(nb::init<>(), "Default constructor.")
-        .def(nb::init<const MatrixType&>(), "matrix"_a,
+        .def(nb::init<MatrixType>(), "matrix"_a,
              "Initialize the solver with matrix A for further Ax=b solving.\n"
              "This constructor is a shortcut for the default constructor "
              "followed by a call to compute().")
-
         .def(IterativeSolverVisitor<Solver>());
   }
 

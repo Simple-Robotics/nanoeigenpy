@@ -17,12 +17,12 @@ struct ConjugateGradientVisitor
   template <typename... Ts>
   void execute(nb::class_<ConjugateGradient, Ts...>& cl) {
     using namespace nb::literals;
-    cl.def(IterativeSolverVisitor<ConjugateGradient>())
-        .def(nb::init<>(), "Default constructor.")
+    cl.def(nb::init<>(), "Default constructor.")
         .def(nb::init<MatrixType>(), "A"_a,
              "Initialize the solver with matrix A for further Ax=b solving.\n"
              "This constructor is a shortcut for the default constructor "
-             "followed by a call to compute().");
+             "followed by a call to compute().")
+        .def(IterativeSolverVisitor<ConjugateGradient>());
   }
 
   static void expose(nb::module_& m, const char* name) {
