@@ -27,3 +27,27 @@ print("X_est :", X_est)
 
 assert nanoeigenpy.is_approx(X, X_est, 1e-6)
 assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
+
+# With guess
+# Vector rhs
+
+minres = nanoeigenpy.MINRES(A)
+b = A.dot(x)
+x_est = minres.solveWithGuess(b, x)
+
+print("x_est :", x_est)
+print(x_est - x)
+
+assert nanoeigenpy.is_approx(x, x_est, 1e-6)
+assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
+
+# Matrix rhs
+
+minres = nanoeigenpy.MINRES(A)
+B = A.dot(X)
+X_est = minres.solveWithGuess(B, X)
+
+print("X_est :", X_est)
+
+assert nanoeigenpy.is_approx(X, X_est, 1e-6)
+assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
