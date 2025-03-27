@@ -36,6 +36,12 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   )
 endif()
 
+option(
+  BUILD_WITH_CHOLMOD_SUPPORT
+  "Build NanoEigenPy with the Cholmod support"
+  OFF
+)
+
 # Find dependencies
 ADD_PROJECT_DEPENDENCY(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
 
@@ -49,12 +55,43 @@ execute_process(
 )
 find_package(nanobind CONFIG REQUIRED)
 
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  set(
+    CMAKE_MODULE_PATH
+    ${JRL_CMAKE_MODULES}/find-external/CHOLMOD
+    ${CMAKE_MODULE_PATH}
+  )
+  ADD_PROJECT_DEPENDENCY(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
+  message(
+    STATUS
+    "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
+  )
+  add_definitions(-DNANOEIGENPY_WITH_CHOLMOD_SUPPORT)
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
 # Setup main targets
 file(
   GLOB_RECURSE ${PROJECT_NAME}_HEADERS
   CONFIGURE_DEPENDS
   include/nanoeigenpy/*.hpp
 )
+
+list(
+  FILTER ${PROJECT_NAME}_HEADERS
+  EXCLUDE
+  REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
+)
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  file(
+    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS
+    include/nanoeigenpy/decompositions/sparse/cholmod/*.hpp
+  )
+  list(
+    APPEND
+    ${PROJECT_NAME}_HEADERS
+    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS}
+  )
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
 
 add_library(nanoeigenpy_headers INTERFACE)
 target_include_directories(
@@ -69,6 +106,10 @@ target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  target_link_libraries(nanoeigenpy PUBLIC CHOLMOD::CHOLMOD)
+endif()
 
 if(BUILD_TESTING)
   add_subdirectory(tests)

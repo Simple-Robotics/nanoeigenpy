@@ -32,7 +32,7 @@ void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
       .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
            "Constructs a LDLT factorization from a given matrix.")
 
-      .def(CholmodDecompositionVisitor());
+      .def(CholmodBaseVisitor());
 }
 
 }  // namespace nanoeigenpy

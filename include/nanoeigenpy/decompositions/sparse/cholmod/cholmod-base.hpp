@@ -3,6 +3,7 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
+#include "nanoeigenpy/eigen-base.hpp"
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 #include <Eigen/CholmodSupport>
 
@@ -12,6 +13,9 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
   template <typename CholdmodDerived, typename... Ts>
   void execute(nb::class_<CholdmodDerived, Ts...> &cl) {
     using Solver = CholdmodDerived;
+    static_assert(nb::is_base_of_template_v<Solver, Eigen::SparseSolverBase>,
+                  "Template type parameter Solver must inherit from "
+                  "Eigen::SparseSolverBase");
     using MatrixType = typename CholdmodDerived::MatrixType;
     using Scalar = typename MatrixType::Scalar;
     using RealScalar = typename MatrixType::RealScalar;
@@ -23,7 +27,6 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
            "This function is particularly useful when solving for several "
            "problems having the same structure.")
 
-        .def(EigenBaseVisitor())
         .def(SparseSolverBaseVisitor())
 
         .def(

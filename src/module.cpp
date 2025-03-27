@@ -21,12 +21,12 @@ using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
-NB_MAKE_OPAQUE(Eigen::MINRES<Eigen::MatrixXd>)  // necessary ?
+NB_MAKE_OPAQUE(Eigen::MINRES<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::HouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ColPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd>)
-NB_MAKE_OPAQUE(Eigen::EigenSolver<Eigen::MatrixXd>)  // necessary ?
+NB_MAKE_OPAQUE(Eigen::EigenSolver<Eigen::MatrixXd>)
 
 std::string printEigenVersion(const char* delim = ".") {
   std::ostringstream oss;
@@ -55,6 +55,10 @@ NB_MODULE(nanoeigenpy, m) {
 
   exposeSimplicialLLT<SparseMatrix>(m, "SimplicialLLT");
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
+
+  exposeCholmodSimplicialLLT<SparseMatrix>(m, "CholmodSimplicialLLT");
+  exposeCholmodSimplicialLDLT<SparseMatrix>(m, "CholmodSimplicialLDLT");
+  exposeCholmodSupernodalLLT<SparseMatrix>(m, "CholmodSupernodalLLT");
 
   // Geometry
   exposeQuaternion<Scalar>(m, "Quaternion");
