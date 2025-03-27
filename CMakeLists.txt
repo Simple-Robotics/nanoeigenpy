@@ -55,43 +55,12 @@ execute_process(
 )
 find_package(nanobind CONFIG REQUIRED)
 
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  set(
-    CMAKE_MODULE_PATH
-    ${JRL_CMAKE_MODULES}/find-external/CHOLMOD
-    ${CMAKE_MODULE_PATH}
-  )
-  ADD_PROJECT_DEPENDENCY(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
-  message(
-    STATUS
-    "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
-  )
-  add_definitions(-DNANOEIGENPY_WITH_CHOLMOD_SUPPORT)
-endif(BUILD_WITH_CHOLMOD_SUPPORT)
-
 # Setup main targets
 file(
   GLOB_RECURSE ${PROJECT_NAME}_HEADERS
   CONFIGURE_DEPENDS
   include/nanoeigenpy/*.hpp
 )
-
-list(
-  FILTER ${PROJECT_NAME}_HEADERS
-  EXCLUDE
-  REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
-)
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  file(
-    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS
-    include/nanoeigenpy/decompositions/sparse/cholmod/*.hpp
-  )
-  list(
-    APPEND
-    ${PROJECT_NAME}_HEADERS
-    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS}
-  )
-endif(BUILD_WITH_CHOLMOD_SUPPORT)
 
 add_library(nanoeigenpy_headers INTERFACE)
 target_include_directories(
@@ -107,8 +76,44 @@ file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
+# Detect the installed cholmod library and import it into CMake
 if(BUILD_WITH_CHOLMOD_SUPPORT)
-  target_link_libraries(nanoeigenpy PUBLIC CHOLMOD::CHOLMOD)
+  set(
+    CMAKE_MODULE_PATH
+    ${JRL_CMAKE_MODULES}/find-external/CHOLMOD
+    ${CMAKE_MODULE_PATH}
+  )
+  ADD_PROJECT_DEPENDENCY(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
+  message(
+    STATUS
+    "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
+  )
+  target_compile_definitions(
+    nanoeigenpy_headers
+    INTERFACE -DNANOEIGENPY_WITH_CHOLMOD_SUPPORT
+  )
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  file(
+    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS
+    include/nanoeigenpy/decompositions/sparse/cholmod/*.hpp
+  )
+  list(
+    APPEND
+    ${PROJECT_NAME}_HEADERS
+    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS}
+  )
+else()
+  list(
+    FILTER ${PROJECT_NAME}_HEADERS
+    EXCLUDE
+    REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
+  )
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  target_link_libraries(nanoeigenpy_headers INTERFACE CHOLMOD::CHOLMOD)
 endif()
 
 if(BUILD_TESTING)

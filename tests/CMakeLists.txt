@@ -72,3 +72,15 @@ set(
 foreach(test_name ${TEST_NAMES})
   add_tests_py_module(${test_name})
 endforeach()
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  set(
+    TEST_NAMES_CHOLMOD
+    test_cholmod_simplicial_ldlt
+    test_cholmod_simplicial_llt
+    test_cholmod_supernodal_llt
+  )
+  foreach(test_name ${TEST_NAMES_CHOLMOD})
+    add_tests_py_module(${test_name})
+  endforeach()
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
