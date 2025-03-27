@@ -34,8 +34,9 @@ python = "3.13.*"
 [feature.python-oldest.dependencies]
 python = "3.9.*"
 
-[feature.cholmod.dependencies]
-suitesparse = ">=7"
+[feature.cholmod]
+dependencies = { suitesparse = ">=7" }
+activation = { env = { NANOEIGENPY_BUILD_WITH_CHOLMOD = "ON" } }
 
 [activation]
 scripts = ["development/scripts/pixi/activation.sh"]
