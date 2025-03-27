@@ -3,7 +3,6 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 #include <Eigen/CholmodSupport>
 
@@ -17,10 +16,6 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
                   "Template type parameter Solver must inherit from "
                   "Eigen::SparseSolverBase");
     using MatrixType = typename CholdmodDerived::MatrixType;
-    using Scalar = typename MatrixType::Scalar;
-    using RealScalar = typename MatrixType::RealScalar;
-    using CholMatrixType = MatrixType;
-    using StorageIndex = typename MatrixType::StorageIndex;
 
     cl.def("analyzePattern", &Solver::analyzePattern,
            "Performs a symbolic decomposition on the sparcity of matrix.\n"
