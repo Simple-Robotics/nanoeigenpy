@@ -17,6 +17,7 @@ configure = { cmd = [
   ".",
   "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
   "-DCMAKE_BUILD_TYPE=$NANOEIGENPY_BUILD_TYPE",
+  "-DBUILD_WITH_CHOLMOD_SUPPORT=$NANOEIGENPY_BUILD_WITH_CHOLMOD"
 ] }
 build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
@@ -26,13 +27,15 @@ python = ">=3.9"
 eigen = ">=3.3.1"
 numpy = ">=1.22"
 scipy = ">=1.10.0"
-suitesparse = ">=7"
 
 [feature.python-latest.dependencies]
 python = "3.13.*"
 
 [feature.python-oldest.dependencies]
 python = "3.9.*"
+
+[feature.cholmod.dependencies]
+suitesparse = ">=7"
 
 [activation]
 scripts = ["development/scripts/pixi/activation.sh"]
@@ -53,3 +56,5 @@ doxygen = ">=1.13.2,<2"
 [environments]
 default = ["python-latest"]
 python-oldest = ["python-oldest"]
+all = ["python-latest", "cholmod"]
+all-python-oldest = ["python-oldest", "cholmod"]
