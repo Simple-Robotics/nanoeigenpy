@@ -52,12 +52,6 @@ struct MINRESSolverVisitor : nb::def_visitor<MINRESSolverVisitor<_MatrixType>> {
         .def(MINRESSolverVisitor())
         .def(IdVisitor());
   }
-
- private:
-  template <typename MatrixOrVector>
-  static MatrixOrVector solve(const Solver& self, const MatrixOrVector& vec) {
-    return self.solve(vec);
-  }
 };
 
 template <typename _MatrixType>

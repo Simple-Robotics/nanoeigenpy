@@ -25,17 +25,18 @@ struct IterativeSolverVisitor
   void execute(nb::class_<IterativeSolver, Ts...>& cl) {
     using IS = IterativeSolver;
     using namespace nb::literals;
-    cl.def(
-          "solve",
-          [](const IS& self, Eigen::Ref<const VectorType> vec) -> VectorType {
-            return self.solve(vec);
-          },
-          "Returns the solution x of Ax = b using the current decomposition of "
-          "A.")
+    cl  //
         .def(
             "solve",
-            [](const IS& self, Eigen::Ref<const DenseMatrix> vec)
-                -> DenseMatrix { return self.solve(vec); },
+            [](const IS& self, Eigen::Ref<const VectorType> vec) -> VectorType {
+              return self.solve(vec);
+            },
+            "Returns the solution x of Ax = b using the current decomposition "
+            "of A.")
+        .def(
+            "solve",
+            [](const IS& self, Eigen::Ref<const DenseMatrix> mat)
+                -> DenseMatrix { return self.solve(mat); },
             "Returns the solution x of Ax = b using the current decomposition "
             "of A.")
         .def("error", &IS::error,
