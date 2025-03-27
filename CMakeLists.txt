@@ -42,6 +42,16 @@ option(
   OFF
 )
 
+if(APPLE)
+  option(
+    BUILD_WITH_ACCELERATE_SUPPORT
+    "Build EigenPy with the Accelerate support"
+    OFF
+  )
+else(APPLE)
+  set(BUILD_WITH_ACCELERATE_SUPPORT FALSE)
+endif(APPLE)
+
 # Find dependencies
 ADD_PROJECT_DEPENDENCY(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
 
@@ -74,9 +84,9 @@ target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
 file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
-target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers)
+target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
-# Detect the installed cholmod library and import it into CMake
+# Cholmod
 if(BUILD_WITH_CHOLMOD_SUPPORT)
   set(
     CMAKE_MODULE_PATH
@@ -88,7 +98,10 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
     STATUS
     "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
   )
-  target_link_libraries(nanoeigenpy PRIVATE CHOLMOD::CHOLMOD)
+  target_compile_definitions(
+    nanoeigenpy_headers
+    INTERFACE -DNANOEIGENPY_WITH_CHOLMOD_SUPPORT
+  )
 endif(BUILD_WITH_CHOLMOD_SUPPORT)
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
@@ -108,6 +121,58 @@ else()
     REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
   )
 endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  target_link_libraries(nanoeigenpy_headers INTERFACE CHOLMOD::CHOLMOD)
+endif()
+
+# Apple accelerate
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  if(NOT ${Eigen3_VERSION} VERSION_GREATER_EQUAL "3.4.90")
+    message(
+      FATAL_ERROR
+      "Your version of Eigen is too low. Should be at least 3.4.90. Current version is ${Eigen3_VERSION}."
+    )
+  endif()
+
+  set(
+    CMAKE_MODULE_PATH
+    ${JRL_CMAKE_MODULES}/find-external/Accelerate
+    ${CMAKE_MODULE_PATH}
+  )
+  find_package(
+    Accelerate
+    REQUIRED # FIND_EXTERNAL "Accelerate" # We don't export yet as
+    # there might be an issue on AMR64 platforms
+  )
+  message(STATUS "Build with Accelerate support framework.")
+  target_compile_definitions(
+    nanoeigenpy_headers
+    INTERFACE -DNANOEIGENPY_WITH_ACCELERATE_SUPPORT
+  )
+endif(BUILD_WITH_ACCELERATE_SUPPORT)
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  file(
+    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_ACCELERATE_HEADERS
+    include/nanoeigenpy/decompositions/sparse/accelerate/*.hpp
+  )
+  list(
+    APPEND
+    ${PROJECT_NAME}_HEADERS
+    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_ACCELERATE_HEADERS}
+  )
+else()
+  list(
+    FILTER ${PROJECT_NAME}_HEADERS
+    EXCLUDE
+    REGEX "include/nanoeigenpy/decompositions/sparse/accelerate/.*"
+  )
+endif(BUILD_WITH_ACCELERATE_SUPPORT)
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  target_link_libraries(nanoeigenpy_headers PRIVATE "-framework accelerate")
+endif()
 
 if(BUILD_TESTING)
   add_subdirectory(tests)
