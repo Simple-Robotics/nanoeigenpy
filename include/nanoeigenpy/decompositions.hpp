@@ -21,3 +21,6 @@
 #include "nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-ldlt.hpp"
 #include "nanoeigenpy/decompositions/sparse/cholmod/cholmod-supernodal-llt.hpp"
 #endif
+#ifdef NANOEIGENPY_WITH_CHOLMOD_SUPPORT
+#include "nanoeigenpy/decompositions/sparse/accelerate/accelerate.hpp"
+#endif

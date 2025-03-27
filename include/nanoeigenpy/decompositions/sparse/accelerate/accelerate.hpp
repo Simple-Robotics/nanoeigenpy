@@ -60,11 +60,44 @@ struct AccelerateImplVisitor
         .def("setOrder", &Solver::setOrder, "Set order");
   }
 
-  static void expose(nb::module_& m, const char* name) {
-    nb::class_<Solver>(m, name, "Apple accelerate")
+  static void expose(nb::module_& m, const char* name, const char* doc) {
+    nb::class_<Solver>(m, name, doc)
         .def(AccelerateImplVisitor())
         .def(IdVisitor());
   }
 };
+
+void exposeAccelerate(nb::module_ m) {
+  using namespace Eigen;
+  using ColMajorSparseMatrix = Eigen::SparseMatrix<double, Eigen::ColMajor>;
+
+#define EXPOSE_ACCELERATE_DECOMPOSITION(m, name, doc) \
+  AccelerateImplVisitor<name<ColMajorSparseMatrix>>::expose(m, #name, doc)
+
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateLLT,
+      "A direct Cholesky (LLT) factorization and solver based on Accelerate.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(m, AccelerateLDLT,
+                                  "The default Cholesky (LDLT) factorization "
+                                  "and solver based on Accelerate.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateLDLTUnpivoted,
+      "A direct Cholesky-like LDL^T factorization and solver based on "
+      "Accelerate with only 1x1 pivots and no pivoting.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateLDLTSBK,
+      "A direct Cholesky (LDLT) factorization and solver based on Accelerate "
+      "with Supernode Bunch-Kaufman and static pivoting.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateLDLTTPP,
+      "A direct Cholesky (LDLT) factorization and solver based on Accelerate "
+      "with full threshold partial pivoting.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateQR, "A QR factorization and solver based on Accelerate.");
+  EXPOSE_ACCELERATE_DECOMPOSITION(
+      m, AccelerateCholeskyAtA,
+      "A QR factorization and solver based on Accelerate without storing Q "
+      "(equivalent to A^TA = R^T R).");
+}
 
 }  // namespace nanoeigenpy
