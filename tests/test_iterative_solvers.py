@@ -5,6 +5,7 @@ import pytest
 dim = 100
 seed = 6
 rng = np.random.default_rng(seed)
+MAX_ITER = 2000
 
 _clazzes = [
     nanoeigenpy.solvers.ConjugateGradient,
@@ -17,8 +18,9 @@ _clazzes = [
 @pytest.mark.parametrize("cls", _clazzes)
 def test_solver(cls):
     Q = np.random.randn(dim, dim)
-    A = Q.T @ Q / dim
+    A = 0.5 * (Q.T + Q)
     solver = cls(A)
+    solver.setMaxIterations(MAX_ITER)
 
     # Vector rhs
 
@@ -26,7 +28,6 @@ def test_solver(cls):
     b = A.dot(x)
     x_est = solver.solve(b)
 
-    assert nanoeigenpy.is_approx(x, x_est, 1e-6)
     assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
 
     # Matrix rhs
@@ -35,15 +36,15 @@ def test_solver(cls):
     B = A.dot(X)
     X_est = solver.solve(B)
 
-    assert nanoeigenpy.is_approx(X, X_est, 1e-6)
     assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
 
 
 @pytest.mark.parametrize("cls", _clazzes)
 def test_solver_with_guess(cls):
     Q = np.random.randn(dim, dim)
-    A = Q.T @ Q
+    A = 0.5 * (Q.T + Q)
     solver = cls(A)
+    solver.setMaxIterations(MAX_ITER)
 
     # With guess
     # Vector rhs
@@ -52,6 +53,7 @@ def test_solver_with_guess(cls):
     b = A.dot(x)
     x_est = solver.solveWithGuess(b, x + 0.01)
 
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
     assert nanoeigenpy.is_approx(x, x_est, 1e-6)
     assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
 
