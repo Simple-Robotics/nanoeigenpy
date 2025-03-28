@@ -16,7 +16,6 @@ using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
-NB_MAKE_OPAQUE(Eigen::MINRES<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::HouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ColPivHouseholderQR<Eigen::MatrixXd>)
@@ -38,7 +37,6 @@ NB_MODULE(nanoeigenpy, m) {
   // Decompositions
   exposeLLTSolver<Matrix>(m, "LLT");
   exposeLDLTSolver<Matrix>(m, "LDLT");
-  exposeMINRESSolver<Matrix>(m, "MINRES");
   exposeHouseholderQRSolver<Matrix>(m, "HouseholderQR");
   exposeFullPivHouseholderQRSolver<Matrix>(m, "FullPivHouseholderQR");
   exposeColPivHouseholderQRSolver<Matrix>(m, "ColPivHouseholderQR");

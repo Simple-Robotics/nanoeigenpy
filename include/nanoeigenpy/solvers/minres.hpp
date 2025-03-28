@@ -3,7 +3,7 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "../solvers/iterative-solver-base.hpp"
+#include "nanoeigenpy/solvers/iterative-solver-base.hpp"
 #include <nanobind/eigen/dense.h>
 #include <unsupported/Eigen/IterativeSolvers>
 

@@ -11,6 +11,7 @@ void exposeSolvers(nb::module_& m) {
   exposeLeastSquareDiagonalPreconditioner<Scalar>(
       m, "LeastSquareDiagonalPreconditioner");
 #endif
+  exposeMINRESSolver<Matrix>(m, "MINRES");
 
   // Solvers
   using Eigen::ConjugateGradient;

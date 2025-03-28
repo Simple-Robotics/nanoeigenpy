@@ -4,7 +4,6 @@
 
 #include "nanoeigenpy/decompositions/llt.hpp"
 #include "nanoeigenpy/decompositions/ldlt.hpp"
-#include "nanoeigenpy/decompositions/minres.hpp"
 #include "nanoeigenpy/decompositions/householder-qr.hpp"
 #include "nanoeigenpy/decompositions/full-piv-householder-qr.hpp"
 #include "nanoeigenpy/decompositions/col-piv-householder-qr.hpp"
