@@ -39,4 +39,4 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
-}
+}  // namespace nanoeigenpy
