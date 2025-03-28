@@ -71,21 +71,6 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
         .def_prop_rw("w", &QuaternionVisitor::getCoeff<3>,
                      &QuaternionVisitor::setCoeff<3>, "The w coefficient.")
 
-        // isApprox
-        // .def(
-        //      "isApprox",
-        //      [this](const Quaternion &self, const Quaternion &other,
-        //      const Scalar &prec =
-        //      Eigen::NumTraits<Scalar>::dummy_precision()) -> bool { return
-        //      QuaternionVisitor::isApprox(self, other, prec); }, "other"_a,
-        //      "prec"_a, "Returns true if *this is approximately equal to
-        //      other, " "within the precision determined by prec.")
-        // .def(
-        //      "isApprox",
-        //      &Quaternion::isApprox, "other"_a, "prec"_a,
-        //      "Returns true if *this is approximately equal to other, "
-        //      "within the precision determined by prec.")
-
         .def(
             "isApprox",
             [](const Quaternion& self, const Quaternion& other) -> bool {
