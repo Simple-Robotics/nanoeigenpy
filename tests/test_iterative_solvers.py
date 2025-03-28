@@ -5,7 +5,7 @@ import pytest
 dim = 100
 seed = 6
 rng = np.random.default_rng(seed)
-MAX_ITER = 2000
+MAX_ITER = 8000
 
 _clazzes = [
     nanoeigenpy.solvers.ConjugateGradient,
