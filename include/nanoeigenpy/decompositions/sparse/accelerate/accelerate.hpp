@@ -2,9 +2,8 @@
 
 #pragma once
 
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/id.hpp"
-#include "nanoeigenpy/nanoeigenpy.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
 #include "nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp"
 
 #include <Eigen/AccelerateSupport>
@@ -67,7 +66,7 @@ struct AccelerateImplVisitor
   }
 };
 
-void exposeAccelerate(nb::module_ m) {
+inline void exposeAccelerate(nb::module_ m) {
   using namespace Eigen;
   using ColMajorSparseMatrix = Eigen::SparseMatrix<double, Eigen::ColMajor>;
 
@@ -98,6 +97,7 @@ void exposeAccelerate(nb::module_ m) {
       m, AccelerateCholeskyAtA,
       "A QR factorization and solver based on Accelerate without storing Q "
       "(equivalent to A^TA = R^T R).");
+#undef EXPOSE_ACCELERATE_DECOMPOSITION
 }
 
 }  // namespace nanoeigenpy
