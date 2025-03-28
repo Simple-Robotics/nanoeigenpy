@@ -92,6 +92,7 @@ f(quat)
 
 - the Eigen C++ template library - [conda-forge](https://anaconda.org/conda-forge/eigen) | [repo](https://gitlab.com/libeigen/eigen/)
 - nanobind - [conda-forge](https://anaconda.org/conda-forge/nanobind) | [repo](https://github.com/wjakob/nanobind)
+- [for testing] pytest - `conda install pytest` or `pip install pytest`
 
 #### Conda
 
