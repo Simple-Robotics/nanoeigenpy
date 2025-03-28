@@ -62,7 +62,7 @@ set(
   test_geometry
   test_ldlt
   test_llt
-  test_minres
+  test_iterative_solvers
   test_permutation_matrix
   test_qr
   test_self_adjoint_eigen_solver
