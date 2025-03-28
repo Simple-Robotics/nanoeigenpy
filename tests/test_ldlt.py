@@ -8,14 +8,14 @@ rng = np.random.default_rng(seed)
 # Test isNegative
 A_neg = -np.eye(dim)
 ldlt_neg = nanoeigenpy.LDLT(A_neg)
-assert ldlt_neg.isNegative() == True
-assert ldlt_neg.isPositive() == False
+assert ldlt_neg.isNegative()
+assert not ldlt_neg.isPositive()
 
 # Test isPositive
 A_pos = np.eye(dim)
 ldlt_pos = nanoeigenpy.LDLT(A_pos)
-assert ldlt_pos.isPositive() == True
-assert ldlt_pos.isNegative() == False
+assert ldlt_pos.isPositive()
+assert not ldlt_pos.isNegative()
 
 # Test nb::init<const MatrixType &>()
 A = rng.random((dim, dim))
@@ -32,7 +32,9 @@ assert ldlt.info() == nanoeigenpy.ComputationInfo.Success
 L = ldlt.matrixL()
 D = ldlt.vectorD()
 P = ldlt.transpositionsP()
-assert nanoeigenpy.is_approx(np.transpose(P).dot(L.dot(np.diag(D).dot(np.transpose(L).dot(P)))), A)
+assert nanoeigenpy.is_approx(
+    np.transpose(P).dot(L.dot(np.diag(D).dot(np.transpose(L).dot(P)))), A
+)
 
 # Test solve (matrix)
 X = rng.random((dim, 20))

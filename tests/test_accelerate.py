@@ -4,6 +4,7 @@ from scipy.sparse import csc_matrix
 
 rng = np.random.default_rng()
 
+
 def test(SolverType: type):
     dim = 100
     A = rng.random((dim, dim))
@@ -24,6 +25,7 @@ def test(SolverType: type):
 
     llt.analyzePattern(A)
     llt.factorize(A)
+
 
 test(nanoeigenpy.AccelerateLLT)
 test(nanoeigenpy.AccelerateLDLT)

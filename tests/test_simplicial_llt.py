@@ -8,7 +8,7 @@ rng = np.random.default_rng(30)
 
 A_fac = spa.random(dim, dim, density=0.25, random_state=rng)
 A = A_fac.T @ A_fac
-A += spa.diags(10. * rng.standard_normal(dim) ** 2)
+A += spa.diags(10.0 * rng.standard_normal(dim) ** 2)
 A = A.tocsc(True)
 A.check_format()
 
