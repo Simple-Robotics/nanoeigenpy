@@ -1,21 +1,16 @@
 /// Copyright 2025 INRIA
 
-#include <nanobind/nanobind.h>
 #include <nanobind/stl/string.h>
 
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
-#include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 #include "nanoeigenpy/constants.hpp"
 
-using namespace nanoeigenpy;
-namespace nb = nanobind;
+#include "./internal.h"
 
-using Scalar = double;
-static constexpr int Options = Eigen::ColMajor;
-using Matrix = Eigen::Matrix<Scalar, -1, -1, Options>;
-using Vector = Eigen::Matrix<Scalar, -1, 1>;
+using namespace nanoeigenpy;
+
 using Quaternion = Eigen::Quaternion<Scalar, Options>;
 using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
@@ -83,29 +78,4 @@ NB_MODULE(nanoeigenpy, m) {
   m.def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
         "Get the set of SIMD instructions used in Eigen when this module was "
         "compiled.");
-}
-
-void exposeSolvers(nb::module_& m) {
-  exposeIdentityPreconditioner<Scalar>(m, "IdentityPreconditioner");
-  exposeDiagonalPreconditioner<Scalar>(m, "DiagonalPreconditioner");
-#if EIGEN_VERSION_AT_LEAST(3, 3, 5)
-  exposeLeastSquareDiagonalPreconditioner<Scalar>(
-      m, "LeastSquareDiagonalPreconditioner");
-#endif
-
-  // Solvers
-  using Eigen::Lower;
-  using Eigen::Upper;
-  using ConjugateGradient = Eigen::ConjugateGradient<Matrix, Lower | Upper>;
-  exposeConjugateGradient<ConjugateGradient>(m, "ConjugateGradient");
-  using LeastSquaresConjugateGradient = Eigen::LeastSquaresConjugateGradient<
-      Matrix, Eigen::LeastSquareDiagonalPreconditioner<Scalar>>;
-  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient>(
-      m, "LeastSquaresConjugateGradient");
-
-  using IdentityConjugateGradient =
-      Eigen::ConjugateGradient<Matrix, Lower | Upper,
-                               Eigen::IdentityPreconditioner>;
-  exposeConjugateGradient<IdentityConjugateGradient>(
-      m, "IdentityConjugateGradient");
 }

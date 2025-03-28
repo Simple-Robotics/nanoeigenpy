@@ -82,7 +82,7 @@ target_include_directories(
 )
 target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
-file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
+set(${PROJECT_NAME}_SOURCES src/module.cpp src/solvers.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
 target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers)
 
