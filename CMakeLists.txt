@@ -84,7 +84,7 @@ target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
 file(GLOB ${PROJECT_NAME}_SOURCES src/*.cpp)
 nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
-target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
+target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers)
 
 # Cholmod
 if(BUILD_WITH_CHOLMOD_SUPPORT)
@@ -98,13 +98,6 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
     STATUS
     "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
   )
-  target_compile_definitions(
-    nanoeigenpy_headers
-    INTERFACE -DNANOEIGENPY_WITH_CHOLMOD_SUPPORT
-  )
-endif(BUILD_WITH_CHOLMOD_SUPPORT)
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
   file(
     GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS
     include/nanoeigenpy/decompositions/sparse/cholmod/*.hpp
@@ -114,6 +107,7 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
     ${PROJECT_NAME}_HEADERS
     ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS}
   )
+  target_link_libraries(nanoeigenpy PRIVATE CHOLMOD::CHOLMOD)
 else()
   list(
     FILTER ${PROJECT_NAME}_HEADERS
@@ -121,10 +115,6 @@ else()
     REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
   )
 endif(BUILD_WITH_CHOLMOD_SUPPORT)
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  target_link_libraries(nanoeigenpy_headers INTERFACE CHOLMOD::CHOLMOD)
-endif()
 
 # Apple accelerate
 if(BUILD_WITH_ACCELERATE_SUPPORT)
