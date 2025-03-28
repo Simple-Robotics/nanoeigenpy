@@ -55,4 +55,36 @@ add_test(
 )
 
 add_tests_cpp_extension(quaternion)
-add_tests_py_module(test_quaternion)
+
+set(
+  TEST_NAMES
+  test_eigen_solver
+  test_geometry
+  test_ldlt
+  test_llt
+  test_iterative_solvers
+  test_permutation_matrix
+  test_qr
+  test_self_adjoint_eigen_solver
+  test_simplicial_llt
+)
+
+if(BUILD_WITH_CHOLMOD_SUPPORT)
+  list(
+    APPEND
+    TEST_NAMES
+    test_cholmod_simplicial_ldlt
+    test_cholmod_simplicial_llt
+    test_cholmod_supernodal_llt
+  )
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
+foreach(test_name ${TEST_NAMES})
+  message(STATUS "Adding Python test ${test_name}")
+  add_tests_py_module(${test_name})
+endforeach()
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  message(STATUS "Adding Python test test_accelerate")
+  add_tests_py_module(test_accelerate)
+endif(BUILD_WITH_ACCELERATE_SUPPORT)

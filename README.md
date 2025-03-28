@@ -1,5 +1,9 @@
 # nanoeigenpy
 
+<p align="left">
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Linter: ruff"></a>
+</p>
+
 This is a collection of tools for using Eigen together with nanobind, as a successor to the [eigenpy](https://github.com/stack-of-tasks/eigenpy) support library. Its aim is to help the transition away from Boost.Python.
 
 It reintroduces a few features (e.g. bindings for Eigen matrix decompositions) which are not in [nanobind](https://github.com/wjakob/nanobind) at time of writing.
@@ -17,6 +21,16 @@ These features were finally added to eigenpy with a lot of developer effort. Thi
 
 - bindings for Eigen's [Geometry module](https://libeigen.gitlab.io/docs/group__Geometry__Module.html) - quaternions, angle-axis representations...
 - bindings for Eigen's matrix dense and sparse decompositions and solvers
+
+### Optional features
+
+**nanoeigenpy** also provides bindings for Eigen's [Cholmod](https://eigen.tuxfamily.org/dox/group__CholmodSupport__Module.html) and [Apple Accelerate](https://eigen.tuxfamily.org/dox/group__AccelerateSupport__Module.html) modules.
+
+> [!NOTE]
+> The Accelerate module is only available on Eigen's master branch, and not in any official release yet (as of 3/28/2025).
+>
+> Cholmod is part of the [SuiteSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse) algorithms library. It can be installed standalone from [conda](https://anaconda.org/conda-forge/libcholmod).
+
 
 ## Example usage
 
@@ -92,6 +106,7 @@ f(quat)
 
 - the Eigen C++ template library - [conda-forge](https://anaconda.org/conda-forge/eigen) | [repo](https://gitlab.com/libeigen/eigen/)
 - nanobind - [conda-forge](https://anaconda.org/conda-forge/nanobind) | [repo](https://github.com/wjakob/nanobind)
+- [for testing] pytest - `conda install pytest` or `pip install pytest`
 
 #### Conda
 
