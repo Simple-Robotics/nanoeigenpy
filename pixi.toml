@@ -38,6 +38,9 @@ python = "3.9.*"
 dependencies = { suitesparse = ">=7" }
 activation = { env = { NANOEIGENPY_BUILD_WITH_CHOLMOD = "ON" } }
 
+[feature.test.dependencies]
+pytest = "*"
+
 [activation]
 scripts = ["development/scripts/pixi/activation.sh"]
 
@@ -55,7 +58,7 @@ git = ">=2.49.0"
 doxygen = ">=1.13.2,<2"
 
 [environments]
-default = ["python-latest"]
-python-oldest = ["python-oldest"]
-all = ["python-latest", "cholmod"]
-all-python-oldest = ["python-oldest", "cholmod"]
+default =           ["test", "python-latest"]
+python-oldest =     ["test", "python-oldest"]
+all =               ["test", "python-latest", "cholmod"]
+all-python-oldest = ["test", "python-oldest", "cholmod"]
