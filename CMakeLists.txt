@@ -168,6 +168,16 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
+nanobind_add_stub(
+  nanoeigenpy_stub
+  INSTALL_TIME
+  VERBOSE
+  MODULE nanoeigenpy
+  OUTPUT nanoeigenpy.pyi
+  PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
+  DEPENDS nanoeigenpy
+)
+
 # Install targets
 install(
   TARGETS ${PROJECT_NAME}_headers
