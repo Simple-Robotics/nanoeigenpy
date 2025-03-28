@@ -18,8 +18,9 @@ if(POLICY CMP0177)
   cmake_policy(SET CMP0177 NEW)
   set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 endif()
-include(cmake/base.cmake)
-include(cmake/ide.cmake)
+set(JRL_CMAKE_MODULES ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(${JRL_CMAKE_MODULES}/base.cmake)
+include(${JRL_CMAKE_MODULES}/ide.cmake)
 
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
@@ -48,8 +49,6 @@ if(APPLE)
     "Build EigenPy with the Accelerate support"
     OFF
   )
-else(APPLE)
-  set(BUILD_WITH_ACCELERATE_SUPPORT FALSE)
 endif(APPLE)
 
 # Find dependencies
@@ -130,10 +129,12 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
     ${JRL_CMAKE_MODULES}/find-external/Accelerate
     ${CMAKE_MODULE_PATH}
   )
+  message(WARNING "CMAKE MODULE PATH: ${CMAKE_MODULE_PATH}")
   find_package(
     Accelerate
-    REQUIRED # FIND_EXTERNAL "Accelerate" # We don't export yet as
-    # there might be an issue on AMR64 platforms
+    REQUIRED
+    # FIND_EXTERNAL
+    # "Accelerate"
   )
   message(STATUS "Build with Accelerate support framework.")
   target_compile_definitions(
@@ -161,7 +162,7 @@ else()
 endif(BUILD_WITH_ACCELERATE_SUPPORT)
 
 if(BUILD_WITH_ACCELERATE_SUPPORT)
-  target_link_libraries(nanoeigenpy_headers PRIVATE "-framework accelerate")
+  target_link_libraries(nanoeigenpy PRIVATE Accelerate)
 endif()
 
 if(BUILD_TESTING)
