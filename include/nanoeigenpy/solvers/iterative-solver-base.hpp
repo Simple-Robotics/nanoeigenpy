@@ -26,19 +26,12 @@ struct IterativeSolverVisitor
     using IS = IterativeSolver;
     using namespace nb::literals;
     cl  //
-        .def(
-            "solve",
-            [](const IS& self, Eigen::Ref<const VectorType> vec) -> VectorType {
-              return self.solve(vec);
-            },
-            "Returns the solution x of Ax = b using the current decomposition "
-            "of A.")
-        .def(
-            "solve",
-            [](const IS& self, Eigen::Ref<const DenseMatrix> mat)
-                -> DenseMatrix { return self.solve(mat); },
-            "Returns the solution x of Ax = b using the current decomposition "
-            "of A.")
+        .def("solve", &solve<VectorType>,
+             "Returns the solution x of Ax = b using the current decomposition "
+             "of A.")
+        .def("solve", &solve<DenseMatrix>,
+             "Returns the solution x of Ax = b using the current decomposition "
+             "of A.")
         .def("error", &IS::error,
              "Returns the tolerance error reached during the last solve.\n"
              "It is a close approximation of the true relative residual error "
@@ -119,7 +112,12 @@ struct IterativeSolverVisitor
   }
 
   template <typename T>
-  static T solveWithGuess(IterativeSolver& self, Eigen::Ref<const T> b,
+  static T solve(const IterativeSolver& self, Eigen::Ref<const T> b) {
+    return self.solve(b);
+  }
+
+  template <typename T>
+  static T solveWithGuess(const IterativeSolver& self, Eigen::Ref<const T> b,
                           Eigen::Ref<const T> x0) {
     return self.solveWithGuess(b, x0);
   }
