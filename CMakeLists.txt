@@ -10,6 +10,11 @@ set(PROJECT_DESCRIPTION "Tools for using Eigen with nanobind")
 set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
 set(PROJECT_USE_CMAKE_EXPORT True)
 
+# To enable jrl-cmakemodules compatibility with workspace we must define the two
+# following lines
+set(PROJECT_AUTO_RUN_FINALIZE FALSE)
+set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+
 if(POLICY CMP0167)
   cmake_policy(SET CMP0167 NEW)
   set(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
@@ -20,9 +25,9 @@ if(POLICY CMP0177)
 endif()
 set(JRL_CMAKE_MODULES ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(${JRL_CMAKE_MODULES}/base.cmake)
-include(${JRL_CMAKE_MODULES}/ide.cmake)
-
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+include(${JRL_CMAKE_MODULES}/ide.cmake)
+include(${JRL_CMAKE_MODULES}/apple.cmake)
 project(${PROJECT_NAME} ${PROJECT_ARGS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
