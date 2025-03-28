@@ -15,6 +15,39 @@ set(PROJECT_USE_CMAKE_EXPORT True)
 set(PROJECT_AUTO_RUN_FINALIZE FALSE)
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
+# Check if the submodule cmake have been initialized
+set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
+if(EXISTS "${JRL_CMAKE_MODULES}/base.cmake")
+  message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
+else()
+  find_package(jrl-cmakemodules QUIET CONFIG)
+  if(jrl-cmakemodules_FOUND)
+    get_property(
+      JRL_CMAKE_MODULES
+      TARGET jrl-cmakemodules::jrl-cmakemodules
+      PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+    )
+    message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
+  elseif(${CMAKE_VERSION} VERSION_LESS "3.14.0")
+    message(
+      FATAL_ERROR
+      "\nCan't find jrl-cmakemodules. Please either:\n"
+      "  - use git submodule: 'git submodule update --init'\n"
+      "  - or install https://github.com/jrl-umi3218/jrl-cmakemodules\n"
+      "  - or upgrade your CMake version to >= 3.14 to allow automatic fetching\n"
+    )
+  else()
+    message(STATUS "JRL cmakemodules not found. Let's fetch it.")
+    include(FetchContent)
+    FetchContent_Declare(
+      "jrl-cmakemodules"
+      GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git"
+    )
+    FetchContent_MakeAvailable("jrl-cmakemodules")
+    FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
+  endif()
+endif()
+
 if(POLICY CMP0167)
   cmake_policy(SET CMP0167 NEW)
   set(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
@@ -23,7 +56,6 @@ if(POLICY CMP0177)
   cmake_policy(SET CMP0177 NEW)
   set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 endif()
-set(JRL_CMAKE_MODULES ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(${JRL_CMAKE_MODULES}/base.cmake)
 COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 include(${JRL_CMAKE_MODULES}/ide.cmake)
