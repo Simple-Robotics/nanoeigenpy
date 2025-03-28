@@ -172,13 +172,7 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
     ${JRL_CMAKE_MODULES}/find-external/Accelerate
     ${CMAKE_MODULE_PATH}
   )
-  message(WARNING "CMAKE MODULE PATH: ${CMAKE_MODULE_PATH}")
-  find_package(
-    Accelerate
-    REQUIRED
-    # FIND_EXTERNAL
-    # "Accelerate"
-  )
+  find_package(Accelerate REQUIRED)
   message(STATUS "Build with Accelerate support framework.")
   target_compile_definitions(
     nanoeigenpy_headers

@@ -83,3 +83,8 @@ foreach(test_name ${TEST_NAMES})
   message(STATUS "Adding Python test ${test_name}")
   add_tests_py_module(${test_name})
 endforeach()
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  message(STATUS "Adding Python test test_accelerate")
+  add_tests_py_module(test_accelerate)
+endif(BUILD_WITH_ACCELERATE_SUPPORT)

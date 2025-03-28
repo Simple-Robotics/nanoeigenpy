@@ -40,7 +40,7 @@ struct AccelerateImplVisitor
 
         .def(
             "compute",
-            [](Solver& c, MatrixType const& matrix) -> Solver& {
+            [](Solver& c, MatrixType const& matrix) {
               return c.compute(matrix);
             },
             nb::arg("matrix"),

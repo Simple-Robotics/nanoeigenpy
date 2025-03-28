@@ -22,6 +22,10 @@
 #define NANOEIGENPY_HAS_CHOLMOD
 #endif
 
+#if __has_include(<Accelerate.h>)
+#define NANOEIGENPY_HAS_ACCELERATE
+#endif
+
 #if (__cplusplus >= 202002L || (defined(_MSVC_LAG) && _MSVC_LANG >= 202002L))
 #define NANOEIGENPY_WITH_CXX20_SUPPORT
 #endif
