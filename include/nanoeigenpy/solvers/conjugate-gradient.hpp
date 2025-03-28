@@ -26,8 +26,7 @@ struct ConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<ConjugateGradient>(
-        m, name, nb::is_final())  // is_final good to replace bp::noncopyable ?
+    nb::class_<ConjugateGradient>(m, name)
         .def(ConjugateGradientVisitor<ConjugateGradient>())
         .def(IdVisitor());
   }

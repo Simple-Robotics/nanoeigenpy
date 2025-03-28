@@ -26,8 +26,7 @@ struct LeastSquaresConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<LeastSquaresConjugateGradient>(
-        m, name, nb::is_final())  // is_final good to replace bp::noncopyable ?
+    nb::class_<LeastSquaresConjugateGradient>(m, name)
         .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
         .def(LeastSquaresConjugateGradientVisitor<
              LeastSquaresConjugateGradient>())
