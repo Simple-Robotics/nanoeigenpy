@@ -6,7 +6,10 @@ cmake_minimum_required(VERSION 3.18)
 
 set(PROJECT_NAME nanoeigenpy)
 set(PROJECT_URL https://github.com/Simple-Robotics/nanoeigenpy)
-set(PROJECT_DESCRIPTION "Tools for using Eigen with nanobind")
+set(
+  PROJECT_DESCRIPTION
+  "A support library for bindings between Eigen in C++ and Python, based on nanobind"
+)
 set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
 set(PROJECT_USE_CMAKE_EXPORT True)
 
