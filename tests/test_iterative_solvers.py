@@ -17,7 +17,7 @@ _clazzes = [
 
 @pytest.mark.parametrize("cls", _clazzes)
 def test_solver(cls):
-    Q = np.random.randn(dim, dim)
+    Q = rng.standard_normal((dim, dim))
     A = 0.5 * (Q.T + Q)
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
@@ -41,7 +41,7 @@ def test_solver(cls):
 
 @pytest.mark.parametrize("cls", _clazzes)
 def test_solver_with_guess(cls):
-    Q = np.random.randn(dim, dim)
+    Q = rng.standard_normal((dim, dim))
     A = 0.5 * (Q.T + Q)
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
