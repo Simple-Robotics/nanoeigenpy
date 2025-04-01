@@ -3,11 +3,10 @@
   <name>nanoeigenpy</name>
   <version>0.1.0</version>
   <description>A support library for bindings between Eigen in C++ and Python, based on nanobind</description>
-  <maintainer email="wilson.jallet@polytechnique.org">Wilson Jallet</maintainer>
-  <maintainer email="lucas.haubert@ens-paris-saclay.fr">Lucas Haubert</maintainer>
+  <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
   <author>Wilson Jallet</author>
   <author>Lucas Haubert</author>
-  <license>BSD</license>
+  <license>BSD-3-Clause</license>
 
   <url type="website">https://github.com/Simple-Robotics/nanoeigenpy</url>
 
