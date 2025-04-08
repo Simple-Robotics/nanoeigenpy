@@ -214,9 +214,8 @@ nanobind_add_stub(
   INSTALL_TIME
   VERBOSE
   MODULE nanoeigenpy
-  OUTPUT nanoeigenpy.pyi
+  OUTPUT ${Python_SITELIB}/nanoeigenpy.pyi
   PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
-  DEPENDS nanoeigenpy
 )
 
 # Install targets
