@@ -28,14 +28,15 @@ struct LeastSquaresConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (!register_symbolic_link_to_registered_type<
+    if (register_symbolic_link_to_registered_type<
             LeastSquaresConjugateGradient>(m)) {
-      nb::class_<LeastSquaresConjugateGradient>(m, name)
-          .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
-          .def(LeastSquaresConjugateGradientVisitor<
-               LeastSquaresConjugateGradient>())
-          .def(IdVisitor());
+      return;
     }
+    nb::class_<LeastSquaresConjugateGradient>(m, name)
+        .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
+        .def(LeastSquaresConjugateGradientVisitor<
+             LeastSquaresConjugateGradient>())
+        .def(IdVisitor());
   }
 };
 

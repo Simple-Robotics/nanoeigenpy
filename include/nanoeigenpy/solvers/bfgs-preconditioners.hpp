@@ -31,11 +31,12 @@ struct BFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (!register_symbolic_link_to_registered_type<Preconditioner>(m)) {
-      nb::class_<Preconditioner>(m, name)
-          .def(BFGSPreconditionerBaseVisitor<Preconditioner>())
-          .def(IdVisitor());
+    if (register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+      return;
     }
+    nb::class_<Preconditioner>(m, name)
+        .def(BFGSPreconditionerBaseVisitor<Preconditioner>())
+        .def(IdVisitor());
   }
 };
 
@@ -58,11 +59,12 @@ struct LimitedBFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (!register_symbolic_link_to_registered_type<Preconditioner>(m)) {
-      nb::class_<Preconditioner>(m, name)
-          .def(LimitedBFGSPreconditionerBaseVisitor<Preconditioner>())
-          .def(IdVisitor());
+    if (register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+      return;
     }
+    nb::class_<Preconditioner>(m, name)
+        .def(LimitedBFGSPreconditionerBaseVisitor<Preconditioner>())
+        .def(IdVisitor());
   }
 };
 
