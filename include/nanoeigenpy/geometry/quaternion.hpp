@@ -3,6 +3,7 @@
 #pragma once
 
 #include "detail/rotation-base.hpp"
+#include "nanoeigenpy/utils/helpers.hpp"
 #include <nanobind/nanobind.h>
 #include <nanobind/operators.h>
 
@@ -243,7 +244,9 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
 
  public:
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Quaternion>(m, name).def(QuaternionVisitor());
+    if (!register_symbolic_link_to_registered_type<Quaternion>(m)) {
+      nb::class_<Quaternion>(m, name).def(QuaternionVisitor());
+    }
   }
 };
 

@@ -58,7 +58,9 @@ struct DiagonalPreconditionerVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Preconditioner>(m, name).def(IdVisitor());
+    if (!register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+      nb::class_<Preconditioner>(m, name).def(IdVisitor());
+    }
   }
 };
 
@@ -84,7 +86,9 @@ struct LeastSquareDiagonalPreconditionerVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Preconditioner>(m, name).def(IdVisitor());
+    if (!register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+      nb::class_<Preconditioner>(m, name).def(IdVisitor());
+    }
   }
 };
 
@@ -103,9 +107,11 @@ struct IdentityPreconditionerVisitor
   void execute(nb::class_<Scalar, Ts...>&) {}
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Preconditioner>(m, name)
-        .def(PreconditionerBaseVisitor<Preconditioner>())
-        .def(IdVisitor());
+    if (!register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+      nb::class_<Preconditioner>(m, name)
+          .def(PreconditionerBaseVisitor<Preconditioner>())
+          .def(IdVisitor());
+    }
   }
 };
 

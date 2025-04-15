@@ -36,22 +36,24 @@ struct MINRESSolverVisitor : nb::def_visitor<MINRESSolverVisitor<_MatrixType>> {
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<Solver>(
-        m, name,
-        "A minimal residual solver for sparse symmetric problems.\n"
-        "This class allows to solve for A.x = b sparse linear problems using "
-        "the MINRES algorithm of Paige and Saunders (1975). The sparse "
-        "matrix "
-        "A must be symmetric (possibly indefinite). The vectors x and b can "
-        "be "
-        "either dense or sparse.\n"
-        "The maximal number of iterations and tolerance value can be "
-        "controlled via the setMaxIterations() and setTolerance() methods. "
-        "The "
-        "defaults are the size of the problem for the maximal number of "
-        "iterations and NumTraits<Scalar>::epsilon() for the tolerance.\n")
-        .def(MINRESSolverVisitor())
-        .def(IdVisitor());
+    if (!register_symbolic_link_to_registered_type<Solver>(m)) {
+      nb::class_<Solver>(
+          m, name,
+          "A minimal residual solver for sparse symmetric problems.\n"
+          "This class allows to solve for A.x = b sparse linear problems using "
+          "the MINRES algorithm of Paige and Saunders (1975). The sparse "
+          "matrix "
+          "A must be symmetric (possibly indefinite). The vectors x and b can "
+          "be "
+          "either dense or sparse.\n"
+          "The maximal number of iterations and tolerance value can be "
+          "controlled via the setMaxIterations() and setTolerance() methods. "
+          "The "
+          "defaults are the size of the problem for the maximal number of "
+          "iterations and NumTraits<Scalar>::epsilon() for the tolerance.\n")
+          .def(MINRESSolverVisitor())
+          .def(IdVisitor());
+    }
   }
 };
 

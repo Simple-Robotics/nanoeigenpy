@@ -28,9 +28,11 @@ struct ConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    nb::class_<ConjugateGradient>(m, name)
-        .def(ConjugateGradientVisitor<ConjugateGradient>())
-        .def(IdVisitor());
+    if (!register_symbolic_link_to_registered_type<ConjugateGradient>(m)) {
+      nb::class_<ConjugateGradient>(m, name)
+          .def(ConjugateGradientVisitor<ConjugateGradient>())
+          .def(IdVisitor());
+    }
   }
 };
 
