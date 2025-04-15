@@ -21,6 +21,10 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
   using Chol = Eigen::LLT<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
+
+  if (register_symbolic_link_to_registered_type<Chol>(m)) {
+    return;
+  }
   nb::class_<Chol>(
       m, name,
       "Standard Cholesky decomposition (LL^T) of a matrix and associated "

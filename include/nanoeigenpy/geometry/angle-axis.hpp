@@ -44,6 +44,9 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
   using Vector3 = typename AngleAxis::Vector3;
   using Matrix3 = typename AngleAxis::Matrix3;
 
+  if (register_symbolic_link_to_registered_type<AngleAxis>(m)) {
+    return;
+  }
   nb::class_<AngleAxis>(m, name, "Angle-axis representation of a 3D rotation.")
       .def(nb::init<>(), "Default constructor")
       .def(nb::init<const Scalar &, const Vector3 &>(), "angle"_a, "axis"_a,

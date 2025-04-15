@@ -13,6 +13,9 @@ void exposeSimplicialLLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SimplicialLLT<MatrixType>;
 
+  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "A direct sparse LLT Cholesky factorizations.\n\n"

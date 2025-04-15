@@ -1,6 +1,7 @@
 build*/
 .cache/
 __pycache__
+.pytest_cache
 
 # pixi environments
 .pixi

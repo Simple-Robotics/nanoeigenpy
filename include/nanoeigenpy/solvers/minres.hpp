@@ -36,6 +36,9 @@ struct MINRESSolverVisitor : nb::def_visitor<MINRESSolverVisitor<_MatrixType>> {
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (register_symbolic_link_to_registered_type<Solver>(m)) {
+      return;
+    }
     nb::class_<Solver>(
         m, name,
         "A minimal residual solver for sparse symmetric problems.\n"

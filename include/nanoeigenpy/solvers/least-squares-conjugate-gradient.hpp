@@ -28,6 +28,10 @@ struct LeastSquaresConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (register_symbolic_link_to_registered_type<
+            LeastSquaresConjugateGradient>(m)) {
+      return;
+    }
     nb::class_<LeastSquaresConjugateGradient>(m, name)
         .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
         .def(LeastSquaresConjugateGradientVisitor<

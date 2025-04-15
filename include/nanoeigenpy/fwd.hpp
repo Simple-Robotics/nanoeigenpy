@@ -4,6 +4,7 @@
 
 #include "nanoeigenpy/config.hpp"
 #include "nanoeigenpy/id.hpp"
+#include "nanoeigenpy/utils/helpers.hpp"
 #include <nanobind/nanobind.h>
 
 #include <Eigen/Core>

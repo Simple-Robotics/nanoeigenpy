@@ -13,6 +13,9 @@ void exposeCholmodSupernodalLLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::CholmodSupernodalLLT<_MatrixType, _UpLo>;
 
+  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "A supernodal direct Cholesky (LLT) factorization and solver based on "

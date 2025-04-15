@@ -18,6 +18,9 @@ void exposeSimplicialLDLT(nb::module_ m, const char *name) {
   using DenseVectorXs =
       Eigen::Matrix<Scalar, Eigen::Dynamic, 1, MatrixType::Options>;
 
+  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "A direct sparse LDLT Cholesky factorizations.\n\n"
