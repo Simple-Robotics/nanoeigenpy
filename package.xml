@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>nanoeigenpy</name>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <description>A support library for bindings between Eigen in C++ and Python, based on nanobind</description>
   <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
   <author>Wilson Jallet</author>
