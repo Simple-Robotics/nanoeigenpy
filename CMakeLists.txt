@@ -101,6 +101,10 @@ endif(APPLE)
 ADD_PROJECT_DEPENDENCY(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development)
+# On Windows Python_SITELIB contains \ that can create installation issues
+if (WIN32)
+   string(REPLACE "\\" "/" Python_SITELIB  "${Python_SITELIB}")
+endif()
 
 # Detect the installed nanobind package and import it into CMake
 execute_process(
