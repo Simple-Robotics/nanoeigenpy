@@ -70,6 +70,10 @@ jobs:
       run: |
         pixi run -e ${{ matrix.environment }} ctest --test-dir build --output-on-failure
 
+    - name: Install nanoeigenpy [MacOS/Linux/Windows]
+      run: |
+        pixi run -e ${{ matrix.environment }} cmake --build build --target install
+
   check:
     if: always()
     name: check-macos-linux-windows-pixi
