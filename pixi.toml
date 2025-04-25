@@ -4,7 +4,7 @@ channels = ["conda-forge"]
 name = "nanoeigenpy"
 description = "A support library for bindings between Eigen/C++ and Python, based on nanobind"
 platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
-version = "0.2.0"
+version = "0.2.1"
 license = "BSD-3-Clause"
 license-file = "LICENSE"
 
