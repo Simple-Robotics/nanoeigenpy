@@ -28,6 +28,9 @@ struct ConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<ConjugateGradient>(m)) {
+      return;
+    }
     nb::class_<ConjugateGradient>(m, name)
         .def(ConjugateGradientVisitor<ConjugateGradient>())
         .def(IdVisitor());

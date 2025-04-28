@@ -22,6 +22,9 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
   using Scalar = typename MatrixType::Scalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
 
+  if (check_registration_alias<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "Robust Cholesky decomposition of a matrix with pivoting.\n\n"

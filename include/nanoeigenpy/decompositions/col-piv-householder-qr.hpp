@@ -27,6 +27,10 @@ void exposeColPivHouseholderQRSolver(nb::module_ m, const char *name) {
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
+
+  if (check_registration_alias<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "This class performs a rank-revealing QR decomposition of a matrix A "

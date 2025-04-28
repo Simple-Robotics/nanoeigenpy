@@ -31,6 +31,9 @@ struct BFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<Preconditioner>(m)) {
+      return;
+    }
     nb::class_<Preconditioner>(m, name)
         .def(BFGSPreconditionerBaseVisitor<Preconditioner>())
         .def(IdVisitor());
@@ -56,6 +59,9 @@ struct LimitedBFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<Preconditioner>(m)) {
+      return;
+    }
     nb::class_<Preconditioner>(m, name)
         .def(LimitedBFGSPreconditionerBaseVisitor<Preconditioner>())
         .def(IdVisitor());

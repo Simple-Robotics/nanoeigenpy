@@ -13,6 +13,9 @@ void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::CholmodSimplicialLDLT<_MatrixType, _UpLo>;
 
+  if (check_registration_alias<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(
       m, name,
       "A simplicial direct Cholesky (LDLT) factorization and solver based on "

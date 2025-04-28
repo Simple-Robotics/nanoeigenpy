@@ -15,8 +15,10 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::EigenSolver<MatrixType>;
 
+  if (check_registration_alias<Solver>(m)) {
+    return;
+  }
   nb::class_<Solver>(m, name, "Eigen solver.")
-
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
            "Default constructor with memory preallocation.")

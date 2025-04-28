@@ -58,6 +58,9 @@ struct DiagonalPreconditionerVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<Preconditioner>(m)) {
+      return;
+    }
     nb::class_<Preconditioner>(m, name).def(IdVisitor());
   }
 };
@@ -84,6 +87,9 @@ struct LeastSquareDiagonalPreconditionerVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<Preconditioner>(m)) {
+      return;
+    }
     nb::class_<Preconditioner>(m, name).def(IdVisitor());
   }
 };
@@ -103,6 +109,9 @@ struct IdentityPreconditionerVisitor
   void execute(nb::class_<Scalar, Ts...>&) {}
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<Preconditioner>(m)) {
+      return;
+    }
     nb::class_<Preconditioner>(m, name)
         .def(PreconditionerBaseVisitor<Preconditioner>())
         .def(IdVisitor());

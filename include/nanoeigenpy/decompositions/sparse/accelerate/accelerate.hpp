@@ -60,6 +60,9 @@ struct AccelerateImplVisitor
   }
 
   static void expose(nb::module_& m, const char* name, const char* doc) {
+    if (check_registration_alias<Solver>(m)) {
+      return;
+    }
     nb::class_<Solver>(m, name, doc)
         .def(AccelerateImplVisitor())
         .def(IdVisitor());

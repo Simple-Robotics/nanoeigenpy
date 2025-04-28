@@ -28,6 +28,9 @@ struct LeastSquaresConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
+    if (check_registration_alias<LeastSquaresConjugateGradient>(m)) {
+      return;
+    }
     nb::class_<LeastSquaresConjugateGradient>(m, name)
         .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
         .def(LeastSquaresConjugateGradientVisitor<
