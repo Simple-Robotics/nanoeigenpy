@@ -244,7 +244,7 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
 
  public:
   static void expose(nb::module_& m, const char* name) {
-    if (register_symbolic_link_to_registered_type<Quaternion>(m)) {
+    if (check_registration_alias<Quaternion>(m)) {
       return;
     }
     nb::class_<Quaternion>(m, name).def(QuaternionVisitor());

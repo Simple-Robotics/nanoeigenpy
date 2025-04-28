@@ -28,7 +28,7 @@ struct ConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (register_symbolic_link_to_registered_type<ConjugateGradient>(m)) {
+    if (check_registration_alias<ConjugateGradient>(m)) {
       return;
     }
     nb::class_<ConjugateGradient>(m, name)

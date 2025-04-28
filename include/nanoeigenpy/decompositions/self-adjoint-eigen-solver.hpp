@@ -15,7 +15,7 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SelfAdjointEigenSolver<MatrixType>;
 
-  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+  if (check_registration_alias<Solver>(m)) {
     return;
   }
   nb::class_<Solver>(m, name, "Self adjoint Eigen Solver")

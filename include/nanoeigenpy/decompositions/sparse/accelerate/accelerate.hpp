@@ -60,7 +60,7 @@ struct AccelerateImplVisitor
   }
 
   static void expose(nb::module_& m, const char* name, const char* doc) {
-    if (register_symbolic_link_to_registered_type<Solver>(m)) {
+    if (check_registration_alias<Solver>(m)) {
       return;
     }
     nb::class_<Solver>(m, name, doc)

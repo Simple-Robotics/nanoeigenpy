@@ -28,8 +28,7 @@ struct LeastSquaresConjugateGradientVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (register_symbolic_link_to_registered_type<
-            LeastSquaresConjugateGradient>(m)) {
+    if (check_registration_alias<LeastSquaresConjugateGradient>(m)) {
       return;
     }
     nb::class_<LeastSquaresConjugateGradient>(m, name)

@@ -31,7 +31,7 @@ struct BFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+    if (check_registration_alias<Preconditioner>(m)) {
       return;
     }
     nb::class_<Preconditioner>(m, name)
@@ -59,7 +59,7 @@ struct LimitedBFGSPreconditionerBaseVisitor
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (register_symbolic_link_to_registered_type<Preconditioner>(m)) {
+    if (check_registration_alias<Preconditioner>(m)) {
       return;
     }
     nb::class_<Preconditioner>(m, name)

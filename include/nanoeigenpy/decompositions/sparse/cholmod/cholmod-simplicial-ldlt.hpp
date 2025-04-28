@@ -13,7 +13,7 @@ void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::CholmodSimplicialLDLT<_MatrixType, _UpLo>;
 
-  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+  if (check_registration_alias<Solver>(m)) {
     return;
   }
   nb::class_<Solver>(

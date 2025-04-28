@@ -31,7 +31,7 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
   using RealScalar = typename MatrixType::RealScalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
 
-  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+  if (check_registration_alias<Solver>(m)) {
     return;
   }
   nb::class_<Solver>(

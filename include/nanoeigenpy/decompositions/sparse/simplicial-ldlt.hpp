@@ -18,7 +18,7 @@ void exposeSimplicialLDLT(nb::module_ m, const char *name) {
   using DenseVectorXs =
       Eigen::Matrix<Scalar, Eigen::Dynamic, 1, MatrixType::Options>;
 
-  if (register_symbolic_link_to_registered_type<Solver>(m)) {
+  if (check_registration_alias<Solver>(m)) {
     return;
   }
   nb::class_<Solver>(

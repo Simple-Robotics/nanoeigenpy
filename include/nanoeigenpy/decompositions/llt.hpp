@@ -22,7 +22,7 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
   using Scalar = typename MatrixType::Scalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
 
-  if (register_symbolic_link_to_registered_type<Chol>(m)) {
+  if (check_registration_alias<Chol>(m)) {
     return;
   }
   nb::class_<Chol>(

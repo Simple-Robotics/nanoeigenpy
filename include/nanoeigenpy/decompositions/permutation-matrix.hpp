@@ -19,7 +19,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
   using VectorIndex = Eigen::Matrix<StorageIndex, SizeAtCompileTime, 1, 0,
                                     MaxSizeAtCompileTime, 1>;
 
-  if (register_symbolic_link_to_registered_type<PermutationMatrix>(m)) {
+  if (check_registration_alias<PermutationMatrix>(m)) {
     return;
   }
   nb::class_<PermutationMatrix>(m, name,
