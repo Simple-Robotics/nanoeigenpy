@@ -2,6 +2,7 @@
 
 <p align="left">
   <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Linter: ruff"></a>
+  <a href="https://anaconda.org/conda-forge/nanoeigenpy"><img src="https://img.shields.io/conda/vn/conda-forge/nanoeigenpy.svg"></a>
 </p>
 
 This is a collection of tools for using Eigen together with nanobind, as a successor to the [eigenpy](https://github.com/stack-of-tasks/eigenpy) support library. Its aim is to help the transition away from Boost.Python.
