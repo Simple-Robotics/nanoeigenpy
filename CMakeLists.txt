@@ -2,7 +2,7 @@
 # Copyright 2025 INRIA
 #
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.22)
 
 set(PROJECT_NAME nanoeigenpy)
 set(PROJECT_URL https://github.com/Simple-Robotics/nanoeigenpy)
