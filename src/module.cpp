@@ -3,6 +3,7 @@
 #include <nanobind/stl/string.h>
 
 #include "nanoeigenpy/decompositions.hpp"
+#include "nanoeigenpy/decompositions/generalized-eigen-solver.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 #include "nanoeigenpy/constants.hpp"
@@ -21,6 +22,17 @@ NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ColPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::EigenSolver<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::ComplexEigenSolver<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::ComplexSchur<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::GeneralizedEigenSolver<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::HessenbergDecomposition<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::RealQZ<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::RealSchur<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::Tridiagonalization<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::FullPivLU<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::PartialPivLU<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::BDCSVD<Eigen::MatrixXd>)
+NB_MAKE_OPAQUE(Eigen::JacobiSVD<Eigen::MatrixXd>)
 
 std::string printEigenVersion(const char* delim = ".") {
   std::ostringstream oss;
@@ -44,10 +56,25 @@ NB_MODULE(nanoeigenpy, m) {
       m, "CompleteOrthogonalDecomposition");
   exposeEigenSolver<Matrix>(m, "EigenSolver");
   exposeSelfAdjointEigenSolver<Matrix>(m, "SelfAdjointEigenSolver");
+  exposeGeneralizedSelfAdjointEigenSolver<Matrix>(
+      m, "GeneralizedSelfAdjointEigenSolver");
+  exposeComplexEigenSolver<Matrix>(m, "ComplexEigenSolver");
+  exposeComplexSchur<Matrix>(m, "ComplexSchur");
+  exposeGeneralizedEigenSolver<Matrix>(m, "GeneralizedEigenSolver");
+  exposeHessenbergDecomposition<Matrix>(m, "HessenbergDecomposition");
+  exposeRealQZ<Matrix>(m, "RealQZ");
+  exposeRealSchur<Matrix>(m, "RealSchur");
+  exposeTridiagonalization<Matrix>(m, "Tridiagonalization");
   exposePermutationMatrix<Eigen::Dynamic>(m, "PermutationMatrix");
+  exposeFullPivLUSolver<Matrix>(m, "FullPivLU");
+  exposePartialPivLUSolver<Matrix>(m, "PartialPivLU");
+  exposeBDCSVDSolver<Matrix>(m, "BDCSVD");
+  exposeJacobiSVDSolver<Matrix>(m, "JacobiSVD");
 
   exposeSimplicialLLT<SparseMatrix>(m, "SimplicialLLT");
   exposeSimplicialLDLT<SparseMatrix>(m, "SimplicialLDLT");
+  exposeSparseLU<SparseMatrix>(m, "SparseLU");
+  exposeSparseQR<SparseMatrix>(m, "SparseQR");
 
 #ifdef NANOEIGENPY_HAS_CHOLMOD
   exposeCholmodSimplicialLLT<SparseMatrix>(m, "CholmodSimplicialLLT");
