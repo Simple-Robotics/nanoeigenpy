@@ -16,7 +16,7 @@ MatrixOrVector solve(const Eigen::HouseholderQR<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeHouseholderQRSolver(nb::module_ m, const char *name) {
+void exposeHouseholderQR(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::HouseholderQR<MatrixType>;
   using Scalar = typename MatrixType::Scalar;

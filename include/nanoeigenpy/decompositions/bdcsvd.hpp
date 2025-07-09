@@ -17,7 +17,7 @@ MatrixOrVector solve(const Eigen::BDCSVD<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeBDCSVDSolver(nb::module_ m, const char *name) {
+void exposeBDCSVD(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::BDCSVD<MatrixType>;
   using Scalar = typename MatrixType::Scalar;

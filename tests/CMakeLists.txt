@@ -60,27 +60,27 @@ set(
   TEST_NAMES
   test_eigen_solver
   test_complex_eigen_solver
-  test_complex_schur
   test_generalized_eigen_solver
+  test_self_adjoint_eigen_solver
   test_generalized_self_adjoint_eigen_solver
+  test_real_schur
+  test_complex_schur
   test_hessenberg_decomposition
   test_real_qz
-  test_real_schur
   test_tridiagonalization
-  test_geometry
-  test_ldlt
-  test_llt
-  test_iterative_solvers
-  test_permutation_matrix
-  test_qr
-  test_self_adjoint_eigen_solver
-  test_simplicial_llt
-  test_full_piv_lu
-  test_partial_piv_lu
   test_bdcsvd
   test_jacobi_svd
+  test_full_piv_lu
+  test_partial_piv_lu
+  test_ldlt
+  test_llt
+  test_qr
+  test_simplicial_llt
   test_sparse_lu
   test_sparse_qr
+  test_geometry
+  test_iterative_solvers
+  test_permutation_matrix
 )
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)

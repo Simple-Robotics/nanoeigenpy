@@ -21,7 +21,7 @@ MatrixType inverse(const Eigen::ColPivHouseholderQR<MatrixType> &c) {
 }
 
 template <typename _MatrixType>
-void exposeColPivHouseholderQRSolver(nb::module_ m, const char *name) {
+void exposeColPivHouseholderQR(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::ColPivHouseholderQR<MatrixType>;
   using Scalar = typename MatrixType::Scalar;

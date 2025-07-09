@@ -17,7 +17,7 @@ MatrixOrVector solve(const Eigen::JacobiSVD<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeJacobiSVDSolver(nb::module_ m, const char *name) {
+void exposeJacobiSVD(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::JacobiSVD<MatrixType>;
   using Scalar = typename MatrixType::Scalar;

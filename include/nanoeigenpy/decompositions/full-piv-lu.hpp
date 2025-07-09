@@ -17,7 +17,7 @@ MatrixOrVector solve(const Eigen::FullPivLU<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeFullPivLUSolver(nb::module_ m, const char *name) {
+void exposeFullPivLU(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::FullPivLU<MatrixType>;
   using Scalar = typename MatrixType::Scalar;

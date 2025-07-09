@@ -15,12 +15,11 @@ template <typename _MatrixType>
 void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::GeneralizedSelfAdjointEigenSolver<MatrixType>;
-  using Base = Eigen::SelfAdjointEigenSolver<MatrixType>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
   }
-  nb::class_<Solver, Base>(m, name, "Generalized self adjoint Eigen Solver")
+  nb::class_<Solver>(m, name, "Generalized self adjoint Eigen Solver")
 
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
@@ -48,6 +47,41 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           "matA"_a, "matB"_a, "options"_a,
           "Computes the generalized eigendecomposition of given matrix.",
           nb::rv_policy::reference)
+
+      .def("eigenvalues", &Solver::eigenvalues,
+           "Returns the eigenvalues of given matrix.",
+           nb::rv_policy::reference_internal)
+      .def("eigenvectors", &Solver::eigenvectors,
+           "Returns the eigenvectors of given matrix.",
+           nb::rv_policy::reference_internal)
+
+      .def(
+          "computeDirect",
+          [](Solver &c, MatrixType const &matrix) -> Solver & {
+            return static_cast<Solver &>(c.computeDirect(matrix));
+          },
+          nb::arg("matrix"),
+          "Computes eigendecomposition of given matrix using a closed-form "
+          "algorithm.",
+          nb::rv_policy::reference)
+      .def(
+          "computeDirect",
+          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+            return static_cast<Solver &>(c.computeDirect(matrix, options));
+          },
+          nb::arg("matrix"), nb::arg("options"),
+          "Computes eigendecomposition of given matrix using a closed-form "
+          "algorithm.",
+          nb::rv_policy::reference)
+
+      .def("operatorInverseSqrt", &Solver::operatorInverseSqrt,
+           "Computes the inverse square root of the matrix.")
+      .def("operatorSqrt", &Solver::operatorSqrt,
+           "Computes the square root of the matrix.")
+
+      .def("info", &Solver::info,
+           "NumericalIssue if the input contains INF or NaN values or "
+           "overflow occured. Returns Success otherwise.")
 
       .def(IdVisitor());
 }
