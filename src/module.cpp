@@ -109,26 +109,39 @@ NB_MODULE(nanoeigenpy, m) {
   exposeLeastSquareDiagonalPreconditioner<Scalar>(
       solvers, "LeastSquareDiagonalPreconditioner");
 #endif
-  exposeMINRESSolver<Matrix>(solvers, "MINRES");
 
+  using Eigen::BiCGSTAB;
   using Eigen::ConjugateGradient;
+  using Eigen::DiagonalPreconditioner;
   using Eigen::IdentityPreconditioner;
   using Eigen::LeastSquareDiagonalPreconditioner;
   using Eigen::LeastSquaresConjugateGradient;
   using Eigen::Lower;
+  using Eigen::MINRES;
   using Eigen::Upper;
 
+  exposeMINRES<MINRES<Matrix, Lower | Upper>>(solvers, "MINRES");
+  exposeBiCGSTAB<BiCGSTAB<Matrix>>(solvers, "BiCGSTAB");
   exposeConjugateGradient<ConjugateGradient<Matrix, Lower | Upper>>(
       solvers, "ConjugateGradient");
-
-  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<
-      Matrix, LeastSquareDiagonalPreconditioner<Scalar>>>(
+  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<Matrix>>(
       solvers, "LeastSquaresConjugateGradient");
 
+  using IdentityBiCGSTAB = BiCGSTAB<Matrix, IdentityPreconditioner>;
   using IdentityConjugateGradient =
       ConjugateGradient<Matrix, Lower | Upper, IdentityPreconditioner>;
+  using IdentityLeastSquaresConjugateGradient =
+      LeastSquaresConjugateGradient<Matrix, IdentityPreconditioner>;
+  using DiagonalLeastSquaresConjugateGradient =
+      LeastSquaresConjugateGradient<Matrix, DiagonalPreconditioner<Scalar>>;
+
+  exposeBiCGSTAB<IdentityBiCGSTAB>(solvers, "IdentityBiCGSTAB");
   exposeConjugateGradient<IdentityConjugateGradient>(
       solvers, "IdentityConjugateGradient");
+  exposeLeastSquaresConjugateGradient<IdentityLeastSquaresConjugateGradient>(
+      solvers, "IdentityLeastSquaresConjugateGradient");
+  exposeLeastSquaresConjugateGradient<DiagonalLeastSquaresConjugateGradient>(
+      solvers, "DiagonalLeastSquaresConjugateGradient");
 
   // Utils
   exposeIsApprox<double>(m);

@@ -10,3 +10,5 @@
 #include "nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp"
 #endif
 #include "nanoeigenpy/solvers/conjugate-gradient.hpp"
+
+#include "nanoeigenpy/solvers/bicgstab.hpp"

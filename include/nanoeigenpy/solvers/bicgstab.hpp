@@ -5,38 +5,40 @@
 #include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/solvers/iterative-solver-base.hpp"
 #include <nanobind/eigen/dense.h>
-#include <unsupported/Eigen/IterativeSolvers>
+#include <Eigen/IterativeLinearSolvers>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
 
-template <typename MINRES>
-struct MINRESVisitor : nb::def_visitor<MINRESVisitor<MINRES>> {
-  using MatrixType = typename MINRES::MatrixType;
+template <typename BiCGSTAB>
+struct BiCGSTABVisitor : nb::def_visitor<BiCGSTABVisitor<BiCGSTAB>> {
+  using MatrixType = typename BiCGSTAB::MatrixType;
   using CtorArg = nb::DMap<const MatrixType>;
 
   template <typename... Ts>
-  void execute(nb::class_<MINRES, Ts...>& cl) {
+  void execute(nb::class_<BiCGSTAB, Ts...>& cl) {
     using namespace nb::literals;
     cl.def(nb::init<>(), "Default constructor.")
         .def(nb::init<CtorArg>(), "A"_a,
              "Initialize the solver with matrix A for further Ax=b solving.\n"
              "This constructor is a shortcut for the default constructor "
              "followed by a call to compute().")
-        .def(IterativeSolverVisitor<MINRES>());
+        .def(IterativeSolverVisitor<BiCGSTAB>());
   }
 
   static void expose(nb::module_& m, const char* name) {
-    if (check_registration_alias<MINRES>(m)) {
+    if (check_registration_alias<BiCGSTAB>(m)) {
       return;
     }
-    nb::class_<MINRES>(m, name).def(MINRESVisitor<MINRES>()).def(IdVisitor());
+    nb::class_<BiCGSTAB>(m, name)
+        .def(BiCGSTABVisitor<BiCGSTAB>())
+        .def(IdVisitor());
   }
 };
 
-template <typename MINRES>
-void exposeMINRES(nb::module_& m, const char* name) {
-  MINRESVisitor<MINRES>::expose(m, name);
+template <typename BiCGSTAB>
+void exposeBiCGSTAB(nb::module_& m, const char* name) {
+  BiCGSTABVisitor<BiCGSTAB>::expose(m, name);
 }
 
 }  // namespace nanoeigenpy

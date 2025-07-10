@@ -11,7 +11,11 @@ _clazzes = [
     nanoeigenpy.solvers.ConjugateGradient,
     nanoeigenpy.solvers.IdentityConjugateGradient,
     nanoeigenpy.solvers.LeastSquaresConjugateGradient,
+    nanoeigenpy.solvers.IdentityLeastSquaresConjugateGradient,
+    nanoeigenpy.solvers.DiagonalLeastSquaresConjugateGradient,
     nanoeigenpy.solvers.MINRES,
+    # nanoeigenpy.solvers.BiCGSTAB,
+    nanoeigenpy.solvers.IdentityBiCGSTAB,
 ]
 
 
