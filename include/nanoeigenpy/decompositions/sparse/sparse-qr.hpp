@@ -16,10 +16,7 @@ void exposeSparseQR(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Ordering = _Ordering;
   using Solver = Eigen::SparseQR<MatrixType, Ordering>;
-  using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
-  using DenseVectorXs =
-      Eigen::Matrix<Scalar, Eigen::Dynamic, 1, MatrixType::Options>;
 
   if (check_registration_alias<Solver>(m)) {
     return;

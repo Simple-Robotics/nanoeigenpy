@@ -21,7 +21,6 @@ void exposeJacobiSVD(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::JacobiSVD<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
-  using RealScalar = typename MatrixType::RealScalar;
   using VectorType = Eigen::Matrix<Scalar, -1, 1>;
 
   if (check_registration_alias<Solver>(m)) {

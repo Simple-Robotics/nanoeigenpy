@@ -15,10 +15,7 @@ template <typename _MatrixType, typename _Ordering = Eigen::COLAMDOrdering<
 void exposeSparseLU(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SparseLU<MatrixType>;
-  using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
-  using DenseVectorXs =
-      Eigen::Matrix<Scalar, Eigen::Dynamic, 1, MatrixType::Options>;
 
   if (check_registration_alias<Solver>(m)) {
     return;

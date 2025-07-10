@@ -4,14 +4,15 @@
 
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
-#include "nanoeigenpy/utils/is-approx.hpp"
+#include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/constants.hpp"
+#include "nanoeigenpy/utils/is-approx.hpp"
 
 #include "./internal.h"
 
 using namespace nanoeigenpy;
 
-using Quaternion = Eigen::Quaternion<Scalar, Options>;
+// Matrix types
 using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
@@ -35,6 +36,7 @@ NB_MAKE_OPAQUE(Eigen::RealSchur<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::Tridiagonalization<Eigen::MatrixXd>)
 
+// Utils
 std::string printEigenVersion(const char* delim = ".") {
   std::ostringstream oss;
   oss << EIGEN_WORLD_VERSION << delim << EIGEN_MAJOR_VERSION << delim
@@ -42,8 +44,7 @@ std::string printEigenVersion(const char* delim = ".") {
   return oss.str();
 }
 
-void exposeSolvers(nb::module_& m);
-
+// Module
 NB_MODULE(nanoeigenpy, m) {
   // <Eigen/Core>
   exposeConstants(m);
@@ -100,8 +101,34 @@ NB_MODULE(nanoeigenpy, m) {
   exposeAngleAxis<Scalar>(m, "AngleAxis");
 
   // <Eigen/IterativeLinearSolvers>
-  nb::module_ solvers = m.def_submodule("solvers", "Solvers in Eigen.");
-  exposeSolvers(solvers);
+  nb::module_ solvers =
+      m.def_submodule("solvers", "Iterative linear solvers in Eigen.");
+  exposeIdentityPreconditioner<Scalar>(solvers, "IdentityPreconditioner");
+  exposeDiagonalPreconditioner<Scalar>(solvers, "DiagonalPreconditioner");
+#if EIGEN_VERSION_AT_LEAST(3, 3, 5)
+  exposeLeastSquareDiagonalPreconditioner<Scalar>(
+      solvers, "LeastSquareDiagonalPreconditioner");
+#endif
+  exposeMINRESSolver<Matrix>(solvers, "MINRES");
+
+  using Eigen::ConjugateGradient;
+  using Eigen::IdentityPreconditioner;
+  using Eigen::LeastSquareDiagonalPreconditioner;
+  using Eigen::LeastSquaresConjugateGradient;
+  using Eigen::Lower;
+  using Eigen::Upper;
+
+  exposeConjugateGradient<ConjugateGradient<Matrix, Lower | Upper>>(
+      solvers, "ConjugateGradient");
+
+  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<
+      Matrix, LeastSquareDiagonalPreconditioner<Scalar>>>(
+      solvers, "LeastSquaresConjugateGradient");
+
+  using IdentityConjugateGradient =
+      ConjugateGradient<Matrix, Lower | Upper, IdentityPreconditioner>;
+  exposeConjugateGradient<IdentityConjugateGradient>(
+      solvers, "IdentityConjugateGradient");
 
   // Utils
   exposeIsApprox<double>(m);
