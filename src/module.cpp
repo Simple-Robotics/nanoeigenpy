@@ -15,6 +15,23 @@ using namespace nanoeigenpy;
 // Matrix types
 using SparseMatrix = Eigen::SparseMatrix<Scalar, Options>;
 
+using Eigen::ColPivHouseholderQRPreconditioner;
+using Eigen::FullPivHouseholderQRPreconditioner;
+using Eigen::HouseholderQRPreconditioner;
+using Eigen::JacobiSVD;
+using Eigen::NoQRPreconditioner;
+
+using ColPivHhJacobiSVD = JacobiSVD<Matrix, ColPivHouseholderQRPreconditioner>;
+using FullPivHhJacobiSVD =
+    JacobiSVD<Matrix, FullPivHouseholderQRPreconditioner>;
+using HhJacobiSVD = JacobiSVD<Matrix, HouseholderQRPreconditioner>;
+using NoPrecondJacobiSVD = JacobiSVD<Matrix, NoQRPreconditioner>;
+
+NB_MAKE_OPAQUE(ColPivHhJacobiSVD)
+NB_MAKE_OPAQUE(FullPivHhJacobiSVD)
+NB_MAKE_OPAQUE(HhJacobiSVD)
+NB_MAKE_OPAQUE(NoPrecondJacobiSVD)
+
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivLU<Eigen::MatrixXd>)
@@ -24,7 +41,6 @@ NB_MAKE_OPAQUE(Eigen::CompleteOrthogonalDecomposition<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivHouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::HouseholderQR<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::BDCSVD<Eigen::MatrixXd>)
-NB_MAKE_OPAQUE(Eigen::JacobiSVD<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ComplexEigenSolver<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::ComplexSchur<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::EigenSolver<Eigen::MatrixXd>)
@@ -64,7 +80,10 @@ NB_MODULE(nanoeigenpy, m) {
   exposeHouseholderQR<Matrix>(m, "HouseholderQR");
   // <Eigen/SVD>
   exposeBDCSVD<Matrix>(m, "BDCSVD");
-  exposeJacobiSVD<Matrix>(m, "JacobiSVD");
+  exposeJacobiSVD<ColPivHhJacobiSVD>(m, "ColPivHhJacobiSVD");
+  exposeJacobiSVD<FullPivHhJacobiSVD>(m, "FullPivHhJacobiSVD");
+  exposeJacobiSVD<HhJacobiSVD>(m, "HhJacobiSVD");
+  exposeJacobiSVD<NoPrecondJacobiSVD>(m, "NoPrecondJacobiSVD");
   // <Eigen/Eigenvalues>
   exposeComplexEigenSolver<Matrix>(m, "ComplexEigenSolver");
   exposeComplexSchur<Matrix>(m, "ComplexSchur");
@@ -118,18 +137,17 @@ NB_MODULE(nanoeigenpy, m) {
   using Eigen::LeastSquaresConjugateGradient;
   using Eigen::Lower;
   using Eigen::MINRES;
-  using Eigen::Upper;
 
-  exposeMINRES<MINRES<Matrix, Lower | Upper>>(solvers, "MINRES");
+  exposeMINRES<MINRES<Matrix, Lower>>(solvers, "MINRES");
   exposeBiCGSTAB<BiCGSTAB<Matrix>>(solvers, "BiCGSTAB");
-  exposeConjugateGradient<ConjugateGradient<Matrix, Lower | Upper>>(
+  exposeConjugateGradient<ConjugateGradient<Matrix, Lower>>(
       solvers, "ConjugateGradient");
   exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<Matrix>>(
       solvers, "LeastSquaresConjugateGradient");
 
   using IdentityBiCGSTAB = BiCGSTAB<Matrix, IdentityPreconditioner>;
   using IdentityConjugateGradient =
-      ConjugateGradient<Matrix, Lower | Upper, IdentityPreconditioner>;
+      ConjugateGradient<Matrix, Lower, IdentityPreconditioner>;
   using IdentityLeastSquaresConjugateGradient =
       LeastSquaresConjugateGradient<Matrix, IdentityPreconditioner>;
   using DiagonalLeastSquaresConjugateGradient =

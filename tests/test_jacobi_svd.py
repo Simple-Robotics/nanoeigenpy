@@ -1,72 +1,99 @@
 import nanoeigenpy
 import numpy as np
+import pytest
 
-dim = 100
-rng = np.random.default_rng()
+_classes = [
+    nanoeigenpy.ColPivHhJacobiSVD,
+    nanoeigenpy.FullPivHhJacobiSVD,
+    nanoeigenpy.HhJacobiSVD,
+    nanoeigenpy.NoPrecondJacobiSVD,
+]
 
-# Test nb::init<const MatrixType &>()
-A = rng.random((dim, dim))
-A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
 
-opt_U = nanoeigenpy.DecompositionOptions.ComputeFullU.value
-opt_V = nanoeigenpy.DecompositionOptions.ComputeFullV.value
+@pytest.mark.parametrize("cls", _classes)
+def test_jacobi(cls):
+    dim = 100
+    rng = np.random.default_rng()
 
-jacobisvd = nanoeigenpy.JacobiSVD(A, opt_U | opt_V)
-assert jacobisvd.info() == nanoeigenpy.ComputationInfo.Success
+    # Test nb::init<const MatrixType &>()
+    A = rng.random((dim, dim))
+    A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
 
-# Solve
-X = rng.random((dim, 20))
-B = A.dot(X)
-X_est = jacobisvd.solve(B)
-assert nanoeigenpy.is_approx(X, X_est)
-assert nanoeigenpy.is_approx(A.dot(X_est), B)
+    opt_U = nanoeigenpy.DecompositionOptions.ComputeFullU.value
+    opt_V = nanoeigenpy.DecompositionOptions.ComputeFullV.value
 
-x = rng.random(dim)
-b = A.dot(x)
-x_est = jacobisvd.solve(b)
-assert nanoeigenpy.is_approx(x, x_est)
-assert nanoeigenpy.is_approx(A.dot(x_est), b)
+    jacobisvd = cls(A, opt_U | opt_V)
+    assert jacobisvd.info() == nanoeigenpy.ComputationInfo.Success
 
-# Others
-rows = jacobisvd.rows()
-cols = jacobisvd.cols()
-assert cols == dim
-assert rows == dim
+    # Solve
+    X = rng.random((dim, 20))
+    B = A.dot(X)
+    X_est = jacobisvd.solve(B)
+    assert nanoeigenpy.is_approx(X, X_est)
+    assert nanoeigenpy.is_approx(A.dot(X_est), B)
 
-bdcsvd_compute = jacobisvd.compute(A)
-bdcsvd_compute_options = jacobisvd.compute(A, opt_U | opt_V)
+    x = rng.random(dim)
+    b = A.dot(x)
+    x_est = jacobisvd.solve(b)
+    assert nanoeigenpy.is_approx(x, x_est)
+    assert nanoeigenpy.is_approx(A.dot(x_est), b)
 
-rank = jacobisvd.rank()
-singularvalues = jacobisvd.singularValues()
-nonzerosingularvalues = jacobisvd.nonzeroSingularValues()
+    # Others
+    rows = jacobisvd.rows()
+    cols = jacobisvd.cols()
+    assert cols == dim
+    assert rows == dim
 
-matrixU = jacobisvd.matrixU()
-matrixV = jacobisvd.matrixV()
+    bdcsvd_compute = jacobisvd.compute(A)
+    bdcsvd_compute_options = jacobisvd.compute(A, opt_U | opt_V)
+    print("bdcsvd_compute: ", bdcsvd_compute)
+    print("bdcsvd_compute_options: ", bdcsvd_compute_options)
 
-computeU = jacobisvd.computeU()
-computeV = jacobisvd.computeV()
+    rank = jacobisvd.rank()
+    singularvalues = jacobisvd.singularValues()
+    nonzerosingularvalues = jacobisvd.nonzeroSingularValues()
+    print("rank: ", rank)
+    print("singularvalues: ", singularvalues)
+    print("nonzerosingularvalues: ", nonzerosingularvalues)
 
-jacobisvd.setThreshold(1e-8)
-assert jacobisvd.threshold() == 1e-8
+    matrixU = jacobisvd.matrixU()
+    matrixV = jacobisvd.matrixV()
+    print("matrixU: ", matrixU)
+    print("matrixV: ", matrixV)
 
-decomp1 = nanoeigenpy.JacobiSVD()
-decomp2 = nanoeigenpy.JacobiSVD()
+    computeU = jacobisvd.computeU()
+    computeV = jacobisvd.computeV()
+    print("computeU: ", computeU)
+    print("computeV: ", computeV)
 
-id1 = decomp1.id()
-id2 = decomp2.id()
+    jacobisvd.setThreshold(1e-8)
+    assert jacobisvd.threshold() == 1e-8
 
-assert id1 != id2
-assert id1 == decomp1.id()
-assert id2 == decomp2.id()
+    decomp1 = cls()
+    decomp2 = cls()
 
-dim_constructor = 3
+    id1 = decomp1.id()
+    id2 = decomp2.id()
 
-decomp3 = nanoeigenpy.JacobiSVD(rows, cols, opt_U | opt_V)
-decomp4 = nanoeigenpy.JacobiSVD(rows, cols, opt_U | opt_V)
+    assert id1 != id2
+    assert id1 == decomp1.id()
+    assert id2 == decomp2.id()
 
-id3 = decomp3.id()
-id4 = decomp4.id()
+    dim_constructor = 3
+    print("dim_constructor: ", dim_constructor)
 
-assert id3 != id4
-assert id3 == decomp3.id()
-assert id4 == decomp4.id()
+    decomp3 = cls(rows, cols, opt_U | opt_V)
+    decomp4 = cls(rows, cols, opt_U | opt_V)
+
+    id3 = decomp3.id()
+    id4 = decomp4.id()
+
+    assert id3 != id4
+    assert id3 == decomp3.id()
+    assert id4 == decomp4.id()
+
+
+if __name__ == "__main__":
+    import sys
+
+    sys.exit(pytest.main(sys.argv))
