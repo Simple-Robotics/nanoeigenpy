@@ -62,8 +62,6 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
       .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LU factorization from a given matrix.")
 
-      // .def(EigenBaseVisitor()) // TODO: Adapt, because FullPivLU does not
-      // have size() method ?
       .def("rows", &Solver::rows, "Returns the number of rows of the matrix.")
       .def("cols", &Solver::cols, "Returns the number of cols of the matrix.")
 

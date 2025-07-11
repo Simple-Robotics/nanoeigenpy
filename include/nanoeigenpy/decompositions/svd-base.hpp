@@ -21,7 +21,6 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
 
     cl.def(nb::init<>(), "Default constructor.")
 
-        // .def(EigenBaseVisitor())
         .def("rows", &SVDBase::rows,
              "Returns the number of rows of the matrix.")
         .def("cols", &SVDBase::cols,
