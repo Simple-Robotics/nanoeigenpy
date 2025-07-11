@@ -2,8 +2,7 @@ import nanoeigenpy
 import numpy as np
 
 dim = 100
-seed = 1
-rng = np.random.default_rng(seed)
+rng = np.random.default_rng()
 
 A = rng.random((dim, dim))
 # A_imag = rng.random((dim, dim))

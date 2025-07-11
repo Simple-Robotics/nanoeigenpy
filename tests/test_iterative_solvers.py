@@ -3,8 +3,7 @@ import numpy as np
 import pytest
 
 dim = 100
-seed = 6
-rng = np.random.default_rng(seed)
+rng = np.random.default_rng()
 MAX_ITER = 8000
 
 _clazzes = [

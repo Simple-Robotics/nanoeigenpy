@@ -1,9 +1,8 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 10
-seed = 1
-rng = np.random.default_rng(seed)
+dim = 100
+rng = np.random.default_rng()
 indices = rng.permutation(dim)
 
 # Tests init

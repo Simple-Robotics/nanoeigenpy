@@ -1,9 +1,8 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 4
-seed = 1
-rng = np.random.default_rng(seed)
+dim = 100
+rng = np.random.default_rng()
 
 A = rng.random((dim, dim))
 print("A :")
