@@ -3,7 +3,6 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
 #include <Eigen/SVD>
 
 namespace nanoeigenpy {
