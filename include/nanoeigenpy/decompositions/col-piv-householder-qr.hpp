@@ -146,6 +146,12 @@ void exposeColPivHouseholderQR(nb::module_ m, const char *name) {
           "is strictly greater than |pivot| ⩽ threshold×|maxpivot| where "
           "maxpivot is the biggest pivot.",
           nb::rv_policy::reference)
+      .def(
+          "setThreshold",
+          [](Solver &c) { return c.setThreshold(Eigen::Default); },
+          "Allows to come back to the default behavior, letting Eigen use "
+          "its default formula for determining the threshold.",
+          nb::rv_policy::reference)
       .def("threshold", &Solver::threshold,
            "Returns the threshold that will be used by certain methods such "
            "as rank().")

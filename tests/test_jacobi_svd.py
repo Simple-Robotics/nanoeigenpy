@@ -66,6 +66,7 @@ def test_jacobi(cls):
     print("computeU: ", computeU)
     print("computeV: ", computeV)
 
+    jacobisvd.setThreshold()
     jacobisvd.setThreshold(1e-8)
     assert jacobisvd.threshold() == 1e-8
 

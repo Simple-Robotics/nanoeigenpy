@@ -47,6 +47,7 @@ surjective = fullpivlu.isSurjective()
 invertible = fullpivlu.isInvertible()
 inverse = fullpivlu.inverse()
 
+fullpivlu.setThreshold()
 fullpivlu.setThreshold(1e-8)
 assert fullpivlu.threshold() == 1e-8
 

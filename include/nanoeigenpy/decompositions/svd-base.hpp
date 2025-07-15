@@ -58,6 +58,12 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
             "When it needs to get the threshold value, Eigen calls "
             "threshold().",
             nb::rv_policy::reference)
+        .def(
+            "setThreshold",
+            [](Derived &c) { return c.setThreshold(Eigen::Default); },
+            "Allows to come back to the default behavior, letting Eigen use "
+            "its default formula for determining the threshold.",
+            nb::rv_policy::reference)
         .def("threshold", &SVDBase::threshold,
              "Returns the threshold that will be used by certain methods such "
              "as rank().")

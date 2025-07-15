@@ -48,6 +48,7 @@ computeV = bdcsvd.computeV()
 
 bdcsvd.setSwitchSize(5)
 
+bdcsvd.setThreshold()
 bdcsvd.setThreshold(1e-8)
 assert bdcsvd.threshold() == 1e-8
 

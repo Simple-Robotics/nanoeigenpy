@@ -46,6 +46,7 @@ x = rng.random(rows)
 y = fullpiv_householder_qr.solve(x)
 assert (x == y).all()
 
+fullpiv_householder_qr.setThreshold()
 fullpiv_householder_qr.setThreshold(1e-8)
 assert fullpiv_householder_qr.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), fullpiv_householder_qr.inverse())
@@ -67,6 +68,7 @@ Y = colpiv_householder_qr.solve(X)
 assert (X == Y).all()
 assert colpiv_householder_qr.rank() == rows
 
+colpiv_householder_qr.setThreshold()
 colpiv_householder_qr.setThreshold(1e-8)
 assert colpiv_householder_qr.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), colpiv_householder_qr.inverse())
@@ -92,6 +94,7 @@ x = rng.random(rows)
 y = cod.solve(x)
 assert (x == y).all()
 
+cod.setThreshold()
 cod.setThreshold(1e-8)
 assert cod.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), cod.pseudoInverse())
