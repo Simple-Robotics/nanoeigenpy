@@ -118,6 +118,28 @@ NB_MODULE(nanoeigenpy, m) {
   // <Eigen/Geometry>
   exposeQuaternion<Scalar>(m, "Quaternion");
   exposeAngleAxis<Scalar>(m, "AngleAxis");
+  exposeHyperplane<Scalar>(m, "Hyperplane");
+  exposeParametrizedLine<Scalar>(m, "ParametrizedLine");
+  exposeRotation2D<Scalar>(m, "Rotation2D");
+  exposeUniformScaling<Scalar>(m, "UniformScaling");
+  exposeTranslation<Scalar>(m, "Translation");
+
+  using AffineTransform =
+      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Affine>;
+  using AffineCompactTransform =
+      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::AffineCompact>;
+  using ProjectiveTransform =
+      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Projective>;
+  using IsometryTransform =
+      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Isometry>;
+
+  exposeTransform<AffineTransform>(m, "AffineTransform");
+  //   exposeTransform<AffineCompactTransform>(m, "AffineCompactTransform");
+  //   exposeTransform<ProjectiveTransform>(m, "ProjectiveTransform");
+  //   exposeTransform<IsometryTransform>(m, "IsometryTransform");
+
+  // <Eigen/Jacobi>
+  exposeJacobiRotation<Scalar>(m, "JacobiRotation");
 
   // <Eigen/IterativeLinearSolvers>
   nb::module_ solvers =

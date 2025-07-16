@@ -10,6 +10,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/Geometry>
+#include <Eigen/Jacobi>
 
 #if defined(__clang__)
 #define NANOEIGENPY_CLANG_COMPILER

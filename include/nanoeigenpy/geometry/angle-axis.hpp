@@ -88,7 +88,7 @@ void exposeAngleAxis(nb::module_ m, const char *name) {
           },
           "other"_a,
           "Returns true if *this is approximately equal to other, "
-          "within the precision determined by prec.")
+          "within the default precision.")
 
       .def(nb::self * nb::self)
       .def(nb::self * Quaternion())
