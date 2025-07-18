@@ -29,7 +29,6 @@ spqr.factorize(A)
 X_sparse = spa.random(dim, 10, random_state=rng)
 B_sparse = A.dot(X_sparse)
 B_sparse: spa.csc_matrix = B_sparse.tocsc(True)
-# super important
 if not B_sparse.has_sorted_indices:
     B_sparse.sort_indices()
 

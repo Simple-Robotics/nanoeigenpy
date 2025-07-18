@@ -183,6 +183,9 @@ NB_MODULE(nanoeigenpy, m) {
   exposeLeastSquaresConjugateGradient<DiagonalLeastSquaresConjugateGradient>(
       solvers, "DiagonalLeastSquaresConjugateGradient");
 
+  exposeIncompleteLUT<SparseMatrix>(m, "IncompleteLUT");
+  exposeIncompleteCholesky<SparseMatrix>(m, "IncompleteCholesky");
+
   // Utils
   exposeIsApprox<double>(m);
   exposeIsApprox<std::complex<double>>(m);

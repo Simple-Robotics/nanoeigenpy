@@ -10,6 +10,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/Geometry>
+#include <Eigen/IterativeLinearSolvers>
 #include <Eigen/Jacobi>
 
 #if defined(__clang__)

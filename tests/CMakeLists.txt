@@ -81,6 +81,8 @@ set(
   test_geometry
   test_iterative_solvers
   test_permutation_matrix
+  test_incomplete_lut
+  test_incomplete_cholesky
 )
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
