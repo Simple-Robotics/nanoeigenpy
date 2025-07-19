@@ -58,8 +58,13 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
       .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LU factorization from a given matrix.")
 
-      .def("rows", &Solver::rows, "Returns the number of rows of the matrix.")
-      .def("cols", &Solver::cols, "Returns the number of cols of the matrix.")
+      .def(
+          "compute",
+          [](Solver &c, MatrixType const &matrix) -> Solver & {
+            return c.compute(matrix);
+          },
+          "matrix"_a, "Computes the LU of given matrix.",
+          nb::rv_policy::reference)
 
       .def("matrixLU", &Solver::matrixLU,
            "Returns the LU decomposition matrix: the upper-triangular part is "
@@ -70,8 +75,10 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
            "FullPivLU).",
            nb::rv_policy::reference_internal)
 
-      // TODO: Expose so that the return type are convertible to np arrays
-      // permutationP
+      .def("permutationP", &Solver::permutationP,
+           "Returns the permutation matrix P in the decomposition A = P^{-1} L "
+           "U Q^{-1}.",
+           nb::rv_policy::reference_internal)
 
       .def("rcond", &Solver::rcond,
            "Returns an estimate of the reciprocal condition number of the "
@@ -88,12 +95,15 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
            "i.e., it returns the product: P^{-1} L U."
            "This function is provided for debug purpose.")
 
+      .def("rows", &Solver::rows, "Returns the number of rows of the matrix.")
+      .def("cols", &Solver::cols, "Returns the number of cols of the matrix.")
+
       .def(
           "solve",
           [](Solver const &c, VectorType const &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = b using the current "
           "decomposition of A.")
       .def(
@@ -101,7 +111,7 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
           [](Solver const &c, MatrixType const &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

@@ -2,15 +2,11 @@ import nanoeigenpy
 import numpy as np
 
 dim = 100
-rng = np.random.default_rng()
-
-# Test nb::init<const MatrixType &>()
+rng = np.random.default_rng(42)
 A = rng.random((dim, dim))
 A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
-
 partialpivlu = nanoeigenpy.PartialPivLU(A)
 
-# Solve
 X = rng.random((dim, 20))
 B = A.dot(X)
 X_est = partialpivlu.solve(B)
@@ -23,38 +19,57 @@ x_est = partialpivlu.solve(b)
 assert nanoeigenpy.is_approx(x, x_est)
 assert nanoeigenpy.is_approx(A.dot(x_est), b)
 
-# Others
 rows = partialpivlu.rows()
 cols = partialpivlu.cols()
 assert cols == dim
 assert rows == dim
 
+partialpivlu_compute = partialpivlu.compute(A)
 A_reconstructed = partialpivlu.reconstructedMatrix()
 assert nanoeigenpy.is_approx(A_reconstructed, A)
 
+LU = partialpivlu.matrixLU()
+P_perm = partialpivlu.permutationP()
+P = P_perm.toDenseMatrix()
+
+U = np.triu(LU)
+L = np.eye(dim) + np.tril(LU, -1)
+assert nanoeigenpy.is_approx(P @ A, L @ U)
+
+inverse = partialpivlu.inverse()
+assert nanoeigenpy.is_approx(A @ inverse, np.eye(dim))
+assert nanoeigenpy.is_approx(inverse @ A, np.eye(dim))
+
 rcond = partialpivlu.rcond()
 determinant = partialpivlu.determinant()
-inverse = partialpivlu.inverse()
-reconstructedmatrix = partialpivlu.reconstructedMatrix()
+det_numpy = np.linalg.det(A)
+assert rcond > 0
+assert abs(determinant - det_numpy) / abs(det_numpy) < 1e-10
+
+P_inv = P_perm.inverse().toDenseMatrix()
+assert nanoeigenpy.is_approx(P @ P_inv, np.eye(dim))
+assert nanoeigenpy.is_approx(P_inv @ P, np.eye(dim))
 
 decomp1 = nanoeigenpy.PartialPivLU()
 decomp2 = nanoeigenpy.PartialPivLU()
-
 id1 = decomp1.id()
 id2 = decomp2.id()
-
 assert id1 != id2
 assert id1 == decomp1.id()
 assert id2 == decomp2.id()
 
-dim_constructor = 3
-
 decomp3 = nanoeigenpy.PartialPivLU(dim)
 decomp4 = nanoeigenpy.PartialPivLU(dim)
-
 id3 = decomp3.id()
 id4 = decomp4.id()
-
 assert id3 != id4
 assert id3 == decomp3.id()
 assert id4 == decomp4.id()
+
+decomp5 = nanoeigenpy.PartialPivLU(A)
+decomp6 = nanoeigenpy.PartialPivLU(A)
+id5 = decomp5.id()
+id6 = decomp6.id()
+assert id5 != id6
+assert id5 == decomp5.id()
+assert id6 == decomp6.id()
