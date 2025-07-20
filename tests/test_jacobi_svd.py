@@ -71,12 +71,8 @@ def test_jacobi(cls, options):
     assert cols == dim
     assert rows == dim
 
-    jacobisvd_compute = jacobisvd.compute(A)
-    jacobisvd_compute_options = jacobisvd.compute(A, options)
-    print("jacobisvd_compute")
-    print(jacobisvd_compute)
-    print("jacobisvd_compute_options")
-    print(jacobisvd_compute_options)
+    _jacobisvd_compute = jacobisvd.compute(A)
+    _jacobisvd_compute_options = jacobisvd.compute(A, options)
 
     rank = jacobisvd.rank()
     singularvalues = jacobisvd.singularValues()
@@ -132,9 +128,7 @@ def test_jacobi(cls, options):
         assert nanoeigenpy.is_approx(A, A_reconstructed)
 
     jacobisvd.setThreshold()
-    default_threshold = jacobisvd.threshold()
-    print("default_threshold")
-    print(default_threshold)
+    _default_threshold = jacobisvd.threshold()
     jacobisvd.setThreshold(1e-8)
     assert jacobisvd.threshold() == 1e-8
 

@@ -15,21 +15,18 @@ def isapprox(a, b, epsilon=1e-6):
 
 
 # --- Quaternion ---------------------------------------------------------------
-# Coefficient initialisation
 verbose and print("[Quaternion] Coefficient initialisation")
 q = nanoeigenpy.Quaternion(1, 2, 3, 4)
 q.normalize()
 assert isapprox(np.linalg.norm(q.coeffs()), q.norm())
 assert isapprox(np.linalg.norm(q.coeffs()), 1)
 
-# Coefficient-vector initialisation
 verbose and print("[Quaternion] Coefficient-vector initialisation")
 v = np.array([0.5, -0.5, 0.5, 0.5])
 for k in range(10000):
     qv = nanoeigenpy.Quaternion(v)
 assert isapprox(qv.coeffs(), v)
 
-# Angle axis initialisation
 verbose and print("[Quaternion] AngleAxis initialisation")
 r = nanoeigenpy.AngleAxis(q)
 q2 = nanoeigenpy.Quaternion(r)
@@ -43,7 +40,6 @@ Rr = r.matrix()
 assert isapprox(Rq.dot(Rq.T), np.eye(3))
 assert isapprox(Rr, Rq)
 
-# Rotation matrix initialisation
 verbose and print("[Quaternion] Rotation Matrix initialisation")
 qR = nanoeigenpy.Quaternion(Rr)
 assert q.isApprox(qR)
@@ -57,7 +53,6 @@ except IndexError as e:
     if verbose:
         print("As expected, caught exception: ", e)
 
-# Test struct owning quaternion, constructed from quaternion
 x = quaternion.X(q)
 assert x.a == q
 
@@ -131,8 +126,8 @@ h_copy.normalize()
 assert isapprox(np.linalg.norm(h_copy.normal()), 1.0)
 
 verbose and print("[Hyperplane] Line intersection")
-h_line1 = nanoeigenpy.Hyperplane(np.array([1.0, 0.0]), 0.0)  # x = 0
-h_line2 = nanoeigenpy.Hyperplane(np.array([0.0, 1.0]), 0.0)  # y = 0
+h_line1 = nanoeigenpy.Hyperplane(np.array([1.0, 0.0]), 0.0)
+h_line2 = nanoeigenpy.Hyperplane(np.array([0.0, 1.0]), 0.0)
 intersection = h_line1.intersection(h_line2)
 assert isapprox(intersection, np.array([0.0, 0.0]))
 
@@ -141,9 +136,7 @@ h5 = nanoeigenpy.Hyperplane(h)
 assert h.isApprox(h5)
 assert h.isApprox(h5, 1e-12)
 
-
 # --- ParametrizedLine ------------------------------------------------
-
 verbose and print("[ParametrizedLine] Origin and direction construction")
 origin = np.array([1.0, 2.0])
 direction = np.array([1.0, 0.0])
@@ -166,7 +159,7 @@ assert isapprox(line_copy.origin(), line.origin())
 assert isapprox(line_copy.direction(), line.direction())
 
 verbose and print("[ParametrizedLine] Construction from 2D hyperplane")
-h_2d = nanoeigenpy.Hyperplane(np.array([1.0, 0.0]), 0.0)  # x = 0 line
+h_2d = nanoeigenpy.Hyperplane(np.array([1.0, 0.0]), 0.0)
 line_from_h = nanoeigenpy.ParametrizedLine(h_2d)
 assert line_from_h.dim() == 2
 assert isapprox(line_from_h.origin(), np.array([0.0, 0.0]))
@@ -249,7 +242,6 @@ assert isapprox(np.linalg.norm(direction), 1.0)
 assert isapprox(direction, expected_dir)
 
 # --- Rotation2D ------------------------------------------------
-
 verbose and print("[Rotation2D] Default constructor")
 r_default = nanoeigenpy.Rotation2D()
 assert isapprox(r_default.angle, 0.0)
@@ -404,9 +396,7 @@ rotated_large = r_large_angle * vec_test
 expected_large = np.array([-1.0, 0.0])
 assert isapprox(rotated_large, expected_large)
 
-
 # --- UniformScaling ------------------------------------------------
-
 verbose and print("[UniformScaling] Default constructor")
 s_default = nanoeigenpy.UniformScaling()
 
@@ -449,59 +439,6 @@ s_identity_scale = nanoeigenpy.UniformScaling(5.0)
 scaled_identity = s_identity_scale * identity
 expected_identity = identity * 5.0
 assert isapprox(scaled_identity, expected_identity)
-
-# verbose and print("[UniformScaling] Multiplication with 2D translation")
-# try:
-#     translation_2d = nanoeigenpy.Translation(np.array([1.0, 2.0]))
-#     s_with_translation = nanoeigenpy.UniformScaling(2.0)
-#     result_transform = s_with_translation * translation_2d
-#     assert hasattr(result_transform, "matrix") or hasattr(
-#         result_transform, "translation"
-#     )
-#     if verbose:
-#         print("2D translation multiplication successful")
-# except (AttributeError, NameError):
-#     if verbose:
-#         print(
-#             "Translation class not available or not exposed"
-#         )  # TODO: Expose Translation
-
-# verbose and print("[UniformScaling] Multiplication with 3D translation")
-# try:
-#     translation_3d = nanoeigenpy.Translation(np.array([1.0, 2.0, 3.0]))
-#     s_with_translation_3d = nanoeigenpy.UniformScaling(3.0)
-#     result_transform_3d = s_with_translation_3d * translation_3d
-#     if verbose:
-#         print("3D translation multiplication successful")
-# except (AttributeError, NameError):
-#     if verbose:
-#         print(
-#             "3D Translation class not available or not exposed"
-#         )  # TODO: Expose Translation
-
-verbose and print("[UniformScaling] Multiplication with transforms")
-try:
-    transform_2d = nanoeigenpy.Transform2d()
-    s_with_transform = nanoeigenpy.UniformScaling(1.5)
-    result_2d = s_with_transform * transform_2d
-    if verbose:
-        print("2D transform multiplication successful")
-except (AttributeError, NameError):
-    if verbose:
-        print(
-            "Transform2d class not available or not exposed"
-        )  # TODO: Expose Transform
-
-try:
-    transform_3d = nanoeigenpy.Transform3d()
-    result_3d = s_with_transform * transform_3d
-    if verbose:
-        print("3D transform multiplication successful")
-except (AttributeError, NameError):
-    if verbose:
-        print(
-            "Transform3d class not available or not exposed"
-        )  # TODO: Expose Transform
 
 verbose and print("[UniformScaling] Multiplication with AngleAxis")
 try:
@@ -594,7 +531,6 @@ expected_vector = vector * 2.0
 assert isapprox(scaled_vector, expected_vector)
 
 # --- Translation ------------------------------------------------
-
 verbose and print("[Translation] Default constructor")
 t_default = nanoeigenpy.Translation()
 
@@ -660,9 +596,7 @@ assert t_approx1.isApprox(t_approx2)
 assert t_approx1.isApprox(t_approx2, 1e-12)
 assert not t_approx1.isApprox(t_approx3)
 
-
 # --- JacobiRotation ---------------------------------------------------------------
-
 verbose and print("[JacobiRotation] Default constructor")
 j = nanoeigenpy.JacobiRotation()
 assert hasattr(j, "c")
@@ -769,11 +703,3 @@ assert isinstance(result, bool)
 if not result:
     assert isapprox(j.c, 1.0)
     assert isapprox(j.s, 0.0)
-
-
-# # TODO: Test the inits and methods that involve several classes from geometry module
-# # (eg constructor of ParametrizedLine from Hyperplane)
-
-# # TODO: Test the operators
-
-# # TODO: Expose the remaining __mul__ in Translation

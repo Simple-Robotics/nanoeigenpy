@@ -21,9 +21,8 @@ void exposeRealSchur(nb::module_ m, const char *name) {
 
       .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), "matrix"_a,
-           "Constructor; computes real Schur decomposition of given matrices.")
-      .def(nb::init<const MatrixType &, bool>(), "matrix"_a, "computeU"_a,
+      .def(nb::init<const MatrixType &, bool>(), "matrix"_a,
+           "computeU"_a = true,
            "Constructor; computes real Schur decomposition of given matrices.")
 
       .def("matrixU", &Solver::matrixU,

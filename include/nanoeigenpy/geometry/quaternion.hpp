@@ -62,7 +62,6 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
             },
             "u"_a, "v"_a, "Initialize from two vectors u and v.")
 
-        // Add property with x, y, z, w
         .def_prop_rw("x", &QuaternionVisitor::getCoeff<0>,
                      &QuaternionVisitor::setCoeff<0>, "The x coefficient.")
         .def_prop_rw("y", &QuaternionVisitor::getCoeff<1>,
@@ -162,7 +161,7 @@ struct QuaternionVisitor : nb::def_visitor<QuaternionVisitor<Quaternion>> {
             [](Quaternion* self, const AngleAxisType& aa) -> Quaternion& {
               return (*self = aa);
             },
-            nb::arg("aa"), nb::rv_policy::reference,
+            "aa"_a, nb::rv_policy::reference,
             "Set *this from an angle-axis and return a reference to self.")
         .def("__str__", &print)
         .def("__repr__", &print)

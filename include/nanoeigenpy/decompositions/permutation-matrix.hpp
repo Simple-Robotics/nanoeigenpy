@@ -8,6 +8,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <int SizeAtCompileTime, int MaxSizeAtCompileTime = SizeAtCompileTime,
           typename StorageIndex_ = int>
@@ -27,9 +28,9 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
                                 "This class represents a permutation matrix, "
                                 "internally stored as a vector of integers.")
 
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<VectorIndex>(), nb::arg("indices"),
+      .def(nb::init<VectorIndex>(), "indices"_a,
            "The indices array has the meaning that the permutations sends "
            "each integer i to indices[i].\n"
            "It is your responsibility to check that the indices array that "
@@ -45,12 +46,10 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
           "The stored array representing the permutation.")
 
       .def("applyTranspositionOnTheLeft",
-           &PermutationMatrix::applyTranspositionOnTheLeft, nb::arg("i"),
-           nb::arg("j"),
+           &PermutationMatrix::applyTranspositionOnTheLeft, "i"_a, "j"_a,
            "Multiplies self by the transposition (ij) on the left.")
       .def("applyTranspositionOnTheRight",
-           &PermutationMatrix::applyTranspositionOnTheRight, nb::arg("i"),
-           nb::arg("j"),
+           &PermutationMatrix::applyTranspositionOnTheRight, "i"_a, "j"_a,
            "Multiplies self by the transposition (ij) on the right.")
 
       .def(
@@ -61,7 +60,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
           [](PermutationMatrix &self, Eigen::DenseIndex size) {
             self.setIdentity(size);
           },
-          nb::arg("size"),
+          "size"_a,
           "Sets self to be the identity permutation matrix of given size.")
 
       .def("toDenseMatrix", &PermutationMatrix::toDenseMatrix,
@@ -81,7 +80,7 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
           },
           "Returns the inverse permutation matrix.")
 
-      .def("resize", &PermutationMatrix::resize, nb::arg("size"),
+      .def("resize", &PermutationMatrix::resize, "size"_a,
            "Resizes to given size.")
 
       .def(nb::self * nb::self)

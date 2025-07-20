@@ -70,42 +70,6 @@ void exposeUniformScaling(nb::module_ m, const char* name) {
 
       .def(
           "__mul__",
-          [](const UniformScaling& self, const Eigen::Translation<Scalar, 2>& t)
-              -> Eigen::Transform<Scalar, 2, Eigen::Affine> {
-            return self * t;
-          },
-          "translation"_a, "Concatenates uniform scaling with 2D translation")
-
-      .def(
-          "__mul__",
-          [](const UniformScaling& self, const Eigen::Translation<Scalar, 3>& t)
-              -> Eigen::Transform<Scalar, 3, Eigen::Affine> {
-            return self * t;
-          },
-          "translation"_a, "Concatenates uniform scaling with 3D translation")
-
-      .def(
-          "__mul__",
-          [](const UniformScaling& self,
-             const Eigen::Transform<Scalar, 2, Eigen::Affine>& t)
-              -> Eigen::Transform<Scalar, 2, Eigen::Affine> {
-            return self * t;
-          },
-          "transform"_a,
-          "Concatenates uniform scaling with 2D affine transform")
-
-      .def(
-          "__mul__",
-          [](const UniformScaling& self,
-             const Eigen::Transform<Scalar, 3, Eigen::Affine>& t)
-              -> Eigen::Transform<Scalar, 3, Eigen::Affine> {
-            return self * t;
-          },
-          "transform"_a,
-          "Concatenates uniform scaling with 3D affine transform")
-
-      .def(
-          "__mul__",
           [](const UniformScaling& self, const Eigen::AngleAxis<Scalar>& r)
               -> Eigen::Matrix<Scalar, 3, 3> { return self * r; },
           "rotation"_a, "Multiplies uniform scaling with AngleAxis rotation")

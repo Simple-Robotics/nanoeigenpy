@@ -7,6 +7,7 @@
 #include <Eigen/SparseCholesky>
 
 namespace nanoeigenpy {
+using namespace nb::literals;
 
 struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
   template <typename SimplicialDerived, typename... Ts>
@@ -38,7 +39,7 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
             [](Solver &self, MatrixType const &matrix) -> decltype(auto) {
               return self.compute(matrix);
             },
-            nb::arg("matrix"),
+            "matrix"_a,
             "Computes the sparse Cholesky decomposition of a given matrix.",
             nb::rv_policy::reference)
 
@@ -46,7 +47,7 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
              "Returns the determinant of the underlying matrix from the "
              "current factorization.")
 
-        .def("factorize", &Solver::factorize, nb::arg("matrix"),
+        .def("factorize", &Solver::factorize, "matrix"_a,
              "Performs a numeric decomposition of a given matrix.\n"
              "The given matrix must has the same sparcity than the matrix on "
              "which the symbolic decomposition has been performed.\n"
@@ -58,8 +59,8 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
              "NumericalIssue if the input contains INF or NaN values or "
              "overflow occured. Returns Success otherwise.")
 
-        .def("setShift", &Solver::setShift, nb::arg("offset"),
-             nb::arg("scale") = RealScalar(1),
+        .def("setShift", &Solver::setShift, "offset"_a,
+             "scale"_a = RealScalar(1),
              "Sets the shift parameters that will be used to adjust the "
              "diagonal coefficients during the numerical factorization.\n"
              "During the numerical factorization, the diagonal coefficients "

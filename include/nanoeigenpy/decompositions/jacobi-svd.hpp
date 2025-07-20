@@ -26,14 +26,10 @@ struct JacobiSVDVisitor : nb::def_visitor<JacobiSVDVisitor<JacobiSVD>> {
     using namespace nb::literals;
     cl.def(nb::init<>(), "Default constructor.")
         .def(nb::init<Eigen::DenseIndex, Eigen::DenseIndex, unsigned int>(),
-             "rows"_a, "cols"_a, "computationOptions"_a,
+             "rows"_a, "cols"_a, "computationOptions"_a = 0,
              "Default constructor with memory preallocation.")
-        .def(nb::init<Eigen::DenseIndex, Eigen::DenseIndex>(), "rows"_a,
-             "cols"_a, "Default constructor with memory preallocation.")
-        .def(nb::init<const MatrixType &>(), "matrix"_a,
-             "Constructs a SVD factorization from a given matrix.")
         .def(nb::init<const MatrixType &, unsigned int>(), "matrix"_a,
-             "computationOptions"_a,
+             "computationOptions"_a = 0,
              "Constructs a SVD factorization from a given matrix.")
 
         .def(SVDBaseVisitor())

@@ -10,7 +10,7 @@ A = rng.random((dim, dim))
 A = (A + A.T) * 0.5 + np.diag(5.0 + rng.random(dim))
 A = csc_matrix(A)
 
-ichol = nanoeigenpy.IncompleteCholesky(A)
+ichol = nanoeigenpy.solvers.IncompleteCholesky(A)
 assert ichol.info() == nanoeigenpy.ComputationInfo.Success
 assert ichol.rows() == dim
 assert ichol.cols() == dim

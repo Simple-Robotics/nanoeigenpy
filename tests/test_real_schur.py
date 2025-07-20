@@ -3,7 +3,6 @@ import numpy as np
 
 
 def verify_is_quasi_triangular(T):
-    """Inspired from "eigen/test/schur_real.cpp"""
     size = T.shape[0]
 
     for row in range(2, size):

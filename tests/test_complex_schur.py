@@ -1,7 +1,7 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 5
+dim = 100
 rng = np.random.default_rng()
 A = rng.random((dim, dim))
 

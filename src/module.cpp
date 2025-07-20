@@ -124,20 +124,6 @@ NB_MODULE(nanoeigenpy, m) {
   exposeUniformScaling<Scalar>(m, "UniformScaling");
   exposeTranslation<Scalar>(m, "Translation");
 
-  using AffineTransform =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Affine>;
-  using AffineCompactTransform =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::AffineCompact>;
-  using ProjectiveTransform =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Projective>;
-  using IsometryTransform =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Isometry>;
-
-  exposeTransform<AffineTransform>(m, "AffineTransform");
-  //   exposeTransform<AffineCompactTransform>(m, "AffineCompactTransform");
-  //   exposeTransform<ProjectiveTransform>(m, "ProjectiveTransform");
-  //   exposeTransform<IsometryTransform>(m, "IsometryTransform");
-
   // <Eigen/Jacobi>
   exposeJacobiRotation<Scalar>(m, "JacobiRotation");
 
@@ -185,8 +171,8 @@ NB_MODULE(nanoeigenpy, m) {
   exposeBiCGSTAB<BiCGSTAB<Matrix>>(solvers, "BiCGSTAB");
   exposeBiCGSTAB<IdentityBiCGSTAB>(solvers, "IdentityBiCGSTAB");
 
-  exposeIncompleteLUT<SparseMatrix>(m, "IncompleteLUT");
-  exposeIncompleteCholesky<SparseMatrix>(m, "IncompleteCholesky");
+  exposeIncompleteLUT<SparseMatrix>(solvers, "IncompleteLUT");
+  exposeIncompleteCholesky<SparseMatrix>(solvers, "IncompleteCholesky");
 
   // Utils
   exposeIsApprox<double>(m);

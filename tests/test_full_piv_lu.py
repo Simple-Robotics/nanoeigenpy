@@ -2,7 +2,7 @@ import nanoeigenpy
 import numpy as np
 
 dim = 100
-rng = np.random.default_rng(42)
+rng = np.random.default_rng()
 A = rng.random((dim, dim))
 A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
 fullpivlu = nanoeigenpy.FullPivLU(A)

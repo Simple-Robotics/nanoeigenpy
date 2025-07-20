@@ -7,7 +7,6 @@ rng = np.random.default_rng()
 
 A = rng.random((rows, cols))
 
-# Test HouseholderQR decomposition
 householder_qr = nanoeigenpy.HouseholderQR()
 householder_qr = nanoeigenpy.HouseholderQR(rows, cols)
 householder_qr = nanoeigenpy.HouseholderQR(A)
@@ -24,7 +23,6 @@ x = rng.random(rows)
 y = householder_qr_eye.solve(x)
 assert (x == y).all()
 
-# Test FullPivHouseholderQR decomposition
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR()
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR(rows, cols)
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR(A)
@@ -55,7 +53,6 @@ assert fullpiv_householder_qr.maxPivot() == 1.0
 assert fullpiv_householder_qr.nonzeroPivots() == rows
 assert fullpiv_householder_qr.dimensionOfKernel() == 0
 
-# Test ColPivHouseholderQR decomposition
 colpiv_householder_qr = nanoeigenpy.ColPivHouseholderQR(A)
 assert colpiv_householder_qr.info() == nanoeigenpy.ComputationInfo.Success
 
@@ -77,7 +74,6 @@ assert colpiv_householder_qr.maxPivot() == 1.0
 assert colpiv_householder_qr.nonzeroPivots() == rows
 assert colpiv_householder_qr.dimensionOfKernel() == 0
 
-# Test CompleteOrthogonalDecomposition
 cod = nanoeigenpy.CompleteOrthogonalDecomposition(A)
 assert cod.info() == nanoeigenpy.ComputationInfo.Success
 

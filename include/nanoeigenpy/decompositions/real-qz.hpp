@@ -21,10 +21,8 @@ void exposeRealQZ(nb::module_ m, const char *name) {
 
       .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &, const MatrixType &>(), "A"_a, "B"_a,
-           "Constructor; computes real QZ decomposition of given matrices.")
       .def(nb::init<const MatrixType &, const MatrixType &, bool>(), "A"_a,
-           "B"_a, "computeQZ"_a,
+           "B"_a, "computeQZ"_a = true,
            "Constructor; computes real QZ decomposition of given matrices.")
 
       .def("matrixQ", &Solver::matrixQ,

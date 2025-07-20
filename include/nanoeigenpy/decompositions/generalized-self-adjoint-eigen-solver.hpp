@@ -20,13 +20,10 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   nb::class_<Solver>(m, name, "Generalized self adjoint Eigen Solver")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &, const MatrixType &>(), "matA"_a,
-           "matB"_a,
-           "Computes the generalized eigendecomposition of given matrix pencil")
       .def(nb::init<const MatrixType &, const MatrixType &, int>(), "matA"_a,
-           "matB"_a, "options"_a,
+           "matB"_a, "options"_a = Eigen::ComputeEigenvectors | Eigen::Ax_lBx,
            "Computes the generalized eigendecomposition of given matrix pencil")
 
       .def(
@@ -58,7 +55,7 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix) -> Solver & {
             return static_cast<Solver &>(c.computeDirect(matrix));
           },
-          nb::arg("matrix"),
+          "matrix"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)
@@ -67,7 +64,7 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
             return static_cast<Solver &>(c.computeDirect(matrix, options));
           },
-          nb::arg("matrix"), nb::arg("options"),
+          "matrix"_a, "options"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)

@@ -8,6 +8,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename MatrixType, typename MatrixOrVector>
 MatrixOrVector solve(const Eigen::LLT<MatrixType> &c,
@@ -41,9 +42,9 @@ void exposeLLT(nb::module_ m, const char *name) {
       "problems with hermitian matrices.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LLT factorization from a given matrix.")
 
       .def(EigenBaseVisitor())
@@ -65,16 +66,15 @@ void exposeLLT(nb::module_ m, const char *name) {
           [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
-          "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"), nb::rv_policy::reference)
+          "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a,
+          nb::rv_policy::reference)
 #else
       .def(
           "rankUpdate",
           [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
-          "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"))
+          "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
 #endif
 
       .def("adjoint", &Chol::adjoint,
@@ -87,7 +87,7 @@ void exposeLLT(nb::module_ m, const char *name) {
           [](Chol &c, MatrixType const &matrix) -> Chol & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the LDLT of given matrix.",
+          "matrix"_a, "Computes the LDLT of given matrix.",
           nb::rv_policy::reference)
       .def("info", &Chol::info,
            "NumericalIssue if the input contains INF or NaN values or "
@@ -107,7 +107,7 @@ void exposeLLT(nb::module_ m, const char *name) {
           [](Chol const &c, VectorType const &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = b using the current "
           "decomposition of A.")
       .def(
@@ -115,7 +115,7 @@ void exposeLLT(nb::module_ m, const char *name) {
           [](Chol const &c, MatrixType const &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

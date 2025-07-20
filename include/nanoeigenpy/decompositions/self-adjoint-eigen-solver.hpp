@@ -7,6 +7,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename _MatrixType>
 void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
@@ -19,10 +20,10 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   nb::class_<Solver>(m, name, "Self adjoint Eigen Solver")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
       .def(nb::init<const MatrixType &, Eigen::DecompositionOptions>(),
-           nb::arg("matrix"), nb::arg("options") = Eigen::ComputeEigenvectors,
+           "matrix"_a, "options"_a = Eigen::ComputeEigenvectors,
            "Computes eigendecomposition of given matrix")
 
       .def("eigenvalues", &Solver::eigenvalues,
@@ -37,14 +38,14 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix) -> Solver & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the eigendecomposition of given matrix.",
+          "matrix"_a, "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
           [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
             return c.compute(matrix, options);
           },
-          nb::arg("matrix"), nb::arg("options"),
+          "matrix"_a, "options"_a,
           "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
 
@@ -53,7 +54,7 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix) -> Solver & {
             return c.computeDirect(matrix);
           },
-          nb::arg("matrix"),
+          "matrix"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)
@@ -62,7 +63,7 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
             return c.computeDirect(matrix, options);
           },
-          nb::arg("matrix"), nb::arg("options"),
+          "matrix"_a, "options"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)

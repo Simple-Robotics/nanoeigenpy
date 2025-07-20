@@ -8,6 +8,5 @@
 #include "nanoeigenpy/geometry/rotation-2d.hpp"
 #include "nanoeigenpy/geometry/scaling.hpp"
 #include "nanoeigenpy/geometry/translation.hpp"
-#include "nanoeigenpy/geometry/transform.hpp"
 #include "nanoeigenpy/geometry/quaternion.hpp"
 #include "nanoeigenpy/geometry/jacobi-rotation.hpp"

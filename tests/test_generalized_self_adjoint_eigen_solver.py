@@ -4,7 +4,7 @@ import pytest
 
 _options = [
     nanoeigenpy.DecompositionOptions.ComputeEigenvectors.value
-    | nanoeigenpy.DecompositionOptions.Ax_lBx.value,  # Défaut
+    | nanoeigenpy.DecompositionOptions.Ax_lBx.value,
     nanoeigenpy.DecompositionOptions.EigenvaluesOnly.value
     | nanoeigenpy.DecompositionOptions.Ax_lBx.value,
     nanoeigenpy.DecompositionOptions.ComputeEigenvectors.value
@@ -72,12 +72,8 @@ def test_generalized_selfadjoint_eigensolver(options):
                 lam_v = lam * v
                 assert np.allclose(BAv, lam_v)
 
-    gsaes_compute = gsaes.compute(A, B)
-    gsaes_compute_options = gsaes.compute(A, B, options)
-    print("gsaes_compute")
-    print(gsaes_compute)
-    print("gsaes_compute_options")
-    print(gsaes_compute_options)
+    _gsaes_compute = gsaes.compute(A, B)
+    _gsaes_compute_options = gsaes.compute(A, B, options)
 
     rank = len([d for d in D if abs(d) > 1e-12])
     assert rank <= dim

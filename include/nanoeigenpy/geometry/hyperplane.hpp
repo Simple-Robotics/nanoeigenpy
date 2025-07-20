@@ -24,7 +24,6 @@ void exposeHyperplane(nb::module_ m, const char *name) {
   using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
   using MatrixType = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, 1>;
   using Parameterized = Eigen::ParametrizedLine<Scalar, Eigen::Dynamic>;
-  using Transform = Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Affine>;
 
   if (check_registration_alias<Hyperplane>(m)) {
     return;
@@ -171,45 +170,6 @@ void exposeHyperplane(nb::module_ m, const char *name) {
             }
           },
           "other"_a, "Returns the intersection of *this with \a other.")
-
-      // TODO: Pass the tests
-      //  .def(
-      //      "transform",
-      //      [](Hyperplane &h, const MatrixType &mat) -> Hyperplane & {
-      //        return h.transform(mat);
-      //      }, "mat"_a,
-      //      "Applies the transformation matrix \a mat to *this and returns a
-      //      reference to *this.", nb::rv_policy::reference)
-      //  .def(
-      //      "transform",
-      //      [](Hyperplane &h, const MatrixType &mat, Eigen::TransformTraits
-      //      traits) -> Hyperplane & {
-      //        return h.transform(mat, traits);
-      //      }, "mat"_a, "traits"_a,
-      //      "Applies the transformation matrix \a mat to *this and returns a
-      //      reference to *this." "traits specifies whether the matrix \a mat
-      //      represents an #Isometry" "or a more generic #Affine
-      //      transformation. The default is #Affine.",
-      //      nb::rv_policy::reference)
-      // TODO: Fix errors from Transform (maybe due to size management, of
-      // other)
-      //  .def(
-      //      "transform",
-      //      [](Hyperplane &h, const Transform &t) -> Hyperplane & {
-      //        return h.transform(t);
-      //      }, "t"_a,
-      //      "Applies the transformation \a t to *this and returns a reference
-      //      to *this", nb::rv_policy::reference)
-      // .def(
-      //      "transform",
-      //      [](Hyperplane &h, const Transform &t, Eigen::TransformTraits
-      //      traits) -> Hyperplane & {
-      //        return h.transform(t, traits);
-      //      }, "t"_a, "traits"_a,
-      //      "Applies the transformation \a t to *this and returns a reference
-      //      to *this" "traits specifies whether the matrix \a mat represents
-      //      an #Isometry" "or a more generic #Affine transformation. The
-      //      default is #Affine.", nb::rv_policy::reference)
 
       .def(
           "isApprox",

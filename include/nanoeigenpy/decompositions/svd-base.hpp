@@ -45,7 +45,7 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
             [](Derived &c, RealScalar const &threshold) {
               return c.setThreshold(threshold);
             },
-            nb::arg("threshold"),
+            "threshold"_a,
             "Allows to prescribe a threshold to be used by certain methods, "
             "such as rank(), who need to determine when pivots are to be "
             "considered nonzero. This is not used for the SVD decomposition "

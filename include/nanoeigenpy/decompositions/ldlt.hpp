@@ -8,6 +8,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename MatrixType, typename MatrixOrVector>
 MatrixOrVector solve(const Eigen::LDLT<MatrixType> &c,
@@ -40,9 +41,9 @@ void exposeLDLT(nb::module_ m, const char *name) {
       "square root on D also stabilizes the computation.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LLT factorization from a given matrix.")
 
       .def(EigenBaseVisitor())
@@ -80,8 +81,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
           [](Solver &c, VectorType const &w, Scalar sigma) -> Solver & {
             return c.rankUpdate(w, sigma);
           },
-          "If LDL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"))
+          "If LDL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
 
       .def("adjoint", &Solver::adjoint,
            "Returns the adjoint, that is, a reference to the decomposition "
@@ -93,7 +93,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
           [](Solver &c, MatrixType const &matrix) -> Solver & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the LDLT of given matrix.",
+          "matrix"_a, "Computes the LDLT of given matrix.",
           nb::rv_policy::reference)
       .def("info", &Solver::info,
            "NumericalIssue if the input contains INF or NaN values or "
@@ -113,7 +113,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
           [](Solver const &c, VectorType const &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = b using the current "
           "decomposition of A.")
       .def(
@@ -121,7 +121,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
           [](Solver const &c, MatrixType const &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

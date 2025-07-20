@@ -19,12 +19,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
   using SparseLUTransposeViewTrue = Eigen::SparseLUTransposeView<true, Solver>;
   using SparseLUTransposeViewFalse =
       Eigen::SparseLUTransposeView<false, Solver>;
-  //   using SCMatrix = typename Solver::SCMatrix;
-  //   using MappedSparseMatrixType = Eigen::MappedSparseMatrix<typename
-  //   Solver::Scalar, Eigen::ColMajor, typename Solver::StorageIndex>; using
-  //   SparseLUMatrixLType = Eigen::SparseLUMatrixLReturnType<SCMatrix>; using
-  //   SparseLUMatrixUType = Eigen::SparseLUMatrixUReturnType<SCMatrix,
-  //   MappedSparseMatrixType>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
@@ -43,14 +37,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
       .def("setSparseLU", &SparseLUTransposeViewTrue::setSparseLU)
       .def("rows", &SparseLUTransposeViewTrue::rows)
       .def("cols", &SparseLUTransposeViewTrue::cols);
-
-  //   nb::class_<SparseLUMatrixLType>(m, "SparseLUMatrixL")
-  //      .def("rows", &SparseLUMatrixLType::rows)
-  //      .def("cols", &SparseLUMatrixLType::cols);
-
-  //   nb::class_<SparseLUMatrixUType>(m, "SparseLUMatrixU")
-  //      .def("rows", &SparseLUMatrixUType::rows)
-  //      .def("cols", &SparseLUMatrixUType::cols);
 
   nb::class_<Solver>(
       m, name,
@@ -123,20 +109,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
 
       .def("isSymmetric", &Solver::isSymmetric,
            "Indicate that the pattern of the input matrix is symmetric.")
-
-      //  .def("matrixU",
-      //      [](Solver& self) -> SparseLUMatrixUType {
-      //      auto view = self.matrixU();
-      //      return view;
-      //      },
-      //      "Returns an expression of the matrix U.")
-
-      // .def("matrixL",
-      //      [](Solver& self) -> SparseLUMatrixLType {
-      //      auto view = self.matrixL();
-      //      return view;
-      //      },
-      //      "Returns an expression of the matrix L.")
 
       .def("rowsPermutation", &Solver::rowsPermutation,
            "Returns a reference to the row matrix permutation "

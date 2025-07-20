@@ -53,12 +53,8 @@ def test_bdcsvd(options):
     assert cols == dim
     assert rows == dim
 
-    bdcsvd_compute = bdcsvd.compute(A)
-    bdcsvd_compute_options = bdcsvd.compute(A, options)
-    print("bdcsvd_compute")
-    print(bdcsvd_compute)
-    print("bdcsvd_compute_options")
-    print(bdcsvd_compute_options)
+    _bdcsvd_compute = bdcsvd.compute(A)
+    _bdcsvd_compute_options = bdcsvd.compute(A, options)
 
     rank = bdcsvd.rank()
     singularvalues = bdcsvd.singularValues()
@@ -118,9 +114,7 @@ def test_bdcsvd(options):
     bdcsvd.setSwitchSize(32)
 
     bdcsvd.setThreshold()
-    default_threshold = bdcsvd.threshold()
-    print("default_threshold")
-    print(default_threshold)
+    _default_threshold = bdcsvd.threshold()
     bdcsvd.setThreshold(1e-8)
     assert bdcsvd.threshold() == 1e-8
 

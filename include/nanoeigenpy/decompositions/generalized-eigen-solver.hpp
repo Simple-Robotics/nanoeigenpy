@@ -22,12 +22,8 @@ void exposeGeneralizedEigenSolver(nb::module_ m, const char *name) {
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &, const MatrixType &>(), "A"_a, "B"_a,
-           "Constructor; computes the generalized eigendecomposition of given "
-           "matrix pair.")
       .def(nb::init<const MatrixType &, const MatrixType &, bool>(), "A"_a,
-           "B"_a,
-           "computeEigenvectors"_a
+           "B"_a, "computeEigenvectors"_a = true,
            "Constructor; computes the generalized eigendecomposition of given "
            "matrix pair.")
 

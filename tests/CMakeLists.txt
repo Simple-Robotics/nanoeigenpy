@@ -1,3 +1,5 @@
+# Copyright 2025 INRIA
+
 # Create a shared nanobind library for testing
 set(NANOBIND_TESTING_TARGET nanobind-testing)
 nanobind_build_library(${NANOBIND_TESTING_TARGET} SHARED)

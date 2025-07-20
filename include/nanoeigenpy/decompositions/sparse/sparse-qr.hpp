@@ -10,56 +10,6 @@ namespace nanoeigenpy {
 namespace nb = nanobind;
 using namespace nb::literals;
 
-// template<typename SparseQRType>
-// class SparseQRMatrixQReturnTypeWrapper {
-// private:
-//     Eigen::SparseQRMatrixQReturnType<SparseQRType> m_q_expr;
-
-// public:
-//     explicit SparseQRMatrixQReturnTypeWrapper(const SparseQRType& qr)
-//         : m_q_expr(qr) {}
-
-//     Eigen::Index rows() const { return m_q_expr.rows(); }
-//     Eigen::Index cols() const { return m_q_expr.cols(); }
-
-//     Eigen::VectorXd multiply_vec(const Eigen::VectorXd& vec) {
-//      return Eigen::VectorXd(m_q_expr * vec);
-//     }
-
-//     Eigen::MatrixXd multiply_mat(const Eigen::MatrixXd& mat) {
-//      return Eigen::MatrixXd(m_q_expr * mat);
-//     }
-
-//     auto adjoint() const {
-//         return
-//         SparseQRMatrixQTransposeReturnTypeWrapper<SparseQRType>(m_q_expr);
-//     }
-
-//     auto transpose() const {
-//         return
-//         SparseQRMatrixQTransposeReturnTypeWrapper<SparseQRType>(m_q_expr);
-//     }
-// };
-
-// template<typename SparseQRType>
-// class SparseQRMatrixQTransposeReturnTypeWrapper {
-// private:
-//     Eigen::SparseQRMatrixQTransposeReturnType<SparseQRType> m_qt_expr;
-
-// public:
-//     explicit SparseQRMatrixQTransposeReturnTypeWrapper(const SparseQRType&
-//     qt)
-//         : m_qt_expr(qt) {}
-
-//     Eigen::VectorXd multiply_vec(const Eigen::VectorXd& vec) {
-//      return Eigen::VectorXd(m_qt_expr * vec);
-//     }
-
-//     Eigen::MatrixXd multiply_mat(const Eigen::MatrixXd& mat) {
-//      return Eigen::MatrixXd(m_qt_expr * mat);
-//     }
-// };
-
 template <typename _MatrixType, typename _Ordering = Eigen::COLAMDOrdering<
                                     typename _MatrixType::StorageIndex>>
 void exposeSparseQR(nb::module_ m, const char *name) {
@@ -70,36 +20,10 @@ void exposeSparseQR(nb::module_ m, const char *name) {
   using RealScalar = typename MatrixType::RealScalar;
   using QRMatrixType = Eigen::SparseMatrix<Scalar, Eigen::ColMajor,
                                            typename MatrixType::StorageIndex>;
-  //   using QWrapper = SparseQRMatrixQReturnTypeWrapper<Solver>;
-  //   using QTWrapper = SparseQRMatrixQTransposeReturnTypeWrapper<Solver>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
   }
-
-  //   nb::class_<QWrapper>(m, "SparseQRMatrixQ")
-  //       .def("rows", &QWrapper::rows)
-  //       .def("cols", &QWrapper::cols)
-  //       .def("__mul__", [](const QWrapper& self, const Eigen::Ref<const
-  //       Eigen::VectorXd>& vec) {
-  //           return self.multiply_vec(vec);
-  //       }, "vec"_a)
-  //       .def("__mul__", [](const QWrapper& self, const Eigen::Ref<const
-  //       Eigen::MatrixXd>& mat) {
-  //           return self.multiply_mat(mat);
-  //       }, "mat"_a)
-  //       .def("adjoint", &QWrapper::adjoint)
-  //       .def("transpose", &QWrapper::transpose);
-
-  //   nb::class_<QTWrapper>(m, "SparseQRMatrixQTranspose")
-  //       .def("__mul__", [](const QTWrapper& self, const Eigen::Ref<const
-  //       Eigen::VectorXd>& vec) {
-  //           return self.multiply_vec(vec);
-  //       }, "vec"_a)
-  //       .def("__mul__", [](const QTWrapper& self, const Eigen::Ref<const
-  //       Eigen::MatrixXd>& mat) {
-  //           return self.multiply_mat(mat);
-  //       }, "mat"_a);
 
   nb::class_<Solver>(
       m, name,
@@ -146,10 +70,6 @@ void exposeSparseQR(nb::module_ m, const char *name) {
            "matrix.\n\n"
            "The input matrix should be in compressed mode "
            "(see SparseMatrix::makeCompressed()).")
-
-      //  .def("matrixQ", [](const Solver& self) -> QWrapper {
-      //      return QWrapper(self);
-      //      }, "Returns an expression of the matrix Q")
 
       .def(
           "matrixR",

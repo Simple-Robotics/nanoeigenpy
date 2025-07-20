@@ -7,6 +7,7 @@
 #include <Eigen/CholmodSupport>
 
 namespace nanoeigenpy {
+using namespace nb::literals;
 
 struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
   template <typename CholdmodDerived, typename... Ts>
@@ -29,7 +30,7 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
             [](Solver &self, MatrixType const &matrix) -> decltype(auto) {
               return self.compute(matrix);
             },
-            nb::arg("matrix"),
+            "matrix"_a,
             "Computes the sparse Cholesky decomposition of a given matrix.",
             nb::rv_policy::reference)
 
@@ -37,7 +38,7 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
              "Returns the determinant of the underlying matrix from the "
              "current factorization.")
 
-        .def("factorize", &Solver::factorize, nb::arg("matrix"),
+        .def("factorize", &Solver::factorize, "matrix"_a,
              "Performs a numeric decomposition of a given matrix.\n"
              "The given matrix must has the same sparcity than the matrix on "
              "which the symbolic decomposition has been performed.\n"
@@ -51,7 +52,7 @@ struct CholmodBaseVisitor : nb::def_visitor<CholmodBaseVisitor> {
              "NumericalIssue if the input contains INF or NaN values or "
              "overflow occured. Returns Success otherwise.")
 
-        .def("setShift", &Solver::setShift, nb::arg("offset"),
+        .def("setShift", &Solver::setShift, "offset"_a,
              "Sets the shift parameters that will be used to adjust the "
              "diagonal coefficients during the numerical factorization.\n"
              "During the numerical factorization, the diagonal coefficients "

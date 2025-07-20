@@ -22,10 +22,6 @@ void exposeTranslation(nb::module_ m, const char* name) {
   using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
   using LinearMatrixType =
       Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
-  using AffineTransformType =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Affine>;
-  using IsometryTransformType =
-      Eigen::Transform<Scalar, Eigen::Dynamic, Eigen::Isometry>;
   using Translation = Eigen::Translation<Scalar, Eigen::Dynamic>;
 
   if (check_registration_alias<Translation>(m)) {
@@ -131,9 +127,6 @@ void exposeTranslation(nb::module_ m, const char* name) {
             return self * other;
           },
           "other"_a, "Concatenates two translations")
-
-      // TODO: Management of the Eigen::Dynamic to avoic matrices of size 0, 0
-      // in the mul methods
 
       .def(IdVisitor());
 }

@@ -44,7 +44,7 @@ void exposeHessenbergDecomposition(nb::module_ m, const char *name) {
           "matrixQ", [](const Solver &c) -> MatrixType { return c.matrixQ(); },
           "Reconstructs the orthogonal matrix Q in the decomposition.")
       .def(
-          "matrixH", [](Solver &c) -> MatrixType { return c.matrixH(); },
+          "matrixH", [](const Solver &c) -> MatrixType { return c.matrixH(); },
           "Constructs the Hessenberg matrix H in the decomposition.")
 
       .def(IdVisitor());

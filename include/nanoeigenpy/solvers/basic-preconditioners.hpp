@@ -21,16 +21,15 @@ struct PreconditionerBaseVisitor
         .def(nb::init<MatrixType>(), "A"_a)
         .def("info", &Preconditioner::info,
              "Returns success if the Preconditioner has been well initialized.")
-        .def("solve", &solve, nb::arg("b"),
+        .def("solve", &solve, "b"_a,
              "Returns the solution A * z = b where the preconditioner is an "
              "estimate of A^-1.")
 
-        .def("compute", &Preconditioner::template compute<MatrixType>,
-             nb::arg("mat"),
+        .def("compute", &Preconditioner::template compute<MatrixType>, "mat"_a,
              "Initialize the preconditioner from the matrix value.",
              nb::rv_policy::reference)
         .def("factorize", &Preconditioner::template factorize<MatrixType>,
-             nb::arg("mat"),
+             "mat"_a,
              "Initialize the preconditioner from the matrix value, i.e "
              "factorize the mat given as input to approximate its inverse.",
              nb::rv_policy::reference);

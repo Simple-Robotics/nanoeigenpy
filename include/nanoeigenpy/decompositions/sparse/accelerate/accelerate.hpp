@@ -42,7 +42,7 @@ struct AccelerateImplVisitor
             [](Solver& c, MatrixType const& matrix) {
               return c.compute(matrix);
             },
-            nb::arg("matrix"),
+            "matrix"_a,
             "Computes the sparse Cholesky decomposition of a given matrix.",
             nb::rv_policy::reference)
 

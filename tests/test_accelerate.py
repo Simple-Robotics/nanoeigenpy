@@ -19,7 +19,7 @@ def test(SolverType: type):
     X = rng.random((dim, 20))
     B = A.dot(X)
     X_est = llt.solve(B)
-    #    import pdb; pdb.set_trace()
+
     assert nanoeigenpy.is_approx(X, X_est)
     assert nanoeigenpy.is_approx(A.dot(X_est), B)
 

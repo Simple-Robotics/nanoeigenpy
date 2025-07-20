@@ -22,10 +22,8 @@ void exposeComplexEigenSolver(nb::module_ m, const char *name) {
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), "matrix"_a,
-           "Computes eigendecomposition of given matrix")
       .def(nb::init<const MatrixType &, bool>(), "matrix"_a,
-           "computeEigenvectors"_a,
+           "computeEigenvectors"_a = true,
            "Computes eigendecomposition of given matrix")
 
       .def("eigenvalues", &Solver::eigenvalues,
