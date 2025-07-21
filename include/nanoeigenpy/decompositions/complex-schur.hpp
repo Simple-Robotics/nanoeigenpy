@@ -23,7 +23,6 @@ void exposeComplexSchur(nb::module_ m, const char *name) {
            "Default constructor with memory preallocation.")
       .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructor; computes Schur decomposition of given matrix.")
-
       .def(nb::init<const MatrixType &, bool>(), "matrix"_a,
            "computeU"_a = true,
            "Constructor; computes Schur decomposition of given matrix.")

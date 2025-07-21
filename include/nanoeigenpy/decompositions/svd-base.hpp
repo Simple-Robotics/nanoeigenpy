@@ -20,11 +20,6 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
 
     cl.def(nb::init<>(), "Default constructor.")
 
-        .def("rows", &SVDBase::rows,
-             "Returns the number of rows of the matrix.")
-        .def("cols", &SVDBase::cols,
-             "Returns the number of cols of the matrix.")
-
         .def(
             "matrixU",
             [](Derived const &c) -> MatrixType { return c.matrixU(); },
@@ -74,6 +69,11 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
         .def("computeV", &SVDBase::computeV,
              "Returns true if V (full or thin) is asked for in this SVD "
              "decomposition")
+
+        .def("rows", &SVDBase::rows,
+             "Returns the number of rows of the matrix.")
+        .def("cols", &SVDBase::cols,
+             "Returns the number of cols of the matrix.")
 
         .def("info", &SVDBase::info,
              "Reports whether previous computation was successful.");

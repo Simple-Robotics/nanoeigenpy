@@ -16,10 +16,42 @@ void exposeSparseLU(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SparseLU<MatrixType>;
   using RealScalar = typename MatrixType::RealScalar;
+  using SparseLUTransposeViewTrue = Eigen::SparseLUTransposeView<true, Solver>;
+  using SparseLUTransposeViewFalse =
+      Eigen::SparseLUTransposeView<false, Solver>;
+  //   using SCMatrix = typename Solver::SCMatrix;
+  //   using MappedSparseMatrixType = Eigen::MappedSparseMatrix<typename
+  //   Solver::Scalar, Eigen::ColMajor, typename Solver::StorageIndex>; using
+  //   SparseLUMatrixLType = Eigen::SparseLUMatrixLReturnType<SCMatrix>; using
+  //   SparseLUMatrixUType = Eigen::SparseLUMatrixUReturnType<SCMatrix,
+  //   MappedSparseMatrixType>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
   }
+
+  nb::class_<SparseLUTransposeViewFalse>(m, "SparseLUTransposeView")
+      .def(SparseSolverBaseVisitor())
+      .def("setIsInitialized", &SparseLUTransposeViewFalse::setIsInitialized)
+      .def("setSparseLU", &SparseLUTransposeViewFalse::setSparseLU)
+      .def("rows", &SparseLUTransposeViewFalse::rows)
+      .def("cols", &SparseLUTransposeViewFalse::cols);
+
+  nb::class_<SparseLUTransposeViewTrue>(m, "SparseLUAdjointView")
+      .def(SparseSolverBaseVisitor())
+      .def("setIsInitialized", &SparseLUTransposeViewTrue::setIsInitialized)
+      .def("setSparseLU", &SparseLUTransposeViewTrue::setSparseLU)
+      .def("rows", &SparseLUTransposeViewTrue::rows)
+      .def("cols", &SparseLUTransposeViewTrue::cols);
+
+  //   nb::class_<SparseLUMatrixLType>(m, "SparseLUMatrixL")
+  //      .def("rows", &SparseLUMatrixLType::rows)
+  //      .def("cols", &SparseLUMatrixLType::cols);
+
+  //   nb::class_<SparseLUMatrixUType>(m, "SparseLUMatrixU")
+  //      .def("rows", &SparseLUMatrixUType::rows)
+  //      .def("cols", &SparseLUMatrixUType::cols);
+
   nb::class_<Solver>(
       m, name,
       "Sparse supernodal LU factorization for general matrices.\n\n"
@@ -70,14 +102,41 @@ void exposeSparseLU(nb::module_ m, const char *name) {
            "matrix.\n\n"
            "The input matrix should be in column-major storage.")
 
-      // TODO: Expose so that the return type are convertible to np arrays
-      // transpose()
-      // adjoint()
-      // matrixU()
-      // matrixL()
+      .def(
+          "transpose",
+          [](Solver &self) -> SparseLUTransposeViewFalse {
+            auto view = self.transpose();
+            return view;
+          },
+          "Returns an expression of the transposed of the factored matrix.")
+
+      .def(
+          "adjoint",
+          [](Solver &self) -> SparseLUTransposeViewTrue {
+            auto view = self.adjoint();
+            return view;
+          },
+          "Returns an expression of the adjoint of the factored matrix.")
 
       .def("rows", &Solver::rows, "Returns the number of rows of the matrix.")
       .def("cols", &Solver::cols, "Returns the number of cols of the matrix.")
+
+      .def("isSymmetric", &Solver::isSymmetric,
+           "Indicate that the pattern of the input matrix is symmetric.")
+
+      //  .def("matrixU",
+      //      [](Solver& self) -> SparseLUMatrixUType {
+      //      auto view = self.matrixU();
+      //      return view;
+      //      },
+      //      "Returns an expression of the matrix U.")
+
+      // .def("matrixL",
+      //      [](Solver& self) -> SparseLUMatrixLType {
+      //      auto view = self.matrixL();
+      //      return view;
+      //      },
+      //      "Returns an expression of the matrix L.")
 
       .def("rowsPermutation", &Solver::rowsPermutation,
            "Returns a reference to the row matrix permutation "

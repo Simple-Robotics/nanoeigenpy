@@ -39,9 +39,13 @@ void exposeTridiagonalization(nb::module_ m, const char *name) {
            "Returns the internal representation of the decomposition.",
            nb::rv_policy::reference_internal)
 
-      // TODO: Expose so that the return type are convertible to np arrays
-      // matrixQ()
-      // matrixT()
+      .def(
+          "matrixQ", [](const Solver &c) -> MatrixType { return c.matrixQ(); },
+          "Returns the unitary matrix Q in the decomposition.")
+      .def(
+          "matrixT", [](Solver &c) -> MatrixType { return c.matrixT(); },
+          "Returns an expression of the tridiagonal matrix T in the "
+          "decomposition.")
 
       .def("diagonal", &Solver::diagonal,
            "Returns the diagonal of the tridiagonal matrix T in the "

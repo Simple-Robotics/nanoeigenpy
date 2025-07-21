@@ -33,8 +33,9 @@ void exposeGeneralizedEigenSolver(nb::module_ m, const char *name) {
 
       .def("eigenvectors", &Solver::eigenvectors,
            "Returns the computed generalized eigenvectors.")
-      // TODO: Expose so that the return type are convertible to np arrays
-      // eigenvalues()
+      .def(
+          "eigenvalues", [](const Solver &c) { return c.eigenvalues().eval(); },
+          "Returns the computed generalized eigenvalues.")
 
       .def("alphas", &Solver::alphas,
            "Returns the vectors containing the alpha values.")

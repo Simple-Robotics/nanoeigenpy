@@ -151,37 +151,39 @@ NB_MODULE(nanoeigenpy, m) {
       solvers, "LeastSquareDiagonalPreconditioner");
 #endif
 
+  using Eigen::Lower;
+
   using Eigen::BiCGSTAB;
   using Eigen::ConjugateGradient;
   using Eigen::DiagonalPreconditioner;
   using Eigen::IdentityPreconditioner;
   using Eigen::LeastSquareDiagonalPreconditioner;
   using Eigen::LeastSquaresConjugateGradient;
-  using Eigen::Lower;
   using Eigen::MINRES;
 
-  exposeMINRES<MINRES<Matrix, Lower>>(solvers, "MINRES");
-  exposeBiCGSTAB<BiCGSTAB<Matrix>>(solvers, "BiCGSTAB");
-  exposeConjugateGradient<ConjugateGradient<Matrix, Lower>>(
-      solvers, "ConjugateGradient");
-  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<Matrix>>(
-      solvers, "LeastSquaresConjugateGradient");
-
-  using IdentityBiCGSTAB = BiCGSTAB<Matrix, IdentityPreconditioner>;
   using IdentityConjugateGradient =
       ConjugateGradient<Matrix, Lower, IdentityPreconditioner>;
   using IdentityLeastSquaresConjugateGradient =
       LeastSquaresConjugateGradient<Matrix, IdentityPreconditioner>;
   using DiagonalLeastSquaresConjugateGradient =
       LeastSquaresConjugateGradient<Matrix, DiagonalPreconditioner<Scalar>>;
+  using IdentityBiCGSTAB = BiCGSTAB<Matrix, IdentityPreconditioner>;
+  using DiagonalMINRES = MINRES<Matrix, Lower, DiagonalPreconditioner<Scalar>>;
 
-  exposeBiCGSTAB<IdentityBiCGSTAB>(solvers, "IdentityBiCGSTAB");
+  exposeConjugateGradient<ConjugateGradient<Matrix, Lower>>(
+      solvers, "ConjugateGradient");
   exposeConjugateGradient<IdentityConjugateGradient>(
       solvers, "IdentityConjugateGradient");
+  exposeLeastSquaresConjugateGradient<LeastSquaresConjugateGradient<Matrix>>(
+      solvers, "LeastSquaresConjugateGradient");
   exposeLeastSquaresConjugateGradient<IdentityLeastSquaresConjugateGradient>(
       solvers, "IdentityLeastSquaresConjugateGradient");
   exposeLeastSquaresConjugateGradient<DiagonalLeastSquaresConjugateGradient>(
       solvers, "DiagonalLeastSquaresConjugateGradient");
+  exposeMINRES<MINRES<Matrix, Lower>>(solvers, "MINRES");
+  exposeMINRES<DiagonalMINRES>(solvers, "DiagonalMINRES");
+  exposeBiCGSTAB<BiCGSTAB<Matrix>>(solvers, "BiCGSTAB");
+  exposeBiCGSTAB<IdentityBiCGSTAB>(solvers, "IdentityBiCGSTAB");
 
   exposeIncompleteLUT<SparseMatrix>(m, "IncompleteLUT");
   exposeIncompleteCholesky<SparseMatrix>(m, "IncompleteCholesky");

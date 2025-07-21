@@ -6,34 +6,35 @@ dim = 100
 rng = np.random.default_rng()
 MAX_ITER = 8000
 
-_clazzes = [
+_classes = [
     nanoeigenpy.solvers.ConjugateGradient,
     nanoeigenpy.solvers.IdentityConjugateGradient,
     nanoeigenpy.solvers.LeastSquaresConjugateGradient,
     nanoeigenpy.solvers.IdentityLeastSquaresConjugateGradient,
     nanoeigenpy.solvers.DiagonalLeastSquaresConjugateGradient,
     nanoeigenpy.solvers.MINRES,
-    # nanoeigenpy.solvers.BiCGSTAB,
     nanoeigenpy.solvers.IdentityBiCGSTAB,
 ]
 
+_classes_bis = [
+    nanoeigenpy.solvers.DiagonalMINRES,
+    nanoeigenpy.solvers.BiCGSTAB,
+]
 
-@pytest.mark.parametrize("cls", _clazzes)
+
+@pytest.mark.parametrize("cls", _classes)
 def test_solver(cls):
     Q = rng.standard_normal((dim, dim))
     A = 0.5 * (Q.T + Q)
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
 
-    # Vector rhs
-
     x = rng.random(dim)
     b = A.dot(x)
     x_est = solver.solve(b)
 
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
     assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
-
-    # Matrix rhs
 
     X = rng.random((dim, 20))
     B = A.dot(X)
@@ -42,15 +43,12 @@ def test_solver(cls):
     assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
 
 
-@pytest.mark.parametrize("cls", _clazzes)
+@pytest.mark.parametrize("cls", _classes)
 def test_solver_with_guess(cls):
     Q = rng.standard_normal((dim, dim))
     A = 0.5 * (Q.T + Q)
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
-
-    # With guess
-    # Vector rhs
 
     x = rng.random(dim)
     b = A.dot(x)
@@ -60,7 +58,49 @@ def test_solver_with_guess(cls):
     assert nanoeigenpy.is_approx(x, x_est, 1e-6)
     assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
 
-    # Matrix rhs
+    X = rng.random((dim, 20))
+    B = A.dot(X)
+    X_est = solver.solveWithGuess(B, X + 0.01)
+
+    assert nanoeigenpy.is_approx(X, X_est, 1e-6)
+    assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
+
+
+@pytest.mark.parametrize("cls", _classes_bis)
+def test_solver_bis(cls):
+    Q = rng.standard_normal((dim, dim))
+    A = Q.T @ Q + np.eye(dim) * 0.1
+    solver = cls(A)
+    solver.setMaxIterations(MAX_ITER)
+
+    x = rng.random(dim)
+    b = A.dot(x)
+    x_est = solver.solve(b)
+
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
+    assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
+
+    X = rng.random((dim, 20))
+    B = A.dot(X)
+    X_est = solver.solve(B)
+
+    assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
+
+
+@pytest.mark.parametrize("cls", _classes_bis)
+def test_solver_with_guess_bis(cls):
+    Q = rng.standard_normal((dim, dim))
+    A = Q.T @ Q + np.eye(dim) * 0.1
+    solver = cls(A)
+    solver.setMaxIterations(MAX_ITER)
+
+    x = rng.random(dim)
+    b = A.dot(x)
+    x_est = solver.solveWithGuess(b, x + 0.01)
+
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
+    assert nanoeigenpy.is_approx(x, x_est, 1e-6)
+    assert nanoeigenpy.is_approx(b, A.dot(x_est), 1e-6)
 
     X = rng.random((dim, 20))
     B = A.dot(X)

@@ -46,13 +46,15 @@ void exposeRotation2D(nb::module_ m, const char *name) {
            "Returns the rotation angle in [-pi,pi]")
 
       .def(RotationBaseVisitor<Rotation2D, 2>())
+
       .def(
           "fromRotationMatrix",
           [](Rotation2D &r, const Matrix2 &mat) -> Rotation2D & {
             return r.fromRotationMatrix(mat);
           },
-          "mat"_a, "Sets *this from a 3x3 rotation matrix",
+          "mat"_a, "Sets *this from a 2x2 rotation matrix",
           nb::rv_policy::reference_internal)
+      .def("toRotationMatrix", &Rotation2D::toRotationMatrix)
 
       .def(
           "slerp",

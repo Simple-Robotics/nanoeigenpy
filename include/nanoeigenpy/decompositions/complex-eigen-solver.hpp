@@ -22,8 +22,10 @@ void exposeComplexEigenSolver(nb::module_ m, const char *name) {
       .def(nb::init<>(), "Default constructor.")
       .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
+           "Computes eigendecomposition of given matrix")
       .def(nb::init<const MatrixType &, bool>(), "matrix"_a,
-           "computeEigenvectors"_a = true,
+           "computeEigenvectors"_a,
            "Computes eigendecomposition of given matrix")
 
       .def("eigenvalues", &Solver::eigenvalues,
@@ -52,11 +54,11 @@ void exposeComplexEigenSolver(nb::module_ m, const char *name) {
            "NumericalIssue if the input contains INF or NaN values or "
            "overflow occured. Returns Success otherwise.")
 
-      .def("getMaxIterations", &Solver::getMaxIterations,
-           "Returns the maximum number of iterations.")
       .def("setMaxIterations", &Solver::setMaxIterations,
            "Sets the maximum number of iterations allowed.",
            nb::rv_policy::reference)
+      .def("getMaxIterations", &Solver::getMaxIterations,
+           "Returns the maximum number of iterations.")
 
       .def(IdVisitor());
 }

@@ -40,9 +40,12 @@ void exposeHessenbergDecomposition(nb::module_ m, const char *name) {
            "Returns the internal representation of the decomposition.",
            nb::rv_policy::reference_internal)
 
-      // TODO: Expose so that the return type are convertible to np arrays
-      // matrixH
-      // matrixQ
+      .def(
+          "matrixQ", [](const Solver &c) -> MatrixType { return c.matrixQ(); },
+          "Reconstructs the orthogonal matrix Q in the decomposition.")
+      .def(
+          "matrixH", [](Solver &c) -> MatrixType { return c.matrixH(); },
+          "Constructs the Hessenberg matrix H in the decomposition.")
 
       .def(IdVisitor());
 }
