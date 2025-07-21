@@ -29,8 +29,8 @@ assert rs.info() == nanoeigenpy.ComputationInfo.Success
 U = rs.matrixU()
 T = rs.matrixT()
 
-assert nanoeigenpy.is_approx(A, U @ T @ U.T, 1e-10)
-assert nanoeigenpy.is_approx(U @ U.T, np.eye(dim), 1e-10)
+assert nanoeigenpy.is_approx(A, U @ T @ U.T)
+assert nanoeigenpy.is_approx(U @ U.T, np.eye(dim))
 
 verify_is_quasi_triangular(T)
 
@@ -47,20 +47,20 @@ U1 = rs1.matrixU()
 T2 = rs2.matrixT()
 U2 = rs2.matrixU()
 
-assert nanoeigenpy.is_approx(T1, T2, 1e-12)
-assert nanoeigenpy.is_approx(U1, U2, 1e-12)
+assert nanoeigenpy.is_approx(T1, T2)
+assert nanoeigenpy.is_approx(U1, U2)
 
 rs_no_u = nanoeigenpy.RealSchur(A, False)
 assert rs_no_u.info() == nanoeigenpy.ComputationInfo.Success
 T_no_u = rs_no_u.matrixT()
 
-assert nanoeigenpy.is_approx(T, T_no_u, 1e-12)
+assert nanoeigenpy.is_approx(T, T_no_u)
 
 rs_compute_no_u = nanoeigenpy.RealSchur(dim)
 result_no_u = rs_compute_no_u.compute(A, False)
 assert result_no_u.info() == nanoeigenpy.ComputationInfo.Success
 T_compute_no_u = rs_compute_no_u.matrixT()
-assert nanoeigenpy.is_approx(T, T_compute_no_u, 1e-12)
+assert nanoeigenpy.is_approx(T, T_compute_no_u)
 
 rs_iter = nanoeigenpy.RealSchur(dim)
 rs_iter.setMaxIterations(40 * dim)  # m_maxIterationsPerRow * size
@@ -70,8 +70,8 @@ assert rs_iter.getMaxIterations() == 40 * dim
 
 T_iter = rs_iter.matrixT()
 U_iter = rs_iter.matrixU()
-assert nanoeigenpy.is_approx(T, T_iter, 1e-12)
-assert nanoeigenpy.is_approx(U, U_iter, 1e-12)
+assert nanoeigenpy.is_approx(T, T_iter)
+assert nanoeigenpy.is_approx(U, U_iter)
 
 if dim > 2:
     rs_few_iter = nanoeigenpy.RealSchur(dim)
@@ -88,8 +88,8 @@ assert result_triangular.info() == nanoeigenpy.ComputationInfo.Success
 T_triangular = rs_triangular.matrixT()
 U_triangular = rs_triangular.matrixU()
 
-assert nanoeigenpy.is_approx(T_triangular, A_triangular, 1e-10)
-assert nanoeigenpy.is_approx(U_triangular, np.eye(dim), 1e-10)
+assert nanoeigenpy.is_approx(T_triangular, A_triangular)
+assert nanoeigenpy.is_approx(U_triangular, np.eye(dim))
 
 hess = nanoeigenpy.HessenbergDecomposition(A)
 H = hess.matrixH()
@@ -102,7 +102,7 @@ assert result_from_hess.info() == nanoeigenpy.ComputationInfo.Success
 T_from_hess = rs_from_hess.matrixT()
 U_from_hess = rs_from_hess.matrixU()
 
-assert nanoeigenpy.is_approx(A, U_from_hess @ T_from_hess @ U_from_hess.T, 1e-10)
+assert nanoeigenpy.is_approx(A, U_from_hess @ T_from_hess @ U_from_hess.T)
 
 rs1_id = nanoeigenpy.RealSchur(dim)
 rs2_id = nanoeigenpy.RealSchur(dim)

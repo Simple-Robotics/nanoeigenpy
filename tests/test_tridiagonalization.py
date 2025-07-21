@@ -11,15 +11,15 @@ tri = nanoeigenpy.Tridiagonalization(A)
 Q = tri.matrixQ()
 T = tri.matrixT()
 
-assert nanoeigenpy.is_approx(A, Q @ T @ Q.T, 1e-10)
-assert nanoeigenpy.is_approx(Q @ Q.T, np.eye(dim), 1e-10)
+assert nanoeigenpy.is_approx(A, Q @ T @ Q.T)
+assert nanoeigenpy.is_approx(Q @ Q.T, np.eye(dim))
 
 for i in range(dim):
     for j in range(dim):
         if abs(i - j) > 1:
             assert abs(T[i, j]) < 1e-12
 
-assert nanoeigenpy.is_approx(T, T.T, 1e-12)
+assert nanoeigenpy.is_approx(T, T.T)
 
 diag = tri.diagonal()
 sub_diag = tri.subDiagonal()
@@ -42,8 +42,8 @@ T1 = tri1.matrixT()
 Q2 = tri2.matrixQ()
 T2 = tri2.matrixT()
 
-assert nanoeigenpy.is_approx(Q1, Q2, 1e-12)
-assert nanoeigenpy.is_approx(T1, T2, 1e-12)
+assert nanoeigenpy.is_approx(Q1, Q2)
+assert nanoeigenpy.is_approx(T1, T2)
 
 h_coeffs = tri.householderCoefficients()
 packed = tri.packedMatrix()
@@ -65,7 +65,7 @@ tri_diag = nanoeigenpy.Tridiagonalization(A_diag)
 Q_diag = tri_diag.matrixQ()
 T_diag = tri_diag.matrixT()
 
-assert nanoeigenpy.is_approx(A_diag, Q_diag @ T_diag @ Q_diag.T, 1e-10)
+assert nanoeigenpy.is_approx(A_diag, Q_diag @ T_diag @ Q_diag.T)
 for i in range(dim):
     for j in range(dim):
         if i != j:
@@ -83,7 +83,7 @@ tri_tridiag = nanoeigenpy.Tridiagonalization(A_tridiag)
 Q_tridiag = tri_tridiag.matrixQ()
 T_tridiag = tri_tridiag.matrixT()
 
-assert nanoeigenpy.is_approx(A_tridiag, Q_tridiag @ T_tridiag @ Q_tridiag.T, 1e-10)
+assert nanoeigenpy.is_approx(A_tridiag, Q_tridiag @ T_tridiag @ Q_tridiag.T)
 
 
 tri1_id = nanoeigenpy.Tridiagonalization(dim)

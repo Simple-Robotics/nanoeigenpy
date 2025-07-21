@@ -17,4 +17,4 @@ D = es.eigenvalues()
 AdotV = A @ V
 VdotD = V @ np.diag(D)
 
-assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-10)
+assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-6)

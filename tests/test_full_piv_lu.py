@@ -57,7 +57,7 @@ assert invertible
 kernel = fullpivlu.kernel()
 image = fullpivlu.image(A)
 assert kernel.shape[1] == 1
-assert nanoeigenpy.is_approx(A @ kernel, np.zeros((dim, 1)), 1e-10)
+assert nanoeigenpy.is_approx(A @ kernel, np.zeros((dim, 1)))
 assert image.shape[1] == rank
 
 inverse = fullpivlu.inverse()

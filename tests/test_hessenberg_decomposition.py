@@ -14,7 +14,7 @@ if np.iscomplexobj(A):
     A_reconstructed = Q @ H @ Q.conj().T
 else:
     A_reconstructed = Q @ H @ Q.T
-assert nanoeigenpy.is_approx(A, A_reconstructed, 1e-10)
+assert nanoeigenpy.is_approx(A, A_reconstructed)
 
 for row in range(2, dim):
     for col in range(row - 1):
@@ -24,7 +24,7 @@ if np.iscomplexobj(Q):
     QQ_conj = Q @ Q.conj().T
 else:
     QQ_conj = Q @ Q.T
-assert nanoeigenpy.is_approx(QQ_conj, np.eye(dim), 1e-10)
+assert nanoeigenpy.is_approx(QQ_conj, np.eye(dim))
 
 A_test = rng.random((dim, dim))
 hess1 = nanoeigenpy.HessenbergDecomposition(dim)
@@ -36,8 +36,8 @@ H2 = hess2.matrixH()
 Q1 = hess1.matrixQ()
 Q2 = hess2.matrixQ()
 
-assert nanoeigenpy.is_approx(H1, H2, 1e-12)
-assert nanoeigenpy.is_approx(Q1, Q2, 1e-12)
+assert nanoeigenpy.is_approx(H1, H2)
+assert nanoeigenpy.is_approx(Q1, Q2)
 
 hCoeffs = hess.householderCoefficients()
 packed = hess.packedMatrix()

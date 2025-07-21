@@ -14,11 +14,11 @@ S = realqz.matrixS()
 Z = realqz.matrixZ()
 T = realqz.matrixT()
 
-assert nanoeigenpy.is_approx(A, Q @ S @ Z, 1e-10)
-assert nanoeigenpy.is_approx(B, Q @ T @ Z, 1e-10)
+assert nanoeigenpy.is_approx(A, Q @ S @ Z)
+assert nanoeigenpy.is_approx(B, Q @ T @ Z)
 
-assert nanoeigenpy.is_approx(Q @ Q.T, np.eye(dim), 1e-10)
-assert nanoeigenpy.is_approx(Z @ Z.T, np.eye(dim), 1e-10)
+assert nanoeigenpy.is_approx(Q @ Q.T, np.eye(dim))
+assert nanoeigenpy.is_approx(Z @ Z.T, np.eye(dim))
 
 for i in range(dim):
     for j in range(i):
@@ -61,8 +61,8 @@ T_with = realqz_with_qz.matrixT()
 S_without = realqz_without_qz.matrixS()
 T_without = realqz_without_qz.matrixT()
 
-assert nanoeigenpy.is_approx(S_with, S_without, 1e-12)
-assert nanoeigenpy.is_approx(T_with, T_without, 1e-12)
+assert nanoeigenpy.is_approx(S_with, S_without)
+assert nanoeigenpy.is_approx(T_with, T_without)
 
 iterations = realqz.iterations()
 assert iterations >= 0
