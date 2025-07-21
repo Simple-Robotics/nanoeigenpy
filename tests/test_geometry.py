@@ -9,7 +9,7 @@ verbose = True
 
 def isapprox(a, b, epsilon=1e-6):
     if issubclass(a.__class__, np.ndarray) and issubclass(b.__class__, np.ndarray):
-        return np.allclose(a, b, epsilon)
+        return nanoeigenpy.is_approx(a, b, epsilon)
     else:
         return abs(a - b) < epsilon
 

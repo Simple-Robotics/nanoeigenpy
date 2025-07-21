@@ -13,6 +13,8 @@ template <typename _MatrixType>
 void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SelfAdjointEigenSolver<MatrixType>;
+  using Scalar = typename MatrixType::Scalar;
+  using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
@@ -26,12 +28,16 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
            "matrix"_a, "options"_a = Eigen::ComputeEigenvectors,
            "Computes eigendecomposition of given matrix")
 
-      .def("eigenvalues", &Solver::eigenvalues,
-           "Returns the eigenvalues of given matrix.",
-           nb::rv_policy::reference_internal)
-      .def("eigenvectors", &Solver::eigenvectors,
-           "Returns the eigenvectors of given matrix.",
-           nb::rv_policy::reference_internal)
+      .def(
+          "eigenvalues",
+          [](Solver &c) -> const VectorType & { return c.eigenvalues(); },
+          "Returns the eigenvalues of given matrix.",
+          nb::rv_policy::reference_internal)
+      .def(
+          "eigenvectors",
+          [](Solver &c) -> const MatrixType & { return c.eigenvectors(); },
+          "Returns the eigenvectors of given matrix.",
+          nb::rv_policy::reference_internal)
 
       .def(
           "compute",

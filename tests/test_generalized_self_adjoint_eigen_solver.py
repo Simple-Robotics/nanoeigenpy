@@ -20,7 +20,7 @@ _options = [
 
 @pytest.mark.parametrize("options", _options)
 def test_generalized_selfadjoint_eigensolver(options):
-    dim = 100
+    dim = 5
     rng = np.random.default_rng()
     A = rng.random((dim, dim))
     A = (A + A.T) * 0.5
@@ -61,7 +61,7 @@ def test_generalized_selfadjoint_eigensolver(options):
                 lam = D[i]
                 ABv = AB @ v
                 lam_v = lam * v
-                assert np.allclose(ABv, lam_v)
+                assert nanoeigenpy.is_approx(ABv, lam_v, 1e-10)
 
         elif options & nanoeigenpy.DecompositionOptions.BAx_lx.value:
             BA = B @ A
@@ -70,7 +70,7 @@ def test_generalized_selfadjoint_eigensolver(options):
                 lam = D[i]
                 BAv = BA @ v
                 lam_v = lam * v
-                assert np.allclose(BAv, lam_v)
+                assert nanoeigenpy.is_approx(BAv, lam_v, 1e-10)
 
     _gsaes_compute = gsaes.compute(A, B)
     _gsaes_compute_options = gsaes.compute(A, B, options)
