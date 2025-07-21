@@ -20,7 +20,6 @@ template <typename Scalar>
 void exposeParametrizedLine(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using ParametrizedLine = Eigen::ParametrizedLine<Scalar, Eigen::Dynamic>;
-  using RealScalar = Eigen::NumTraits<Scalar>::Real;
   using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
   using Hyperplane = Eigen::Hyperplane<Scalar, Eigen::Dynamic>;
 

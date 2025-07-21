@@ -12,7 +12,7 @@ template <typename _MatrixType>
 void exposeIncompleteLUT(nb::module_ m, const char* name) {
   using MatrixType = _MatrixType;
   using Scalar = typename MatrixType::Scalar;
-  using RealScalar = Eigen::NumTraits<Scalar>::Real;
+  using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
   using Solver = Eigen::IncompleteLUT<Scalar>;
 
   static constexpr int Options =

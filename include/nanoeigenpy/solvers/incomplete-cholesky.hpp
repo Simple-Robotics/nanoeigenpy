@@ -12,7 +12,7 @@ template <typename _MatrixType>
 void exposeIncompleteCholesky(nb::module_ m, const char* name) {
   using MatrixType = _MatrixType;
   using Scalar = typename MatrixType::Scalar;
-  using RealScalar = Eigen::NumTraits<Scalar>::Real;
+  using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
   using Solver = Eigen::IncompleteCholesky<Scalar>;
   using Factortype = Eigen::SparseMatrix<Scalar, Eigen::ColMajor>;
   using VectorRx = Eigen::Matrix<RealScalar, Eigen::Dynamic, 1>;

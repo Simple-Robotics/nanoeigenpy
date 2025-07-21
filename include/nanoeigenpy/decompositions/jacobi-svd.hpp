@@ -44,7 +44,9 @@ struct JacobiSVDVisitor : nb::def_visitor<JacobiSVDVisitor<JacobiSVD>> {
         .def(
             "compute",
             [](JacobiSVD &c, MatrixType const &matrix,
-               unsigned int) -> JacobiSVD & { return c.compute(matrix); },
+               unsigned int computationOptions) -> JacobiSVD & {
+              return c.compute(matrix, computationOptions);
+            },
             "matrix"_a, "computationOptions"_a,
             "Computes the SVD of given matrix.", nb::rv_policy::reference)
 

@@ -7,12 +7,12 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename Scalar>
 void exposeJacobiRotation(nb::module_ m, const char* name) {
-  using namespace nb::literals;
   using JacobiRotation = Eigen::JacobiRotation<Scalar>;
-  using RealScalar = Eigen::NumTraits<Scalar>::Real;
+  using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
 
   if (check_registration_alias<JacobiRotation>(m)) {
     return;
@@ -58,7 +58,7 @@ void exposeJacobiRotation(nb::module_ m, const char* name) {
       .def(
           "makeGivens",
           [](JacobiRotation& self, const Scalar& p, const Scalar& q,
-             Scalar* r = 0) { self.makeGivens(p, q, r); },
+             Scalar* r) { self.makeGivens(p, q, r); },
           "p"_a, "q"_a, "r"_a)
 
       .def(IdVisitor());

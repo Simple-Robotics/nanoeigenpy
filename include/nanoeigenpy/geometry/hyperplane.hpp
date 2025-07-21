@@ -20,9 +20,8 @@ template <typename Scalar>
 void exposeHyperplane(nb::module_ m, const char *name) {
   using namespace nb::literals;
   using Hyperplane = Eigen::Hyperplane<Scalar, Eigen::Dynamic>;
-  using RealScalar = Eigen::NumTraits<Scalar>::Real;
+  using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
   using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
-  using MatrixType = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, 1>;
   using Parameterized = Eigen::ParametrizedLine<Scalar, Eigen::Dynamic>;
 
   if (check_registration_alias<Hyperplane>(m)) {
