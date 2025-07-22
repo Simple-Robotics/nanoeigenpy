@@ -32,6 +32,10 @@ NB_MAKE_OPAQUE(FullPivHhJacobiSVD)
 NB_MAKE_OPAQUE(HhJacobiSVD)
 NB_MAKE_OPAQUE(NoPrecondJacobiSVD)
 
+using SparseQR = Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<int>>;
+NB_MAKE_OPAQUE(Eigen::SparseQRMatrixQReturnType<SparseQR>)
+NB_MAKE_OPAQUE(Eigen::SparseQRMatrixQTransposeReturnType<SparseQR>)
+
 NB_MAKE_OPAQUE(Eigen::LLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::LDLT<Eigen::MatrixXd>)
 NB_MAKE_OPAQUE(Eigen::FullPivLU<Eigen::MatrixXd>)
