@@ -69,13 +69,13 @@ void exposePermutationMatrix(nb::module_ m, const char *name) {
 
       .def(
           "transpose",
-          [](PermutationMatrix const &self) -> PermutationMatrix {
+          [](const PermutationMatrix &self) -> PermutationMatrix {
             return self.transpose();
           },
           "Returns the tranpose permutation matrix.")
       .def(
           "inverse",
-          [](PermutationMatrix const &self) -> PermutationMatrix {
+          [](const PermutationMatrix &self) -> PermutationMatrix {
             return self.inverse();
           },
           "Returns the inverse permutation matrix.")

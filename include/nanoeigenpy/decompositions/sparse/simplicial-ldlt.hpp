@@ -39,7 +39,7 @@ void exposeSimplicialLDLT(nb::module_ m, const char *name) {
 
       .def(
           "vectorD",
-          [](Solver const &self) -> DenseVectorXs { return self.vectorD(); },
+          [](const Solver &self) -> DenseVectorXs { return self.vectorD(); },
           "Returns the diagonal vector D.")
 
       .def(SimplicialCholeskyVisitor())

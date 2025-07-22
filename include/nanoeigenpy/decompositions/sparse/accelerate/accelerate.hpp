@@ -39,7 +39,7 @@ struct AccelerateImplVisitor
 
         .def(
             "compute",
-            [](Solver& c, MatrixType const& matrix) {
+            [](Solver& c, const MatrixType& matrix) {
               return c.compute(matrix);
             },
             "matrix"_a,

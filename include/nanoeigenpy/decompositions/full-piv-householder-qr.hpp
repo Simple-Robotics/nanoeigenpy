@@ -125,7 +125,7 @@ void exposeFullPivHouseholderQR(nb::module_ m, const char *name) {
 
       .def(
           "setThreshold",
-          [](Solver &c, RealScalar const &threshold) {
+          [](Solver &c, const RealScalar &threshold) {
             return c.setThreshold(threshold);
           },
           "threshold"_a,
@@ -161,20 +161,20 @@ void exposeFullPivHouseholderQR(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the QR factorization of given matrix.",
           nb::rv_policy::reference)
 
       .def(
-          "inverse", [](Solver const &c) -> MatrixType { return inverse(c); },
+          "inverse", [](const Solver &c) -> MatrixType { return inverse(c); },
           "Returns the inverse of the matrix associated with the QR "
           "decomposition.")
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -182,7 +182,7 @@ void exposeFullPivHouseholderQR(nb::module_ m, const char *name) {
           "decomposition of A where b is a right hand side vector.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

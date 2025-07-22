@@ -26,7 +26,7 @@ void exposeHessenbergDecomposition(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes Hessenberg decomposition of given matrix.",

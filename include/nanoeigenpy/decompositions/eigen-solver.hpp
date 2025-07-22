@@ -33,14 +33,14 @@ void exposeEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, bool compute_eigen_vectors)
+          [](Solver &c, const MatrixType &matrix, bool compute_eigen_vectors)
               -> Solver & { return c.compute(matrix, compute_eigen_vectors); },
           "matrix"_a, "compute_eigen_vectors"_a,
           "Computes the eigendecomposition of given matrix.",

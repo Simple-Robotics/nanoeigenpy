@@ -40,7 +40,7 @@ void exposeRealQZ(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &A, MatrixType const &B) -> Solver & {
+          [](Solver &c, const MatrixType &A, const MatrixType &B) -> Solver & {
             return c.compute(A, B);
           },
           "A"_a, "B"_a, "Computes QZ decomposition of given matrix. ",
@@ -48,7 +48,7 @@ void exposeRealQZ(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &A, MatrixType const &B,
+          [](Solver &c, const MatrixType &A, const MatrixType &B,
              bool computeQZ) -> Solver & { return c.compute(A, B, computeQZ); },
           "A"_a, "B"_a, "computeQZ"_a,
           "Computes QZ decomposition of given matrix. ",

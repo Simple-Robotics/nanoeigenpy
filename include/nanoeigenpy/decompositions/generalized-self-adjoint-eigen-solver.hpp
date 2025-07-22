@@ -30,14 +30,14 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matA, MatrixType const &matB)
+          [](Solver &c, const MatrixType &matA, const MatrixType &matB)
               -> Solver & { return c.compute(matA, matB); },
           "matA"_a, "matB"_a,
           "Computes the generalized eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matA, MatrixType const &matB,
+          [](Solver &c, const MatrixType &matA, const MatrixType &matB,
              int options) -> Solver & {
             return c.compute(matA, matB, options);
           },
@@ -47,18 +47,20 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "eigenvalues",
-          [](Solver &c) -> const VectorType & { return c.eigenvalues(); },
+          [](const Solver &c) -> const VectorType & { return c.eigenvalues(); },
           "Returns the eigenvalues of given matrix.",
           nb::rv_policy::reference_internal)
       .def(
           "eigenvectors",
-          [](Solver &c) -> const MatrixType & { return c.eigenvectors(); },
+          [](const Solver &c) -> const MatrixType & {
+            return c.eigenvectors();
+          },
           "Returns the eigenvectors of given matrix.",
           nb::rv_policy::reference_internal)
 
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return static_cast<Solver &>(c.computeDirect(matrix));
           },
           "matrix"_a,
@@ -67,7 +69,7 @@ void exposeGeneralizedSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           nb::rv_policy::reference)
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, int options) -> Solver & {
             return static_cast<Solver &>(c.computeDirect(matrix, options));
           },
           "matrix"_a, "options"_a,

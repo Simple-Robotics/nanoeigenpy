@@ -22,11 +22,11 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
 
         .def(
             "matrixU",
-            [](Derived const &c) -> MatrixType { return c.matrixU(); },
+            [](const Derived &c) -> MatrixType { return c.matrixU(); },
             "Returns the U matrix")
         .def(
             "matrixV",
-            [](Derived const &c) -> MatrixType { return c.matrixV(); },
+            [](const Derived &c) -> MatrixType { return c.matrixV(); },
             "Returns the U matrix")
 
         .def("singularValues", &SVDBase::singularValues,
@@ -42,7 +42,7 @@ struct SVDBaseVisitor : nb::def_visitor<SVDBaseVisitor> {
 
         .def(
             "setThreshold",
-            [](Derived &c, RealScalar const &threshold) {
+            [](Derived &c, const RealScalar &threshold) {
               return c.setThreshold(threshold);
             },
             "threshold"_a,

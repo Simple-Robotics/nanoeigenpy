@@ -34,7 +34,7 @@ void exposeRealSchur(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes Schur decomposition of given matrix.",
@@ -42,7 +42,7 @@ void exposeRealSchur(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, bool computeU) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, bool computeU) -> Solver & {
             return c.compute(matrix, computeU);
           },
           "matrix"_a, "computeU"_a,
@@ -51,7 +51,7 @@ void exposeRealSchur(nb::module_ m, const char *name) {
 
       .def(
           "computeFromHessenberg",
-          [](Solver &c, MatrixType const &matrixH, MatrixType const &matrixQ,
+          [](Solver &c, const MatrixType &matrixH, const MatrixType &matrixQ,
              bool computeU) -> Solver & {
             return c.computeFromHessenberg(matrixH, matrixQ, computeU);
           },

@@ -30,25 +30,27 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "eigenvalues",
-          [](Solver &c) -> const VectorType & { return c.eigenvalues(); },
+          [](const Solver &c) -> const VectorType & { return c.eigenvalues(); },
           "Returns the eigenvalues of given matrix.",
           nb::rv_policy::reference_internal)
       .def(
           "eigenvectors",
-          [](Solver &c) -> const MatrixType & { return c.eigenvectors(); },
+          [](const Solver &c) -> const MatrixType & {
+            return c.eigenvectors();
+          },
           "Returns the eigenvectors of given matrix.",
           nb::rv_policy::reference_internal)
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, int options) -> Solver & {
             return c.compute(matrix, options);
           },
           "matrix"_a, "options"_a,
@@ -57,7 +59,7 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.computeDirect(matrix);
           },
           "matrix"_a,
@@ -66,7 +68,7 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
           nb::rv_policy::reference)
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, int options) -> Solver & {
             return c.computeDirect(matrix, options);
           },
           "matrix"_a, "options"_a,

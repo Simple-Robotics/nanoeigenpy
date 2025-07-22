@@ -135,7 +135,7 @@ void exposeCompleteOrthogonalDecomposition(nb::module_ m, const char *name) {
 
       .def(
           "setThreshold",
-          [](Solver &c, RealScalar const &threshold) {
+          [](Solver &c, const RealScalar &threshold) {
             return c.setThreshold(threshold);
           },
           "threshold"_a,
@@ -178,21 +178,21 @@ void exposeCompleteOrthogonalDecomposition(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) { return c.compute(matrix); },
+          [](Solver &c, const MatrixType &matrix) { return c.compute(matrix); },
           "matrix"_a,
           "Computes the complete orthogonal factorization of given matrix.",
           nb::rv_policy::reference)
 
       .def(
           "pseudoInverse",
-          [](Solver const &c) -> MatrixType { return pseudoInverse(c); },
+          [](const Solver &c) -> MatrixType { return pseudoInverse(c); },
           "Returns the pseudo-inverse of the matrix associated with the "
           "complete orthogonal "
           "decomposition.")
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -200,7 +200,7 @@ void exposeCompleteOrthogonalDecomposition(nb::module_ m, const char *name) {
           "decomposition of A where b is a right hand side vector.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

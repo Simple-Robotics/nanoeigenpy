@@ -12,7 +12,7 @@ struct IdVisitor : nb::def_visitor<IdVisitor> {
   void execute(nb::class_<C, Ts...> &cl) {
     cl.def(
         "id",
-        [](C const &self) -> int64_t {
+        [](const C &self) -> int64_t {
           return reinterpret_cast<int64_t>(&self);
         },
         "Returns the unique identity of an object.\n"

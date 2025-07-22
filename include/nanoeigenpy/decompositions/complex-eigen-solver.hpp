@@ -35,14 +35,14 @@ void exposeComplexEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, bool computeEigenvectors)
+          [](Solver &c, const MatrixType &matrix, bool computeEigenvectors)
               -> Solver & { return c.compute(matrix, computeEigenvectors); },
           "matrix"_a, "computeEigenvectors"_a,
           "Computes the eigendecomposition of given matrix.",

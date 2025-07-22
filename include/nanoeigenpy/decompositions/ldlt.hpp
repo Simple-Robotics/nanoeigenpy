@@ -54,13 +54,13 @@ void exposeLDLT(nb::module_ m, const char *name) {
            "Returns true if the matrix is positive (semidefinite).")
 
       .def(
-          "matrixL", [](Solver const &c) -> MatrixType { return c.matrixL(); },
+          "matrixL", [](const Solver &c) -> MatrixType { return c.matrixL(); },
           "Returns the lower triangular matrix L.")
       .def(
-          "matrixU", [](Solver const &c) -> MatrixType { return c.matrixU(); },
+          "matrixU", [](const Solver &c) -> MatrixType { return c.matrixU(); },
           "Returns the upper triangular matrix U.")
       .def(
-          "vectorD", [](Solver const &c) -> VectorType { return c.vectorD(); },
+          "vectorD", [](const Solver &c) -> VectorType { return c.vectorD(); },
           "Returns the coefficients of the diagonal matrix D.")
       .def("matrixLDLT", &Solver::matrixLDLT,
            "Returns the LDLT decomposition matrix made of the lower matrix "
@@ -70,7 +70,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
 
       .def(
           "transpositionsP",
-          [](Solver const &c) -> MatrixType {
+          [](const Solver &c) -> MatrixType {
             return c.transpositionsP() *
                    MatrixType::Identity(c.matrixL().rows(), c.matrixL().rows());
           },
@@ -78,7 +78,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
 
       .def(
           "rankUpdate",
-          [](Solver &c, VectorType const &w, Scalar sigma) -> Solver & {
+          [](Solver &c, const VectorType &w, Scalar sigma) -> Solver & {
             return c.rankUpdate(w, sigma);
           },
           "If LDL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
@@ -90,7 +90,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the LDLT of given matrix.",
@@ -110,7 +110,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -118,7 +118,7 @@ void exposeLDLT(nb::module_ m, const char *name) {
           "decomposition of A.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

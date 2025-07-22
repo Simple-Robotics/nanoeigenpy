@@ -40,7 +40,7 @@ void exposeGeneralizedEigenSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &A, MatrixType const &B) -> Solver & {
+          [](Solver &c, const MatrixType &A, const MatrixType &B) -> Solver & {
             return c.compute(A, B);
           },
           "A"_a, "B"_a,
@@ -48,7 +48,7 @@ void exposeGeneralizedEigenSolver(nb::module_ m, const char *name) {
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &A, MatrixType const &B,
+          [](Solver &c, const MatrixType &A, const MatrixType &B,
              bool computeEigenvectors) -> Solver & {
             return c.compute(A, B, computeEigenvectors);
           },

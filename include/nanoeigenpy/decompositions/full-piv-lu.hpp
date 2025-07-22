@@ -63,7 +63,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the LU of given matrix.",
@@ -98,7 +98,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
           "Computes the LU of given matrix.")
       .def(
           "image",
-          [](Solver &c, MatrixType const &originalMatrix) -> MatrixType {
+          [](Solver &c, const MatrixType &originalMatrix) -> MatrixType {
             return c.image(originalMatrix);
           },
           "Computes the LU of given matrix.")
@@ -112,7 +112,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
 
       .def(
           "setThreshold",
-          [](Solver &c, RealScalar const &threshold) {
+          [](Solver &c, const RealScalar &threshold) {
             return c.setThreshold(threshold);
           },
           "threshold"_a,
@@ -173,7 +173,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
            "you can control by calling setThreshold(threshold).")
 
       .def(
-          "inverse", [](Solver const &c) -> MatrixType { return c.inverse(); },
+          "inverse", [](const Solver &c) -> MatrixType { return c.inverse(); },
           "Returns the inverse of the matrix associated with the LU "
           "decomposition.")
       .def("reconstructedMatrix", &Solver::reconstructedMatrix,
@@ -186,7 +186,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -194,7 +194,7 @@ void exposeFullPivLU(nb::module_ m, const char *name) {
           "decomposition of A.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

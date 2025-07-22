@@ -26,7 +26,7 @@ void exposeTridiagonalization(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes tridiagonal decomposition of given matrix.",
@@ -43,7 +43,7 @@ void exposeTridiagonalization(nb::module_ m, const char *name) {
           "matrixQ", [](const Solver &c) -> MatrixType { return c.matrixQ(); },
           "Returns the unitary matrix Q in the decomposition.")
       .def(
-          "matrixT", [](Solver &c) -> MatrixType { return c.matrixT(); },
+          "matrixT", [](const Solver &c) -> MatrixType { return c.matrixT(); },
           "Returns an expression of the tridiagonal matrix T in the "
           "decomposition.")
 

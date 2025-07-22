@@ -50,10 +50,10 @@ void exposeLLT(nb::module_ m, const char *name) {
       .def(EigenBaseVisitor())
 
       .def(
-          "matrixL", [](Chol const &c) -> MatrixType { return c.matrixL(); },
+          "matrixL", [](const Chol &c) -> MatrixType { return c.matrixL(); },
           "Returns the lower triangular matrix L.")
       .def(
-          "matrixU", [](Chol const &c) -> MatrixType { return c.matrixU(); },
+          "matrixU", [](const Chol &c) -> MatrixType { return c.matrixU(); },
           "Returns the upper triangular matrix U.")
       .def("matrixLLT", &Chol::matrixLLT,
            "Returns the LLT decomposition matrix made of the lower matrix "
@@ -63,7 +63,7 @@ void exposeLLT(nb::module_ m, const char *name) {
 #if EIGEN_VERSION_AT_LEAST(3, 3, 90)
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
+          [](Chol &c, const VectorType &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
           "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a,
@@ -71,7 +71,7 @@ void exposeLLT(nb::module_ m, const char *name) {
 #else
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
+          [](Chol &c, const VectorType &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
           "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
@@ -84,7 +84,7 @@ void exposeLLT(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Chol &c, MatrixType const &matrix) -> Chol & {
+          [](Chol &c, const MatrixType &matrix) -> Chol & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the LDLT of given matrix.",
@@ -104,7 +104,7 @@ void exposeLLT(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Chol const &c, VectorType const &b) -> VectorType {
+          [](const Chol &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -112,7 +112,7 @@ void exposeLLT(nb::module_ m, const char *name) {
           "decomposition of A.")
       .def(
           "solve",
-          [](Chol const &c, MatrixType const &B) -> MatrixType {
+          [](const Chol &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

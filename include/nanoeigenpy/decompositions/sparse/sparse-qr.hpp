@@ -73,7 +73,9 @@ void exposeSparseQR(nb::module_ m, const char *name) {
 
       .def(
           "matrixR",
-          [](Solver &self) -> const QRMatrixType & { return self.matrixR(); },
+          [](const Solver &self) -> const QRMatrixType & {
+            return self.matrixR();
+          },
           "Returns a const reference to the \b sparse upper triangular matrix "
           "R of the QR factorization.",
           nb::rv_policy::reference_internal)

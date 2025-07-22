@@ -27,16 +27,16 @@ struct SimplicialCholeskyVisitor : nb::def_visitor<SimplicialCholeskyVisitor> {
 
         .def(
             "matrixL",
-            [](Solver const &self) -> MatrixType { return self.matrixL(); },
+            [](const Solver &self) -> MatrixType { return self.matrixL(); },
             "Returns the lower triangular matrix L.")
         .def(
             "matrixU",
-            [](Solver const &self) -> MatrixType { return self.matrixU(); },
+            [](const Solver &self) -> MatrixType { return self.matrixU(); },
             "Returns the upper triangular matrix U.")
 
         .def(
             "compute",
-            [](Solver &self, MatrixType const &matrix) -> decltype(auto) {
+            [](Solver &self, const MatrixType &matrix) -> decltype(auto) {
               return self.compute(matrix);
             },
             "matrix"_a,

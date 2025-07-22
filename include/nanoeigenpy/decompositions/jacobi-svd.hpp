@@ -36,14 +36,14 @@ struct JacobiSVDVisitor : nb::def_visitor<JacobiSVDVisitor<JacobiSVD>> {
 
         .def(
             "compute",
-            [](JacobiSVD &c, MatrixType const &matrix) -> JacobiSVD & {
+            [](JacobiSVD &c, const MatrixType &matrix) -> JacobiSVD & {
               return c.compute(matrix);
             },
             "matrix"_a, "Computes the SVD of given matrix.",
             nb::rv_policy::reference)
         .def(
             "compute",
-            [](JacobiSVD &c, MatrixType const &matrix,
+            [](JacobiSVD &c, const MatrixType &matrix,
                unsigned int computationOptions) -> JacobiSVD & {
               return c.compute(matrix, computationOptions);
             },
@@ -52,7 +52,7 @@ struct JacobiSVDVisitor : nb::def_visitor<JacobiSVDVisitor<JacobiSVD>> {
 
         .def(
             "solve",
-            [](JacobiSVD const &c, VectorType const &b) -> VectorType {
+            [](const JacobiSVD &c, const VectorType &b) -> VectorType {
               return solve(c, b);
             },
             "b"_a,
@@ -60,7 +60,7 @@ struct JacobiSVDVisitor : nb::def_visitor<JacobiSVDVisitor<JacobiSVD>> {
             "decomposition of A.")
         .def(
             "solve",
-            [](JacobiSVD const &c, MatrixType const &B) -> MatrixType {
+            [](const JacobiSVD &c, const MatrixType &B) -> MatrixType {
               return solve(c, B);
             },
             "B"_a,

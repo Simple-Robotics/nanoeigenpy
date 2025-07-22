@@ -60,7 +60,7 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the LU of given matrix.",
@@ -84,7 +84,7 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
            "Returns an estimate of the reciprocal condition number of the "
            "matrix.")
       .def(
-          "inverse", [](Solver const &c) -> MatrixType { return c.inverse(); },
+          "inverse", [](const Solver &c) -> MatrixType { return c.inverse(); },
           "Returns the inverse of the matrix associated with the LU "
           "decomposition.")
       .def("determinant", &Solver::determinant,
@@ -100,7 +100,7 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -108,7 +108,7 @@ void exposePartialPivLU(nb::module_ m, const char *name) {
           "decomposition of A.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,

@@ -51,14 +51,14 @@ void exposeBDCSVD(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "Computes the SVD of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, unsigned int) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, unsigned int) -> Solver & {
             return c.compute(matrix);
           },
           "matrix"_a, "computationOptions"_a,
@@ -68,7 +68,7 @@ void exposeBDCSVD(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
           "b"_a,
@@ -76,7 +76,7 @@ void exposeBDCSVD(nb::module_ m, const char *name) {
           "decomposition of A.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
           "B"_a,
