@@ -40,8 +40,8 @@ Q = spqr.matrixQ()
 R = spqr.matrixR()
 P = spqr.colsPermutation()
 
-assert spqr.matrixQ().rows == dim
-assert spqr.matrixQ().cols == dim
+assert spqr.matrixQ().rows() == dim
+assert spqr.matrixQ().cols() == dim
 assert R.shape[0] == dim
 assert R.shape[1] == dim
 assert P.indices().size == dim

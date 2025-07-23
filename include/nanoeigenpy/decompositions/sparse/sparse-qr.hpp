@@ -43,8 +43,8 @@ void exposeMatrixQ(nb::module_ m) {
     nb::class_<QType>(m, "SparseQRMatrixQReturnType")
         .def(nb::init<const SparseQRType&>(), "qr"_a)
 
-        .def_prop_ro("rows", &QType::rows)
-        .def_prop_ro("cols", &QType::cols)
+        .def("rows", &QType::rows)
+        .def("cols", &QType::cols)
 
         .def(
             "__matmul__",
