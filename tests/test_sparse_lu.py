@@ -35,3 +35,29 @@ X_est = splu.solve(B_sparse)
 assert isinstance(X_est, spa.csc_matrix)
 assert nanoeigenpy.is_approx(X_est.toarray(), X_sparse.toarray())
 assert nanoeigenpy.is_approx(A.dot(X_est.toarray()), B_sparse.toarray())
+
+assert splu.nnzL() > 0
+assert splu.nnzU() > 0
+
+L = splu.matrixL()
+U = splu.matrixU()
+
+assert L.rows() == dim
+assert L.cols() == dim
+assert U.rows() == dim
+assert U.cols() == dim
+
+x_true = rng.random(dim)
+b_true = A.dot(x_true)
+P_rows_indices = splu.rowsPermutation().indices()
+P_cols_indices = splu.colsPermutation().indices()
+
+b_permuted = b_true[P_rows_indices]
+z = b_permuted.copy()
+L.solveInPlace(z)
+y = z.copy()
+U.solveInPlace(y)
+x_reconstructed = np.zeros(dim)
+x_reconstructed[P_cols_indices] = y
+
+assert nanoeigenpy.is_approx(x_reconstructed, x_true, 1e-6)

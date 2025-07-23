@@ -10,19 +10,73 @@ namespace nanoeigenpy {
 namespace nb = nanobind;
 using namespace nb::literals;
 
+template <typename LTypeOrUType, typename MatrixOrVector>
+static void solveInPlace(const LTypeOrUType &self,
+                         Eigen::Ref<MatrixOrVector> mat_vec) {
+  self.solveInPlace(mat_vec);
+}
+
+template <typename MappedSupernodalType>
+void exposeMatrixL(nb::module_ m) {
+  using LType = Eigen::SparseLUMatrixLReturnType<MappedSupernodalType>;
+  using Scalar = typename MappedSupernodalType::Scalar;
+  using VectorXs = Eigen::Matrix<Scalar, Eigen::Dynamic, 1, Eigen::ColMajor>;
+  using MatrixXs =
+      Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>;
+
+  if (check_registration_alias<LType>(m)) {
+    return;
+  }
+
+  nb::class_<LType>(m, "SparseLUMatrixLReturnType")
+      .def("rows", &LType::rows)
+      .def("cols", &LType::cols)
+      .def("solveInPlace", &solveInPlace<LType, MatrixXs>, "X"_a)
+      .def("solveInPlace", &solveInPlace<LType, VectorXs>, "x"_a);
+}
+
+template <typename MatrixLType, typename MatrixUType>
+void exposeMatrixU(nb::module_ m) {
+  using UType = Eigen::SparseLUMatrixUReturnType<MatrixLType, MatrixUType>;
+  using Scalar = typename MatrixLType::Scalar;
+  using VectorXs = Eigen::Matrix<Scalar, Eigen::Dynamic, 1, Eigen::ColMajor>;
+  using MatrixXs =
+      Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>;
+
+  if (check_registration_alias<UType>(m)) {
+    return;
+  }
+
+  nb::class_<UType>(m, "SparseLUMatrixUReturnType")
+      .def("rows", &UType::rows)
+      .def("cols", &UType::cols)
+      .def("solveInPlace", &solveInPlace<UType, MatrixXs>, "X"_a)
+      .def("solveInPlace", &solveInPlace<UType, VectorXs>, "x"_a);
+}
+
 template <typename _MatrixType, typename _Ordering = Eigen::COLAMDOrdering<
                                     typename _MatrixType::StorageIndex>>
 void exposeSparseLU(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SparseLU<MatrixType>;
+  using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
+  using StorageIndex = typename MatrixType::StorageIndex;
   using SparseLUTransposeViewTrue = Eigen::SparseLUTransposeView<true, Solver>;
   using SparseLUTransposeViewFalse =
       Eigen::SparseLUTransposeView<false, Solver>;
+  using SCMatrix = typename Solver::SCMatrix;
+  using MappedSparseMatrix =
+      typename Eigen::MappedSparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>;
+  using LType = Eigen::SparseLUMatrixLReturnType<SCMatrix>;
+  using UType = Eigen::SparseLUMatrixUReturnType<SCMatrix, MappedSparseMatrix>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
   }
+
+  exposeMatrixL<SCMatrix>(m);
+  exposeMatrixU<SCMatrix, MappedSparseMatrix>(m);
 
   nb::class_<SparseLUTransposeViewFalse>(m, "SparseLUTransposeView")
       .def(SparseSolverBaseVisitor())
@@ -103,6 +157,13 @@ void exposeSparseLU(nb::module_ m, const char *name) {
             return view;
           },
           "Returns an expression of the adjoint of the factored matrix.")
+
+      .def(
+          "matrixL", [](const Solver &self) -> LType { return self.matrixL(); },
+          "Returns an expression of the matrix L.")
+      .def(
+          "matrixU", [](const Solver &self) -> UType { return self.matrixU(); },
+          "Returns an expression of the matrix U.")
 
       .def("rows", &Solver::rows, "Returns the number of rows of the matrix.")
       .def("cols", &Solver::cols, "Returns the number of cols of the matrix.")
