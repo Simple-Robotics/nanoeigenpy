@@ -61,3 +61,15 @@ x_reconstructed = np.zeros(dim)
 x_reconstructed[P_cols_indices] = y
 
 assert nanoeigenpy.is_approx(x_reconstructed, x_true, 1e-6)
+
+splu_transpose = splu.transpose()
+splu_adjoint = splu.adjoint()
+
+x_true = rng.random(dim)
+b_transpose = A.T.dot(x_true)
+x_est = splu_transpose.solve(b_transpose)
+assert nanoeigenpy.is_approx(x_true, x_est)
+
+x_est_adj = splu_adjoint.solve(b_transpose)
+assert nanoeigenpy.is_approx(x_true, x_est_adj)
+assert nanoeigenpy.is_approx(x_est, x_est_adj)
