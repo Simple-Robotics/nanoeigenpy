@@ -122,3 +122,12 @@ cmake -S . -B build/ -DCMAKE_INSTALL_PREFIX=<your-prefix>  # prefix can be e.g. 
 cd build/
 cmake --build . --target install
 ```
+
+## Credits
+
+The following people have been involved in the development of **nanoeigenpy**:
+
+- [Wilson Jallet](https://manifoldfr.github.io/) (Inria): core developer and manager of the project
+- [Lucas Haubert](https://www.linkedin.com/in/lucas-haubert-b668a421a/) (Inria): core developer
+
+If you have taken part in the development of **nanoeigenpy**, feel free to add your name and contribution here.
