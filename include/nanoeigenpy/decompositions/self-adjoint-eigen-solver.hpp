@@ -3,17 +3,18 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
-#include <Eigen/Core>
 #include <Eigen/Eigenvalues>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename _MatrixType>
 void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::SelfAdjointEigenSolver<MatrixType>;
+  using Scalar = typename MatrixType::Scalar;
+  using VectorType = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
   if (check_registration_alias<Solver>(m)) {
     return;
@@ -21,50 +22,56 @@ void exposeSelfAdjointEigenSolver(nb::module_ m, const char *name) {
   nb::class_<Solver>(m, name, "Self adjoint Eigen Solver")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
       .def(nb::init<const MatrixType &, Eigen::DecompositionOptions>(),
-           nb::arg("matrix"), nb::arg("options") = Eigen::ComputeEigenvectors,
+           "matrix"_a, "options"_a = Eigen::ComputeEigenvectors,
            "Computes eigendecomposition of given matrix")
 
-      .def("eigenvalues", &Solver::eigenvalues,
-           "Returns the eigenvalues of given matrix.",
-           nb::rv_policy::reference_internal)
-      .def("eigenvectors", &Solver::eigenvectors,
-           "Returns the eigenvectors of given matrix.",
-           nb::rv_policy::reference_internal)
+      .def(
+          "eigenvalues",
+          [](const Solver &c) -> const VectorType & { return c.eigenvalues(); },
+          "Returns the eigenvalues of given matrix.",
+          nb::rv_policy::reference_internal)
+      .def(
+          "eigenvectors",
+          [](const Solver &c) -> const MatrixType & {
+            return c.eigenvectors();
+          },
+          "Returns the eigenvectors of given matrix.",
+          nb::rv_policy::reference_internal)
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the eigendecomposition of given matrix.",
+          "matrix"_a, "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, int options) -> Solver & {
             return c.compute(matrix, options);
           },
-          nb::arg("matrix"), nb::arg("options"),
+          "matrix"_a, "options"_a,
           "Computes the eigendecomposition of given matrix.",
           nb::rv_policy::reference)
 
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.computeDirect(matrix);
           },
-          nb::arg("matrix"),
+          "matrix"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)
       .def(
           "computeDirect",
-          [](Solver &c, MatrixType const &matrix, int options) -> Solver & {
+          [](Solver &c, const MatrixType &matrix, int options) -> Solver & {
             return c.computeDirect(matrix, options);
           },
-          nb::arg("matrix"), nb::arg("options"),
+          "matrix"_a, "options"_a,
           "Computes eigendecomposition of given matrix using a closed-form "
           "algorithm.",
           nb::rv_policy::reference)

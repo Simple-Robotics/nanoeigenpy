@@ -24,7 +24,8 @@ struct LeastSquaresConjugateGradientVisitor
              "Initialize the solver with matrix A for further || Ax - b || "
              "solving.\n"
              "This constructor is a shortcut for the default constructor "
-             "followed by a call to compute().");
+             "followed by a call to compute().")
+        .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>());
   }
 
   static void expose(nb::module_& m, const char* name) {
@@ -32,7 +33,6 @@ struct LeastSquaresConjugateGradientVisitor
       return;
     }
     nb::class_<LeastSquaresConjugateGradient>(m, name)
-        .def(IterativeSolverVisitor<LeastSquaresConjugateGradient>())
         .def(LeastSquaresConjugateGradientVisitor<
              LeastSquaresConjugateGradient>())
         .def(IdVisitor());

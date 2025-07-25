@@ -10,3 +10,6 @@
 #include "nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp"
 #endif
 #include "nanoeigenpy/solvers/conjugate-gradient.hpp"
+#include "nanoeigenpy/solvers/bicgstab.hpp"
+#include "nanoeigenpy/solvers/incomplete-lut.hpp"
+#include "nanoeigenpy/solvers/incomplete-cholesky.hpp"

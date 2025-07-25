@@ -31,5 +31,13 @@ inline void exposeConstants(nb::module_ m) {
       ._c(ABx_lx)
       ._c(BAx_lx);
 #undef _c
+  using Eigen::TransformTraits;
+#define _c(name) value(#name, TransformTraits::name)
+  nb::enum_<TransformTraits>(m, "TransformTraits")
+      ._c(Isometry)
+      ._c(Affine)
+      ._c(AffineCompact)
+      ._c(Projective);
+#undef _c
 }
 }  // namespace nanoeigenpy

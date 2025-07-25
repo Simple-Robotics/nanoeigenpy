@@ -8,6 +8,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename MatrixType, typename MatrixOrVector>
 MatrixOrVector solve(const Eigen::LDLT<MatrixType> &c,
@@ -16,7 +17,7 @@ MatrixOrVector solve(const Eigen::LDLT<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeLDLTSolver(nb::module_ m, const char *name) {
+void exposeLDLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::LDLT<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
@@ -40,9 +41,9 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
       "square root on D also stabilizes the computation.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LLT factorization from a given matrix.")
 
       .def(EigenBaseVisitor())
@@ -53,13 +54,13 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
            "Returns true if the matrix is positive (semidefinite).")
 
       .def(
-          "matrixL", [](Solver const &c) -> MatrixType { return c.matrixL(); },
+          "matrixL", [](const Solver &c) -> MatrixType { return c.matrixL(); },
           "Returns the lower triangular matrix L.")
       .def(
-          "matrixU", [](Solver const &c) -> MatrixType { return c.matrixU(); },
+          "matrixU", [](const Solver &c) -> MatrixType { return c.matrixU(); },
           "Returns the upper triangular matrix U.")
       .def(
-          "vectorD", [](Solver const &c) -> VectorType { return c.vectorD(); },
+          "vectorD", [](const Solver &c) -> VectorType { return c.vectorD(); },
           "Returns the coefficients of the diagonal matrix D.")
       .def("matrixLDLT", &Solver::matrixLDLT,
            "Returns the LDLT decomposition matrix made of the lower matrix "
@@ -69,7 +70,7 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "transpositionsP",
-          [](Solver const &c) -> MatrixType {
+          [](const Solver &c) -> MatrixType {
             return c.transpositionsP() *
                    MatrixType::Identity(c.matrixL().rows(), c.matrixL().rows());
           },
@@ -77,11 +78,10 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "rankUpdate",
-          [](Solver &c, VectorType const &w, Scalar sigma) -> Solver & {
+          [](Solver &c, const VectorType &w, Scalar sigma) -> Solver & {
             return c.rankUpdate(w, sigma);
           },
-          "If LDL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"))
+          "If LDL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
 
       .def("adjoint", &Solver::adjoint,
            "Returns the adjoint, that is, a reference to the decomposition "
@@ -90,10 +90,10 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) -> Solver & {
+          [](Solver &c, const MatrixType &matrix) -> Solver & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the LDLT of given matrix.",
+          "matrix"_a, "Computes the LDLT of given matrix.",
           nb::rv_policy::reference)
       .def("info", &Solver::info,
            "NumericalIssue if the input contains INF or NaN values or "
@@ -110,18 +110,18 @@ void exposeLDLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = b using the current "
           "decomposition of A.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

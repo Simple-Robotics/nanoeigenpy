@@ -1,4 +1,5 @@
 /// Copyright 2025 INRIA
+
 #include <Eigen/Geometry>
 #include <nanobind/nanobind.h>
 

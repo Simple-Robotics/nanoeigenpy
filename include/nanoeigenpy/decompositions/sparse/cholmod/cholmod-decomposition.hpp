@@ -17,7 +17,7 @@ struct CholmodDecompositionVisitor
                   "Eigen::SparseSolverBase");
 
     cl.def(CholmodBaseVisitor())
-        .def("setMode", &Solver::setMode, nb::arg("mode"),
+        .def("setMode", &Solver::setMode, "mode"_a,
              "Set the mode for the Cholesky decomposition.");
   }
 };

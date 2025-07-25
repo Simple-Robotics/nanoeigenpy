@@ -1,3 +1,5 @@
+# Copyright 2025 INRIA
+
 # Create a shared nanobind library for testing
 set(NANOBIND_TESTING_TARGET nanobind-testing)
 nanobind_build_library(${NANOBIND_TESTING_TARGET} SHARED)
@@ -59,14 +61,30 @@ add_tests_cpp_extension(quaternion)
 set(
   TEST_NAMES
   test_eigen_solver
-  test_geometry
+  test_complex_eigen_solver
+  test_generalized_eigen_solver
+  test_self_adjoint_eigen_solver
+  test_generalized_self_adjoint_eigen_solver
+  test_real_schur
+  test_complex_schur
+  test_hessenberg_decomposition
+  test_real_qz
+  test_tridiagonalization
+  test_bdcsvd
+  test_jacobi_svd
+  test_full_piv_lu
+  test_partial_piv_lu
   test_ldlt
   test_llt
+  test_qr
+  test_simplicial_llt
+  test_sparse_lu
+  test_sparse_qr
+  test_geometry
   test_iterative_solvers
   test_permutation_matrix
-  test_qr
-  test_self_adjoint_eigen_solver
-  test_simplicial_llt
+  test_incomplete_lut
+  test_incomplete_cholesky
 )
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)

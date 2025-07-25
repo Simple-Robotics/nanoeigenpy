@@ -9,6 +9,7 @@
 #include <nanobind/nanobind.h>
 
 namespace nanoeigenpy {
+using namespace nb::literals;
 
 template <typename MatrixOrVectorType1, typename MatrixOrVectorType2>
 EIGEN_DONT_INLINE bool is_approx(
@@ -65,7 +66,7 @@ void exposeIsApprox(nb::module_ m) {
       [](const MatrixXs& mat1, const MatrixXs& mat2, RealScalar precision) {
         return is_approx(mat1, mat2, precision);
       },
-      nb::arg("mat1"), nb::arg("mat2"), nb::arg("precision") = dummy_precision,
+      "mat1"_a, "mat2"_a, "precision"_a = dummy_precision,
       "Check if two dense matrices are approximately equal.");
 
   // is_approx for dense vectors
@@ -74,7 +75,7 @@ void exposeIsApprox(nb::module_ m) {
       [](const VectorXs& vec1, const VectorXs& vec2, RealScalar precision) {
         return is_approx(vec1, vec2, precision);
       },
-      nb::arg("vec1"), nb::arg("vec2"), nb::arg("precision") = dummy_precision,
+      "vec1"_a, "vec2"_a, "precision"_a = dummy_precision,
       "Check if two dense vectors are approximately equal.");
 }
 

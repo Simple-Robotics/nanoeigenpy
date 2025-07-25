@@ -8,6 +8,7 @@
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename MatrixType, typename MatrixOrVector>
 MatrixOrVector solve(const Eigen::LLT<MatrixType> &c,
@@ -16,7 +17,7 @@ MatrixOrVector solve(const Eigen::LLT<MatrixType> &c,
 }
 
 template <typename _MatrixType>
-void exposeLLTSolver(nb::module_ m, const char *name) {
+void exposeLLT(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Chol = Eigen::LLT<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
@@ -41,18 +42,18 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
       "problems with hermitian matrices.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<Eigen::DenseIndex>(), nb::arg("size"),
+      .def(nb::init<Eigen::DenseIndex>(), "size"_a,
            "Default constructor with memory preallocation.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LLT factorization from a given matrix.")
 
       .def(EigenBaseVisitor())
 
       .def(
-          "matrixL", [](Chol const &c) -> MatrixType { return c.matrixL(); },
+          "matrixL", [](const Chol &c) -> MatrixType { return c.matrixL(); },
           "Returns the lower triangular matrix L.")
       .def(
-          "matrixU", [](Chol const &c) -> MatrixType { return c.matrixU(); },
+          "matrixU", [](const Chol &c) -> MatrixType { return c.matrixU(); },
           "Returns the upper triangular matrix U.")
       .def("matrixLLT", &Chol::matrixLLT,
            "Returns the LLT decomposition matrix made of the lower matrix "
@@ -62,19 +63,18 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 #if EIGEN_VERSION_AT_LEAST(3, 3, 90)
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
+          [](Chol &c, const VectorType &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
-          "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"), nb::rv_policy::reference)
+          "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a,
+          nb::rv_policy::reference)
 #else
       .def(
           "rankUpdate",
-          [](Chol &c, VectorType const &w, Scalar sigma) -> Chol & {
+          [](Chol &c, const VectorType &w, Scalar sigma) -> Chol & {
             return c.rankUpdate(w, sigma);
           },
-          "If LL^* = A, then it becomes A + sigma * v v^*", nb::arg("w"),
-          nb::arg("sigma"))
+          "If LL^* = A, then it becomes A + sigma * v v^*", "w"_a, "sigma"_a)
 #endif
 
       .def("adjoint", &Chol::adjoint,
@@ -84,10 +84,10 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "compute",
-          [](Chol &c, MatrixType const &matrix) -> Chol & {
+          [](Chol &c, const MatrixType &matrix) -> Chol & {
             return c.compute(matrix);
           },
-          nb::arg("matrix"), "Computes the LDLT of given matrix.",
+          "matrix"_a, "Computes the LDLT of given matrix.",
           nb::rv_policy::reference)
       .def("info", &Chol::info,
            "NumericalIssue if the input contains INF or NaN values or "
@@ -104,18 +104,18 @@ void exposeLLTSolver(nb::module_ m, const char *name) {
 
       .def(
           "solve",
-          [](Chol const &c, VectorType const &b) -> VectorType {
+          [](const Chol &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = b using the current "
           "decomposition of A.")
       .def(
           "solve",
-          [](Chol const &c, MatrixType const &B) -> MatrixType {
+          [](const Chol &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

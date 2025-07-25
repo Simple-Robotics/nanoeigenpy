@@ -30,21 +30,21 @@ struct SparseSolverBaseVisitor : nb::def_visitor<SparseSolverBaseVisitor> {
 
     cl.def(
           "solve",
-          [](Solver const &self, const Eigen::Ref<DenseVectorXs const> &b)
+          [](const Solver &self, const Eigen::Ref<DenseVectorXs const> &b)
               -> DenseVectorXs { return self.solve(b); },
           "b"_a,
           "Returns the solution x of A x = b using the current decomposition "
           "of A, where b is a right hand side vector.")
         .def(
             "solve",
-            [](Solver const &self, const Eigen::Ref<DenseMatrixXs const> &B)
+            [](const Solver &self, const Eigen::Ref<DenseMatrixXs const> &B)
                 -> DenseMatrixXs { return self.solve(B); },
             "B"_a,
             "Returns the solution X of A X = B using the current decomposition "
             "of A where B is a right hand side matrix.")
         .def(
             "solve",
-            [](Solver const &self, const SparseMatrixType &B)
+            [](const Solver &self, const SparseMatrixType &B)
                 -> SparseMatrixType { return self.solve(B); },
             "B"_a,
             "Returns the solution X of A X = B using the current decomposition "

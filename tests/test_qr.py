@@ -7,7 +7,6 @@ rng = np.random.default_rng()
 
 A = rng.random((rows, cols))
 
-# Test HouseholderQR decomposition
 householder_qr = nanoeigenpy.HouseholderQR()
 householder_qr = nanoeigenpy.HouseholderQR(rows, cols)
 householder_qr = nanoeigenpy.HouseholderQR(A)
@@ -24,7 +23,6 @@ x = rng.random(rows)
 y = householder_qr_eye.solve(x)
 assert (x == y).all()
 
-# Test FullPivHouseholderQR decomposition
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR()
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR(rows, cols)
 fullpiv_householder_qr = nanoeigenpy.FullPivHouseholderQR(A)
@@ -46,6 +44,7 @@ x = rng.random(rows)
 y = fullpiv_householder_qr.solve(x)
 assert (x == y).all()
 
+fullpiv_householder_qr.setThreshold()
 fullpiv_householder_qr.setThreshold(1e-8)
 assert fullpiv_householder_qr.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), fullpiv_householder_qr.inverse())
@@ -54,7 +53,6 @@ assert fullpiv_householder_qr.maxPivot() == 1.0
 assert fullpiv_householder_qr.nonzeroPivots() == rows
 assert fullpiv_householder_qr.dimensionOfKernel() == 0
 
-# Test ColPivHouseholderQR decomposition
 colpiv_householder_qr = nanoeigenpy.ColPivHouseholderQR(A)
 assert colpiv_householder_qr.info() == nanoeigenpy.ComputationInfo.Success
 
@@ -67,6 +65,7 @@ Y = colpiv_householder_qr.solve(X)
 assert (X == Y).all()
 assert colpiv_householder_qr.rank() == rows
 
+colpiv_householder_qr.setThreshold()
 colpiv_householder_qr.setThreshold(1e-8)
 assert colpiv_householder_qr.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), colpiv_householder_qr.inverse())
@@ -75,7 +74,6 @@ assert colpiv_householder_qr.maxPivot() == 1.0
 assert colpiv_householder_qr.nonzeroPivots() == rows
 assert colpiv_householder_qr.dimensionOfKernel() == 0
 
-# Test CompleteOrthogonalDecomposition
 cod = nanoeigenpy.CompleteOrthogonalDecomposition(A)
 assert cod.info() == nanoeigenpy.ComputationInfo.Success
 
@@ -92,6 +90,7 @@ x = rng.random(rows)
 y = cod.solve(x)
 assert (x == y).all()
 
+cod.setThreshold()
 cod.setThreshold(1e-8)
 assert cod.threshold() == 1e-8
 assert nanoeigenpy.is_approx(np.eye(rows, rows), cod.pseudoInverse())

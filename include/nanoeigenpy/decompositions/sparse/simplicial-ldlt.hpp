@@ -34,12 +34,12 @@ void exposeSimplicialLDLT(nb::module_ m, const char *name) {
       "P^-1.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LDLT factorization from a given matrix.")
 
       .def(
           "vectorD",
-          [](Solver const &self) -> DenseVectorXs { return self.vectorD(); },
+          [](const Solver &self) -> DenseVectorXs { return self.vectorD(); },
           "Returns the diagonal vector D.")
 
       .def(SimplicialCholeskyVisitor())

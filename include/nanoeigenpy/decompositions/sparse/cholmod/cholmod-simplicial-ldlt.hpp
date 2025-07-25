@@ -30,7 +30,7 @@ void exposeCholmodSimplicialLDLT(nb::module_ m, const char *name) {
       "The vectors or matrices X and B can be either dense or sparse.")
 
       .def(nb::init<>(), "Default constructor.")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a LDLT factorization from a given matrix.")
 
       .def(CholmodBaseVisitor());

@@ -2,9 +2,8 @@ import nanoeigenpy
 import numpy as np
 import scipy.sparse as spa
 
-dim = 10
-np.set_printoptions(precision=3, linewidth=200)
-rng = np.random.default_rng(30)
+dim = 100
+rng = np.random.default_rng()
 
 A_fac = spa.random(dim, dim, density=0.25, random_state=rng)
 A = A_fac.T @ A_fac
@@ -38,7 +37,6 @@ llt.factorize(A)
 X_sparse = spa.random(dim, 10, random_state=rng)
 B_sparse = A.dot(X_sparse)
 B_sparse: spa.csc_matrix = B_sparse.tocsc(True)
-# super important
 if not B_sparse.has_sorted_indices:
     B_sparse.sort_indices()
 

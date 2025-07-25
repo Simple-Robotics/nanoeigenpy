@@ -3,11 +3,11 @@
 #pragma once
 
 #include "nanoeigenpy/fwd.hpp"
-#include "nanoeigenpy/eigen-base.hpp"
 #include <Eigen/QR>
 
 namespace nanoeigenpy {
 namespace nb = nanobind;
+using namespace nb::literals;
 
 template <typename MatrixType, typename MatrixOrVector>
 MatrixOrVector solve(
@@ -23,8 +23,7 @@ MatrixType pseudoInverse(
 }
 
 template <typename _MatrixType>
-void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
-                                                 const char *name) {
+void exposeCompleteOrthogonalDecomposition(nb::module_ m, const char *name) {
   using MatrixType = _MatrixType;
   using Solver = Eigen::CompleteOrthogonalDecomposition<MatrixType>;
   using Scalar = typename MatrixType::Scalar;
@@ -50,12 +49,11 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
            "The default constructor is useful in cases in which the "
            "user intends to perform decompositions via "
            "HouseholderQR.compute(matrix).")
-      .def(nb::init<Eigen::DenseIndex, Eigen::DenseIndex>(), nb::arg("rows"),
-           nb::arg("cols"),
+      .def(nb::init<Eigen::DenseIndex, Eigen::DenseIndex>(), "rows"_a, "cols"_a,
            "Default constructor with memory preallocation.\n"
            "Like the default constructor but with preallocation of the "
            "internal data according to the specified problem size. ")
-      .def(nb::init<const MatrixType &>(), nb::arg("matrix"),
+      .def(nb::init<const MatrixType &>(), "matrix"_a,
            "Constructs a QR factorization from a given matrix.\n"
            "This constructor computes the QR factorization of the matrix "
            "matrix by calling the method compute().")
@@ -137,10 +135,10 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
 
       .def(
           "setThreshold",
-          [](Solver &c, RealScalar const &threshold) {
+          [](Solver &c, const RealScalar &threshold) {
             return c.setThreshold(threshold);
           },
-          nb::arg("threshold"),
+          "threshold"_a,
           "Allows to prescribe a threshold to be used by certain methods, "
           "such as rank(), who need to determine when pivots are to be "
           "considered nonzero. This is not used for the complete "
@@ -158,6 +156,12 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
           "is strictly greater than |pivot| ⩽ threshold×|maxpivot| where "
           "maxpivot is the biggest pivot.",
           nb::rv_policy::reference)
+      .def(
+          "setThreshold",
+          [](Solver &c) { return c.setThreshold(Eigen::Default); },
+          "Allows to come back to the default behavior, letting Eigen use "
+          "its default formula for determining the threshold.",
+          nb::rv_policy::reference)
       .def("threshold", &Solver::threshold,
            "Returns the threshold that will be used by certain methods such "
            "as rank().")
@@ -174,32 +178,32 @@ void exposeCompleteOrthogonalDecompositionSolver(nb::module_ m,
 
       .def(
           "compute",
-          [](Solver &c, MatrixType const &matrix) { return c.compute(matrix); },
-          nb::arg("matrix"),
+          [](Solver &c, const MatrixType &matrix) { return c.compute(matrix); },
+          "matrix"_a,
           "Computes the complete orthogonal factorization of given matrix.",
           nb::rv_policy::reference)
 
       .def(
           "pseudoInverse",
-          [](Solver const &c) -> MatrixType { return pseudoInverse(c); },
+          [](const Solver &c) -> MatrixType { return pseudoInverse(c); },
           "Returns the pseudo-inverse of the matrix associated with the "
           "complete orthogonal "
           "decomposition.")
 
       .def(
           "solve",
-          [](Solver const &c, VectorType const &b) -> VectorType {
+          [](const Solver &c, const VectorType &b) -> VectorType {
             return solve(c, b);
           },
-          nb::arg("b"),
+          "b"_a,
           "Returns the solution x of A x = B using the current "
           "decomposition of A where b is a right hand side vector.")
       .def(
           "solve",
-          [](Solver const &c, MatrixType const &B) -> MatrixType {
+          [](const Solver &c, const MatrixType &B) -> MatrixType {
             return solve(c, B);
           },
-          nb::arg("B"),
+          "B"_a,
           "Returns the solution X of A X = B using the current "
           "decomposition of A where B is a right hand side matrix.")
 

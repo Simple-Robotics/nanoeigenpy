@@ -1,9 +1,8 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 5
-seed = 1
-rng = np.random.default_rng(seed)
+dim = 100
+rng = np.random.default_rng()
 
 A = rng.random((dim, dim))
 A = (A + A.T) * 0.5
@@ -18,4 +17,4 @@ D = es.eigenvalues()
 AdotV = A @ V
 VdotD = V @ np.diag(D)
 
-assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-10)
+assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-6)
