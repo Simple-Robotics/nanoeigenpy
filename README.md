@@ -129,5 +129,7 @@ The following people have been involved in the development of **nanoeigenpy**:
 
 - [Wilson Jallet](https://manifoldfr.github.io/) (Inria): core developer and manager of the project
 - [Lucas Haubert](https://www.linkedin.com/in/lucas-haubert-b668a421a/) (Inria): core developer
+- [Justin Carpentier](https://jcarpent.github.io) (Inria): core developer
+- [Joris Vailant](https://github.com/jorisv) (Inria): windows support
 
 If you have taken part in the development of **nanoeigenpy**, feel free to add your name and contribution here.
