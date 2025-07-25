@@ -62,9 +62,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
   using Scalar = typename MatrixType::Scalar;
   using RealScalar = typename MatrixType::RealScalar;
   using StorageIndex = typename MatrixType::StorageIndex;
-  using SparseLUTransposeViewTrue = Eigen::SparseLUTransposeView<true, Solver>;
-  using SparseLUTransposeViewFalse =
-      Eigen::SparseLUTransposeView<false, Solver>;
   using SCMatrix = typename Solver::SCMatrix;
   using MappedSparseMatrix =
       typename Eigen::MappedSparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>;
@@ -77,20 +74,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
 
   exposeMatrixL<SCMatrix>(m);
   exposeMatrixU<SCMatrix, MappedSparseMatrix>(m);
-
-  nb::class_<SparseLUTransposeViewFalse>(m, "SparseLUTransposeView")
-      .def(SparseSolverBaseVisitor())
-      .def("setIsInitialized", &SparseLUTransposeViewFalse::setIsInitialized)
-      .def("setSparseLU", &SparseLUTransposeViewFalse::setSparseLU)
-      .def("rows", &SparseLUTransposeViewFalse::rows)
-      .def("cols", &SparseLUTransposeViewFalse::cols);
-
-  nb::class_<SparseLUTransposeViewTrue>(m, "SparseLUAdjointView")
-      .def(SparseSolverBaseVisitor())
-      .def("setIsInitialized", &SparseLUTransposeViewTrue::setIsInitialized)
-      .def("setSparseLU", &SparseLUTransposeViewTrue::setSparseLU)
-      .def("rows", &SparseLUTransposeViewTrue::rows)
-      .def("cols", &SparseLUTransposeViewTrue::cols);
 
   nb::class_<Solver>(
       m, name,
@@ -141,22 +124,6 @@ void exposeSparseLU(nb::module_ m, const char *name) {
            "Compute the symbolic and numeric factorization of the input sparse "
            "matrix.\n\n"
            "The input matrix should be in column-major storage.")
-
-      .def(
-          "transpose",
-          [](Solver &self) -> SparseLUTransposeViewFalse {
-            auto view = self.transpose();
-            return view;
-          },
-          "Returns an expression of the transposed of the factored matrix.")
-
-      .def(
-          "adjoint",
-          [](Solver &self) -> SparseLUTransposeViewTrue {
-            auto view = self.adjoint();
-            return view;
-          },
-          "Returns an expression of the adjoint of the factored matrix.")
 
       .def(
           "matrixL", [](const Solver &self) -> LType { return self.matrixL(); },
