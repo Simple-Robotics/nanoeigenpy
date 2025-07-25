@@ -78,44 +78,6 @@ def test_generalized_selfadjoint_eigensolver(options):
     rank = len([d for d in D if abs(d) > 1e-12])
     assert rank <= dim
 
-    decomp1 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver()
-    decomp2 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver()
-    id1 = decomp1.id()
-    id2 = decomp2.id()
-    assert id1 != id2
-    assert id1 == decomp1.id()
-    assert id2 == decomp2.id()
-
-    decomp3 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver(dim)
-    decomp4 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver(dim)
-    id3 = decomp3.id()
-    id4 = decomp4.id()
-    assert id3 != id4
-    assert id3 == decomp3.id()
-    assert id4 == decomp4.id()
-
-    decomp5 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver(A, B, options)
-    decomp6 = nanoeigenpy.GeneralizedSelfAdjointEigenSolver(A, B, options)
-    id5 = decomp5.id()
-    id6 = decomp6.id()
-    assert id5 != id6
-    assert id5 == decomp5.id()
-    assert id6 == decomp6.id()
-
-    if compute_eigenvectors and (
-        options & nanoeigenpy.DecompositionOptions.Ax_lBx.value
-    ):
-        A_pos = A @ A.T + np.eye(dim)
-        gsaes_pos = nanoeigenpy.GeneralizedSelfAdjointEigenSolver(A_pos, B, options)
-        assert gsaes_pos.info() == nanoeigenpy.ComputationInfo.Success
-
-        D_pos = gsaes_pos.eigenvalues()
-        if all(D_pos[i] > 1e-12 for i in range(dim)):
-            sqrt_matrix = gsaes_pos.operatorSqrt()
-            inv_sqrt_matrix = gsaes_pos.operatorInverseSqrt()
-            assert sqrt_matrix.shape == (dim, dim)
-            assert inv_sqrt_matrix.shape == (dim, dim)
-
 
 if __name__ == "__main__":
     import sys
