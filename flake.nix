@@ -15,18 +15,27 @@
         {
           packages = {
             default = self'.packages.nanoeigenpy;
-            nanoeigenpy = pkgs.python3Packages.nanoeigenpy.overrideAttrs (_: {
-              src = pkgs.lib.fileset.toSource {
-                root = ./.;
-                fileset = pkgs.lib.fileset.unions [
-                  ./CMakeLists.txt
-                  ./include
-                  ./package.xml
-                  ./src
-                  ./tests
-                ];
-              };
-            });
+            eigen = pkgs.eigen.overrideAttrs {
+              # Apply https://gitlab.com/libeigen/eigen/-/merge_requests/977
+              postPatch = ''
+                substituteInPlace Eigen/src/SVD/BDCSVD.h \
+                  --replace-fail "if (l == 0) {" "if (i >= k && l == 0) {"
+              '';
+            };
+            nanoeigenpy =
+              (pkgs.python3Packages.nanoeigenpy.override { inherit (self'.packages) eigen; }).overrideAttrs
+                (_: {
+                  src = pkgs.lib.fileset.toSource {
+                    root = ./.;
+                    fileset = pkgs.lib.fileset.unions [
+                      ./CMakeLists.txt
+                      ./include
+                      ./package.xml
+                      ./src
+                      ./tests
+                    ];
+                  };
+                });
           };
         };
     };
