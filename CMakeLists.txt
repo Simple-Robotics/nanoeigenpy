@@ -112,7 +112,10 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE
   OUTPUT_VARIABLE nanobind_ROOT
 )
-find_package(nanobind CONFIG REQUIRED)
+find_package(nanobind 2.5.0 CONFIG)
+if(NOT nanobind_FOUND)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
+endif()
 
 # Setup main targets
 file(
@@ -241,8 +244,5 @@ install(
 
 ADD_HEADER_GROUP(${PROJECT_NAME}_HEADERS)
 ADD_SOURCE_GROUP(${PROJECT_NAME}_SOURCES)
-
-# Install ROS package.xml
-install(FILES package.xml DESTINATION share/${PROJECT_NAME})
 
 SETUP_PROJECT_FINALIZE()
