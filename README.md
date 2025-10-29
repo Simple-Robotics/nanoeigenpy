@@ -18,7 +18,7 @@ These features were finally added to eigenpy with a lot of developer effort. Thi
 
 ## Features
 
-**nanoeigenpy** provides the following features for helping you bind features from Eigen to Python:
+**nanoeigenpy** provides the following features to help you write bindings between Eigen and Python:
 
 - bindings for Eigen's [Geometry module](https://libeigen.gitlab.io/docs/group__Geometry__Module.html) - quaternions, angle-axis representations...
 - bindings for Eigen's matrix dense and sparse decompositions and solvers
