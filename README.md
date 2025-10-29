@@ -28,9 +28,9 @@ These features were finally added to eigenpy with a lot of developer effort. Thi
 **nanoeigenpy** also provides bindings for Eigen's [Cholmod](https://eigen.tuxfamily.org/dox/group__CholmodSupport__Module.html) and [Apple Accelerate](https://eigen.tuxfamily.org/dox/group__AccelerateSupport__Module.html) modules.
 
 > [!NOTE]
-> The Accelerate module is only available on Eigen's master branch, and not in any official release yet (as of 3/28/2025).
->
-> Cholmod is part of the [SuiteSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse) algorithms library. It can be installed standalone from [conda](https://anaconda.org/conda-forge/libcholmod).
+> The Accelerate module is available since Eigen 5.0 (Oct. 2025).
+
+Cholmod is part of the [SuiteSparse](https://github.com/DrTimothyAldenDavis/SuiteSparse) algorithms library. It can be installed standalone from [conda](https://anaconda.org/conda-forge/libcholmod).
 
 
 ## Example usage
