@@ -31,13 +31,16 @@ concurrency:
 
 jobs:
   nanoeigenpy-pixi:
-    name: ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
+    name: Standard - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.os }}
     env:
       CCACHE_BASEDIR: "${GITHUB_WORKSPACE}"
       CCACHE_DIR: "${GITHUB_WORKSPACE}/.ccache"
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 6
+      # Since pixi will install a compiler, the compiler mtime will be changed.
+      # This can invalidate the cache (https://ccache.dev/manual/latest.html#config_compiler_check)
+      CCACHE_COMPILERCHECK: content
 
     strategy:
       fail-fast: false
@@ -45,6 +48,10 @@ jobs:
         os: [ubuntu-latest, macos-latest, macos-15-intel, windows-latest]
         environment: [all, all-python-oldest]
         build_type: [Release, Debug]
+        include:
+          - os: windows-latest
+            environment: all-clang-cl
+            build_type: Release
 
     steps:
     - uses: actions/checkout@v4
@@ -57,10 +64,14 @@ jobs:
         key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
         restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-
 
-    - uses: prefix-dev/setup-pixi@v0.8.3
+    - uses: prefix-dev/setup-pixi@v0.9.3
       with:
         cache: true
         environments: ${{ matrix.environment }}
+
+    - name: Clear ccache statistics [MacOS/Linux/Windows]
+      run: |
+        pixi run -e ${{ matrix.environment }} ccache -z
 
     - name: Build nanoeigenpy [MacOS/Linux/Windows]
       env:
@@ -75,6 +86,35 @@ jobs:
     - name: Install nanoeigenpy [MacOS/Linux/Windows]
       run: |
         pixi run -e ${{ matrix.environment }} cmake --build build --target install
+
+    - name: Show ccache statistics [MacOS/Linux/Windows]
+      run: |
+        pixi run -e ${{ matrix.environment }} ccache -sv
+
+  nanoeigenpy-pixi-build:
+    name: Pixi build - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-15-intel, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        submodules: recursive
+
+    - uses: prefix-dev/setup-pixi@v0.9.3
+      env:
+        CMAKE_BUILD_PARALLEL_LEVEL: 2
+      with:
+        cache: true
+        environments: test-pixi-build
+
+    - name: Test package [MacOS/Linux/Windows]
+      run: |
+        pixi run -e test-pixi-build test
 
   check:
     if: always()
