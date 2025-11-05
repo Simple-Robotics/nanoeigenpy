@@ -7656,7 +7656,7 @@ packages:
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
   input:
-    hash: 97e1041c6a73040e4457c48911d9ad37b0b6807e061f357dba96eafdcc579350
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
     globs: []
 - conda: .
   name: nanoeigenpy
@@ -7670,7 +7670,7 @@ packages:
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
   input:
-    hash: 97e1041c6a73040e4457c48911d9ad37b0b6807e061f357dba96eafdcc579350
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
     globs: []
 - conda: .
   name: nanoeigenpy
@@ -7683,7 +7683,7 @@ packages:
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
   input:
-    hash: 97e1041c6a73040e4457c48911d9ad37b0b6807e061f357dba96eafdcc579350
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
     globs: []
 - conda: .
   name: nanoeigenpy
@@ -7696,7 +7696,7 @@ packages:
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
   input:
-    hash: 97e1041c6a73040e4457c48911d9ad37b0b6807e061f357dba96eafdcc579350
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
     globs: []
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
   sha256: 3fde293232fa3fca98635e1167de6b7c7fda83caf24b9d6c91ec9eefb4f4d586
