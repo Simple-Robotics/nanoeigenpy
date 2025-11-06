@@ -44,6 +44,13 @@ eigen = ">=3.4"
 numpy = ">=1.22"
 scipy = ">=1.10.0"
 
+# nanobind need to use OSX SDK >= 10.13.
+# But default version setup by rattler is 10.9
+# on osx-64.
+# https://github.com/prefix-dev/rattler-build/blob/main/src/macos/env.rs#L18
+[package.build.target.osx-64.config.env]
+MACOSX_DEPLOYMENT_TARGET = "10.13"
+
 [target.unix.activation]
 scripts = ["development/scripts/pixi/activation.sh"]
 
