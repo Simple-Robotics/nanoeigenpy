@@ -10,6 +10,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- Python version update ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25)):
+  - Project is now tested with Python 3.10 and 3.14
+  - Python 3.10 is the minimal supported Python version
+
+### Added
+- Add pixi-build support ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
+
+### Removed
+- Remove pixi 0.57 warnings ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
+
 ## [0.4.0] - 2025-07-25
 
 ### Added
