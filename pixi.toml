@@ -7,9 +7,69 @@ platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
 version = "0.4.0"
 license = "BSD-3-Clause"
 license-file = "LICENSE"
+preview = ["pixi-build"]
+
+[package]
+name = { workspace = true }
+version = { workspace = true }
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "0.3.*" }
+
+[package.build.config]
+extra-args = [
+  "-DBUILD_WITH_CHOLMOD_SUPPORT=OFF",
+  "-DBUILD_WITH_ACCELERATE_SUPPORT=OFF",
+]
+
+[package.host-dependencies]
+nanobind = ">=2.5.0"
+python = ">=3.10"
+eigen = ">=3.4"
+numpy = ">=1.22"
+
+[package.run-dependencies]
+eigen = ">=3.4"
+
+[dependencies]
+nanobind = ">=2.5.0"
+git = ">=2.49.0"
+doxygen = ">=1.13.2"
+ccache = ">=4.9.1"
+cmake = ">=3.22"
+cxx-compiler = ">=1.7.0"
+ninja = ">=1.11"
+python = ">=3.10"
+eigen = ">=3.4"
+numpy = ">=1.22"
+scipy = ">=1.10.0"
+
+# nanobind need to use OSX SDK >= 10.13.
+# But default version setup by rattler is 10.9
+# on osx-64.
+# https://github.com/prefix-dev/rattler-build/blob/main/src/macos/env.rs#L18
+[package.build.target.osx-64.config.env]
+MACOSX_DEPLOYMENT_TARGET = "10.13"
+
+[target.unix.activation]
+scripts = ["development/scripts/pixi/activation.sh"]
+
+[target.win-64.activation]
+scripts = ["development/scripts/pixi/activation.bat"]
+
+[activation.env]
+# Setup ccache
+CMAKE_CXX_COMPILER_LAUNCHER = "ccache"
+# Create compile_commands.json for language server
+CMAKE_EXPORT_COMPILE_COMMANDS = "ON"
+# Activate color output with Ninja
+CMAKE_COLOR_DIAGNOSTICS = "ON"
+# Help ccache manage generated files and PCH (https://ccache.dev/manual/latest.html#_precompiled_headers)
+CCACHE_SLOPPINESS = "include_file_ctime,include_file_mtime,pch_defines,time_macros"
 
 [tasks]
 configure = { cmd = [
+  "CXXFLAGS=$NANOEIGENPY_CXX_FLAGS",
   "cmake",
   "-G",
   "Ninja",
@@ -25,17 +85,34 @@ configure = { cmd = [
 build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
 
-[dependencies]
-python = ">=3.9"
-eigen = ">=3.3.1"
-numpy = ">=1.22"
-scipy = ">=1.10.0"
+# Increment the version number with NANOEIGENPY_VERSION variable
+[feature.new-version.dependencies]
+tomlkit = ">=0.13.2"
+
+[feature.new-version.tasks]
+configure-new-version = { cmd = [
+  "CXXFLAGS=$NANOEIGENPY_CXX_FLAGS",
+  "cmake",
+  "-G",
+  "Ninja",
+  "-B",
+  "build_new_version",
+  "-S",
+  ".",
+  "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
+  "-DCMAKE_BUILD_TYPE=$NANOEIGENPY_BUILD_TYPE",
+  "-DBUILD_WITH_CHOLMOD_SUPPORT=OFF",
+  "-DBUILD_WITH_ACCELERATE_SUPPORT=OFF",
+] }
+release-new-version = { cmd = "VERSION=$NANOEIGENPY_VERSION cmake --build build_new_version --target release", depends-on = [
+  "configure-new-version",
+] }
 
 [feature.python-latest.dependencies]
-python = "3.13.*"
+python = "3.14.*"
 
 [feature.python-oldest.dependencies]
-python = "3.9.*"
+python = "3.10.*"
 
 [feature.cholmod]
 dependencies = { suitesparse = ">=7" }
@@ -49,27 +126,69 @@ activation = { env = { NANOEIGENPY_ACCELERATE_SUPPORT = "ON" } }
 [feature.test.dependencies]
 pytest = "*"
 
-[activation]
-scripts = ["development/scripts/pixi/activation.sh"]
+# Use clang-cl on Windows
+# If something go wrong, we can check this repository:
+# https://github.com/conda-forge/clang-win-activation-feedstock/tree/main
+[feature.clang-cl]
+platforms = ["win-64"]
+dependencies = { clangxx = "*", lld = "*" }
 
-[target.win-64.activation]
-scripts = ["development/scripts/pixi/activation.bat"]
+# Absolute path is needed to avoid using system clang-cl
+[feature.clang-cl.activation.env]
+CC = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
+CXX = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
 
-[build-dependencies]
-nanobind = ">=2.5.0,<3"
-cmake = ">=3.15"
-cxx-compiler = ">=1.7"
-ccache = ">=4.11.2"
-ninja = ">=1.12.1"
-pkg-config = ">=0.29.2"
-git = ">=2.49.0"
-doxygen = ">=1.13.2,<2"
+# Use clang on GNU/Linux
+[feature.clang]
+platforms = ["linux-64"]
+activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
+dependencies = { clangxx = "*", lld = "*" }
+
+[feature.test-pixi-build]
+dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
+
+[feature.test-pixi-build.tasks]
+test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
+test-python = "python -c 'import nanoeigenpy'"
+test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
-default =           {features = ["test", "python-latest"], solve-group = "py-latest"}
-cholmod =           {features = ["test", "python-latest", "cholmod"], solve-group = "py-latest"}
-accelerate =        {features = ["test", "python-latest", "accelerate"], solve-group = "py-latest"}
-python-oldest =     {features = ["test", "python-oldest"], solve-group = "py-oldest"}
+default = { features = ["test", "python-latest"], solve-group = "py-latest" }
+clang = { features = ["clang", "test", "python-latest"] }
+cholmod = { features = [
+  "test",
+  "python-latest",
+  "cholmod",
+], solve-group = "py-latest" }
+accelerate = { features = [
+  "test",
+  "python-latest",
+  "accelerate",
+], solve-group = "py-latest" }
+python-oldest = { features = [
+  "test",
+  "python-oldest",
+], solve-group = "py-oldest" }
 # NB: accelerate not supported with the current Eigen release, will be in next one
-all =               {features = ["test", "python-latest", "cholmod"], solve-group = "py-latest"}
-all-python-oldest = {features = ["test", "python-oldest", "cholmod"], solve-group = "py-oldest"}
+all = { features = [
+  "test",
+  "python-latest",
+  "cholmod",
+], solve-group = "py-latest" }
+all-python-oldest = { features = [
+  "test",
+  "python-oldest",
+  "cholmod",
+], solve-group = "py-oldest" }
+all-clang-cl = { features = [
+  "test",
+  "python-latest",
+  "cholmod",
+  "clang-cl",
+], solve-group = "py-latest" }
+# Release a new software version
+new-version = { features = [
+  "new-version",
+  "python-latest",
+], solve-group = "python-latest" }
+test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
