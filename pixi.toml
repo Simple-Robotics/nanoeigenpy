@@ -141,8 +141,8 @@ CXX = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
 # Use clang on GNU/Linux
 [feature.clang]
 platforms = ["linux-64"]
-activation = { env = { CC = "clang", CXX = "clang++" } }
-dependencies = { clangxx = "*" }
+activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
+dependencies = { clangxx = "*", lld = "*" }
 
 [feature.test-pixi-build]
 dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }

@@ -25,7 +25,7 @@ then
   export CCACHE_COMPILERTYPE=gcc
 fi
 # Without -isystem, some LSP can't find headers
-export NANOEIGENPY_CXX_FLAGS="$CXXFLAGS -isystem $CONDA_PREFIX/include"
+export NANOEIGENPY_CXX_FLAGS="$CXXFLAGS $NANOEIGENPY_CXX_FLAGS -isystem $CONDA_PREFIX/include"
 
 # Set default build value only if not previously set
 export NANOEIGENPY_BUILD_TYPE=${NANOEIGENPY_BUILD_TYPE:=Release}
