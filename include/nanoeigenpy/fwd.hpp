@@ -29,7 +29,7 @@
 #define NANOEIGENPY_HAS_ACCELERATE
 #endif
 
-#if (__cplusplus >= 202002L || (defined(_MSVC_LAG) && _MSVC_LANG >= 202002L))
+#if (__cplusplus >= 202002L || (defined(_MSVC_LANG) && _MSVC_LANG >= 202002L))
 #define NANOEIGENPY_WITH_CXX20_SUPPORT
 #endif
 
