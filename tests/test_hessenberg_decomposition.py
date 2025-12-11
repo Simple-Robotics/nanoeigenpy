@@ -1,70 +1,72 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 100
-rng = np.random.default_rng()
-A = rng.random((dim, dim))
 
-hess = nanoeigenpy.HessenbergDecomposition(A)
+def test_hessenberg_decomposition():
+    dim = 100
+    rng = np.random.default_rng()
+    A = rng.random((dim, dim))
 
-Q = hess.matrixQ()
-H = hess.matrixH()
+    hess = nanoeigenpy.HessenbergDecomposition(A)
 
-if np.iscomplexobj(A):
-    A_reconstructed = Q @ H @ Q.conj().T
-else:
-    A_reconstructed = Q @ H @ Q.T
-assert nanoeigenpy.is_approx(A, A_reconstructed)
+    Q = hess.matrixQ()
+    H = hess.matrixH()
 
-for row in range(2, dim):
-    for col in range(row - 1):
-        assert abs(H[row, col]) < 1e-12
+    if np.iscomplexobj(A):
+        A_reconstructed = Q @ H @ Q.conj().T
+    else:
+        A_reconstructed = Q @ H @ Q.T
+    assert nanoeigenpy.is_approx(A, A_reconstructed)
 
-if np.iscomplexobj(Q):
-    QQ_conj = Q @ Q.conj().T
-else:
-    QQ_conj = Q @ Q.T
-assert nanoeigenpy.is_approx(QQ_conj, np.eye(dim))
+    for row in range(2, dim):
+        for col in range(row - 1):
+            assert abs(H[row, col]) < 1e-12
 
-A_test = rng.random((dim, dim))
-hess1 = nanoeigenpy.HessenbergDecomposition(dim)
-hess1.compute(A_test)
-hess2 = nanoeigenpy.HessenbergDecomposition(A_test)
+    if np.iscomplexobj(Q):
+        QQ_conj = Q @ Q.conj().T
+    else:
+        QQ_conj = Q @ Q.T
+    assert nanoeigenpy.is_approx(QQ_conj, np.eye(dim))
 
-H1 = hess1.matrixH()
-H2 = hess2.matrixH()
-Q1 = hess1.matrixQ()
-Q2 = hess2.matrixQ()
+    A_test = rng.random((dim, dim))
+    hess1 = nanoeigenpy.HessenbergDecomposition(dim)
+    hess1.compute(A_test)
+    hess2 = nanoeigenpy.HessenbergDecomposition(A_test)
 
-assert nanoeigenpy.is_approx(H1, H2)
-assert nanoeigenpy.is_approx(Q1, Q2)
+    H1 = hess1.matrixH()
+    H2 = hess2.matrixH()
+    Q1 = hess1.matrixQ()
+    Q2 = hess2.matrixQ()
 
-hCoeffs = hess.householderCoefficients()
-packed = hess.packedMatrix()
+    assert nanoeigenpy.is_approx(H1, H2)
+    assert nanoeigenpy.is_approx(Q1, Q2)
 
-assert hCoeffs.shape == (dim - 1,)
-assert packed.shape == (dim, dim)
+    hCoeffs = hess.householderCoefficients()
+    packed = hess.packedMatrix()
 
-for i in range(dim):
-    for j in range(i - 1, dim):
-        if j >= 0:
-            assert abs(H[i, j] - packed[i, j]) < 1e-12
+    assert hCoeffs.shape == (dim - 1,)
+    assert packed.shape == (dim, dim)
 
-hess_default = nanoeigenpy.HessenbergDecomposition(dim)
-hess_matrix = nanoeigenpy.HessenbergDecomposition(A)
+    for i in range(dim):
+        for j in range(i - 1, dim):
+            if j >= 0:
+                assert abs(H[i, j] - packed[i, j]) < 1e-12
 
-hess1_id = nanoeigenpy.HessenbergDecomposition(dim)
-hess2_id = nanoeigenpy.HessenbergDecomposition(dim)
-id1 = hess1_id.id()
-id2 = hess2_id.id()
-assert id1 != id2
-assert id1 == hess1_id.id()
-assert id2 == hess2_id.id()
+    hess_default = nanoeigenpy.HessenbergDecomposition(dim)  # noqa
+    hess_matrix = nanoeigenpy.HessenbergDecomposition(A)  # noqa
 
-hess3_id = nanoeigenpy.HessenbergDecomposition(A)
-hess4_id = nanoeigenpy.HessenbergDecomposition(A)
-id3 = hess3_id.id()
-id4 = hess4_id.id()
-assert id3 != id4
-assert id3 == hess3_id.id()
-assert id4 == hess4_id.id()
+    hess1_id = nanoeigenpy.HessenbergDecomposition(dim)
+    hess2_id = nanoeigenpy.HessenbergDecomposition(dim)
+    id1 = hess1_id.id()
+    id2 = hess2_id.id()
+    assert id1 != id2
+    assert id1 == hess1_id.id()
+    assert id2 == hess2_id.id()
+
+    hess3_id = nanoeigenpy.HessenbergDecomposition(A)
+    hess4_id = nanoeigenpy.HessenbergDecomposition(A)
+    id3 = hess3_id.id()
+    id4 = hess4_id.id()
+    assert id3 != id4
+    assert id3 == hess3_id.id()
+    assert id4 == hess4_id.id()
