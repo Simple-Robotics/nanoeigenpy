@@ -82,8 +82,12 @@ configure = { cmd = [
   "-DBUILD_WITH_CHOLMOD_SUPPORT=$NANOEIGENPY_CHOLMOD_SUPPORT",
   "-DBUILD_WITH_ACCELERATE_SUPPORT=$NANOEIGENPY_ACCELERATE_SUPPORT",
 ] }
-build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
+build = { cmd = "cmake --build build", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
+install = { cmd = "cmake --install build", depends-on = ["build"] }
+test = { cmd = "ctest --output-on-failure --test-dir build", depends-on = [
+  "build",
+] }
 
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
