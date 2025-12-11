@@ -12,13 +12,11 @@ function(nanoeigenpy_add_test name)
     NAME ${test_name}
     COMMAND $<TARGET_FILE:Pytest::Pytest> ${CMAKE_CURRENT_SOURCE_DIR}/test_${name}.py
   )
-  set_tests_properties(
-    ${test_name}
-    PROPERTIES
-      ENVIRONMENT_MODIFICATION
+  set_property(
+    TEST ${test_name}
+    PROPERTY ENVIRONMENT_MODIFICATION
         "PYTHONPATH=path_list_prepend:$<TARGET_FILE_DIR:nanoeigenpy>"
         "PYTHONPATH=path_list_prepend:$<TARGET_FILE_DIR:quaternion>"
-      DEPENDS "nanoeigenpy;quaternion"
   )
 endfunction()
 # gersemi: on
