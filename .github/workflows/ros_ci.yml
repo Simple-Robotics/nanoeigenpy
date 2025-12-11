@@ -34,8 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          submodules: recursive
       # Run industrial_ci
       - uses: 'ros-industrial/industrial_ci@ba2a3d0f830f8051b356711a8df2fedfc5d256cf'
         env: ${{ matrix.env }}
