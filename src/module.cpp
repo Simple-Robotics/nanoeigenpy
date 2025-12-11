@@ -2,13 +2,19 @@
 
 #include <nanobind/stl/string.h>
 
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/constants.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 
-#include "./internal.h"
+namespace nb = nanobind;
+
+using Scalar = double;
+static constexpr int Options = Eigen::ColMajor;
+using Matrix = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, Options>;
+using Vector = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 using namespace nanoeigenpy;
 
