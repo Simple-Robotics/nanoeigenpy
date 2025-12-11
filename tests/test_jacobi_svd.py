@@ -111,9 +111,3 @@ def test_jacobi(cls, options):
         S_matrix = np.diag(S)
         A_reconstructed = U @ S_matrix @ V.T
         assert nanoeigenpy.is_approx(A, A_reconstructed)
-
-
-if __name__ == "__main__":
-    import sys
-
-    sys.exit(pytest.main(sys.argv))
