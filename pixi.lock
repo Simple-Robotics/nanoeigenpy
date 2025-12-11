@@ -3,6 +3,8 @@ environments:
   accelerate:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -309,6 +311,8 @@ environments:
   all:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -694,6 +698,8 @@ environments:
   all-clang-cl:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -782,6 +788,8 @@ environments:
   all-python-oldest:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1163,6 +1171,8 @@ environments:
   cholmod:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1548,6 +1558,8 @@ environments:
   clang:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1647,6 +1659,8 @@ environments:
   default:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -1953,6 +1967,8 @@ environments:
   new-version:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -2229,6 +2245,8 @@ environments:
   python-oldest:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -2531,6 +2549,8 @@ environments:
   test-pixi-build:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
+    options:
+      pypi-prerelease-mode: if-necessary-or-explicit
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -2579,7 +2599,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025b-h78e105d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
       - conda: .
-        subdir: linux-64
+        build: hb0f4dca_0
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/bzip2-1.0.8-h500dc9f_8.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/c-ares-1.34.5-hf13058a_0.conda
@@ -2618,7 +2638,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025b-h78e105d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
       - conda: .
-        subdir: osx-64
+        build: h0dc7051_0
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/bzip2-1.0.8-hd037594_8.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/c-ares-1.34.5-h5505292_0.conda
@@ -2658,7 +2678,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025b-h78e105d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
       - conda: .
-        subdir: osx-arm64
+        build: h60d57d3_0
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/bzip2-1.0.8-h0ad9c76_8.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2025.10.5-h4c7d964_0.conda
@@ -2697,7 +2717,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.44.35208-h818238b_32.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
       - conda: .
-        build: h9352c13_0
+        build: h2433df5_0
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
   sha256: fe51de6107f9edc7aa4f786a70f4a883943bc9d39b3bb7307c04c41410990726
@@ -7663,8 +7683,26 @@ packages:
 - conda: .
   name: nanoeigenpy
   version: 0.4.0
-  build: h9352c13_0
+  build: h0dc7051_0
+  subdir: osx-64
+  variants:
+    target_platform: osx-64
+  depends:
+  - eigen >=3.4
+  - libcxx >=21
+  - python_abi 3.14.* *_cp314
+  - numpy >=1.23,<3
+  input:
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
+    globs: []
+- conda: .
+  name: nanoeigenpy
+  version: 0.4.0
+  build: h2433df5_0
   subdir: win-64
+  variants:
+    cxx_compiler: vs2019
+    target_platform: win-64
   depends:
   - eigen >=3.4
   - vc >=14.2,<15
@@ -7678,38 +7716,29 @@ packages:
 - conda: .
   name: nanoeigenpy
   version: 0.4.0
-  build: hbf21a9e_0
+  build: h60d57d3_0
+  subdir: osx-arm64
+  variants:
+    target_platform: osx-arm64
+  depends:
+  - eigen >=3.4
+  - libcxx >=21
+  - python_abi 3.14.* *_cp314
+  - numpy >=1.23,<3
+  input:
+    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
+    globs: []
+- conda: .
+  name: nanoeigenpy
+  version: 0.4.0
+  build: hb0f4dca_0
   subdir: linux-64
+  variants:
+    target_platform: linux-64
   depends:
   - eigen >=3.4
   - libstdcxx >=15
   - libgcc >=15
-  - python_abi 3.14.* *_cp314
-  - numpy >=1.23,<3
-  input:
-    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
-    globs: []
-- conda: .
-  name: nanoeigenpy
-  version: 0.4.0
-  build: hbf21a9e_0
-  subdir: osx-64
-  depends:
-  - eigen >=3.4
-  - libcxx >=21
-  - python_abi 3.14.* *_cp314
-  - numpy >=1.23,<3
-  input:
-    hash: 19a64a4bfc5395af9e521625cb391e3a10feefc33e9e293454c96eb19f27cc08
-    globs: []
-- conda: .
-  name: nanoeigenpy
-  version: 0.4.0
-  build: hbf21a9e_0
-  subdir: osx-arm64
-  depends:
-  - eigen >=3.4
-  - libcxx >=21
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
   input:
