@@ -153,8 +153,13 @@ target_include_directories(
 
 set(nanoeigenpy_SOURCES src/module.cpp)
 
+# NB_SUPPRESS_WARNINGS appeard on nanobind >= 2.5.0
+if(nanobind_VERSION VERSION_GREATER_EQUAL "2.5.0")
+  set(nb_suppress_warnings "NB_SUPPRESS_WARNINGS")
+endif()
+
 nanobind_add_module(nanoeigenpy
-  NB_STATIC LTO NB_SUPPRESS_WARNINGS
+  NB_STATIC LTO ${nb_suppress_warnings}
   ${nanoeigenpy_SOURCES}
   ${nanoeigenpy_HEADERS}
 )
