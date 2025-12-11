@@ -135,8 +135,8 @@ dependencies = { clangxx = "*", lld = "*" }
 
 # Absolute path is needed to avoid using system clang-cl
 [feature.clang-cl.activation.env]
-CC = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
-CXX = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
+CC = "%CONDA_PREFIX%/Library/bin/clang-cl"
+CXX = "%CONDA_PREFIX%/Library/bin/clang-cl"
 
 # Use clang on GNU/Linux
 [feature.clang]
