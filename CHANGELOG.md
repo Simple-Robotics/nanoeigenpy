@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Add pixi-build support ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
+- Add dependabot for github-actions
 
 ### Removed
 - Remove pixi 0.57 warnings ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
