@@ -7,23 +7,7 @@ project(
   HOMEPAGE_URL "https://github.com/Simple-Robotics/nanoeigenpy"
 )
 
-set(JRL_CMAKEMODULES_USE_V2 ON CACHE BOOL "Use jrl-cmakemodules v2")
-if(JRL_CMAKEMODULES_SOURCE_DIR)
-  message(STATUS "Using jrl-cmakemodules from source directory: ${JRL_CMAKEMODULES_SOURCE_DIR}")
-  add_subdirectory(${JRL_CMAKEMODULES_SOURCE_DIR} jrl-cmakemodules)
-else()
-  find_package(jrl-cmakemodules 0.2.0 CONFIG QUIET)
-  if(NOT jrl-cmakemodules_FOUND)
-    message(STATUS "Fetching jrl-cmakemodules")
-    include(FetchContent)
-    FetchContent_Declare(
-      jrl-cmakemodules
-      GIT_REPOSITORY https://github.com/ahoarau/jrl-cmakemodules-v2
-      GIT_TAG main
-    )
-    FetchContent_MakeAvailable(jrl-cmakemodules)
-  endif()
-endif()
+include(cmake/get-jrl-cmakemodules.cmake)
 
 jrl_configure_defaults()
 
