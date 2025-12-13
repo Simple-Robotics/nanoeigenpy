@@ -43,6 +43,7 @@ python = ">=3.10"
 eigen = ">=3.4"
 numpy = ">=1.22"
 scipy = ">=1.10.0"
+pytest = ">=9.0.2,<10"
 
 # nanobind need to use OSX SDK >= 10.13.
 # But default version setup by rattler is 10.9
