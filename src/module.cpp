@@ -2,13 +2,19 @@
 
 #include <nanobind/stl/string.h>
 
+#include "nanoeigenpy/fwd.hpp"
 #include "nanoeigenpy/decompositions.hpp"
 #include "nanoeigenpy/geometry.hpp"
 #include "nanoeigenpy/solvers.hpp"
 #include "nanoeigenpy/constants.hpp"
 #include "nanoeigenpy/utils/is-approx.hpp"
 
-#include "./internal.h"
+namespace nb = nanobind;
+
+using Scalar = double;
+static constexpr int Options = Eigen::ColMajor;
+using Matrix = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic, Options>;
+using Vector = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
 using namespace nanoeigenpy;
 
@@ -31,9 +37,13 @@ using SparseQR = Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<int>>;
 using SparseLU = Eigen::SparseLU<SparseMatrix>;
 using SCMatrix = typename SparseLU::SCMatrix;
 using StorageIndex = typename Matrix::StorageIndex;
+#if EIGEN_VERSION_AT_LEAST(3, 5, 0)
+using MappedSparseMatrix = typename Eigen::Map<
+    Eigen::SparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>>;
+#else
 using MappedSparseMatrix =
-    typename Eigen::MappedSparseMatrix<Scalar, Options, StorageIndex>;
-
+    typename Eigen::MappedSparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>;
+#endif
 NB_MAKE_OPAQUE(ColPivHhJacobiSVD)
 NB_MAKE_OPAQUE(FullPivHhJacobiSVD)
 NB_MAKE_OPAQUE(HhJacobiSVD)
