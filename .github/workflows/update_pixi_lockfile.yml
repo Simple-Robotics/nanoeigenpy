@@ -44,7 +44,7 @@ jobs:
           title: Update pixi lockfile
           body-path: diff.md
           branch: topic/update-pixi
-          base: devel
+          base: main
           labels: |
             pixi
             no changelog
