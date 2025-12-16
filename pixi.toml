@@ -179,7 +179,7 @@ dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
 
 [feature.test-pixi-build.tasks]
 test-cmake = "cmake -S tests/packaging/cmake -B build/test_pixi_build"
-test-python = "python -c 'import nanoeigenpy; print(nanoeigenpy.nanoeigenpy.__version__)'"
+test-python = "python -c 'import nanoeigenpy; print(nanoeigenpy.__version__)'"
 test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
