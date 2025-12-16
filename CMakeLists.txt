@@ -148,6 +148,7 @@ jrl_target_enforce_msvc_conformance(nanoeigenpy PRIVATE)
 jrl_target_generate_config_header(nanoeigenpy PRIVATE VERSION ${PROJECT_VERSION})
 jrl_target_generate_warning_header(nanoeigenpy PRIVATE)
 jrl_target_generate_deprecated_header(nanoeigenpy PRIVATE)
+jrl_check_python_module_name(nanoeigenpy)
 
 target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers Eigen3::Eigen)
 
@@ -161,7 +162,7 @@ if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
   target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
 endif()
 
-if(nanobind_add_stub)
+if(COMMAND nanobind_add_stub)
   nanobind_add_stub(
     nanoeigenpy_stub
     VERBOSE
@@ -172,15 +173,16 @@ if(nanobind_add_stub)
   )
 endif()
 
-jrl_python_compile_all(DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages)
-
 jrl_python_compute_install_dir(python_install_dir)
+# NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
+# In a next version, we might install in a nanoeigenpy directory, which contains all the files.
 install(
-  DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages
+  DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages/
   DESTINATION ${python_install_dir}
   FILES_MATCHING
   PATTERN "*.py"
   PATTERN "*.pyc"
+  PATTERN "*.pyi"
   PATTERN "*.typed"
   PATTERN "*.so"
   PATTERN "*.pyd"
