@@ -178,8 +178,6 @@ if(COMMAND nanobind_add_stub)
   )
 endif()
 
-jrl_python_compile_all(DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages)
-
 jrl_python_compute_install_dir(python_install_dir)
 # NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
 # In a next version, we might install in a nanoeigenpy directory, which contains all the files.
