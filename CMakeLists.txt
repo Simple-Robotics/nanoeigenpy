@@ -166,7 +166,7 @@ if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
   target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
 endif()
 
-if(nanobind_add_stub)
+if(COMMAND nanobind_add_stub)
   nanobind_add_stub(
     nanoeigenpy_stub
     VERBOSE
