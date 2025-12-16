@@ -31,6 +31,9 @@ jobs:
     env:
       # PRERELEASE: true  # Fails due to issues in the underlying Docker image
       BUILDER: colcon
+      VERBOSE_OUTPUT: true
+      VERBOSE_TESTS: true
+      DEBUG_BASH: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
