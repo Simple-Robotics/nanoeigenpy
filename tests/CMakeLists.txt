@@ -5,7 +5,6 @@ nanobind_add_module(quaternion
 target_link_libraries(quaternion PRIVATE Eigen3::Eigen)
 jrl_target_set_output_directory(quaternion OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test-quaternion)
 
-# gersemi: off
 function(nanoeigenpy_add_test name)
   set(test_name "nanoeigenpy: ${name}")
   add_test(
@@ -14,12 +13,12 @@ function(nanoeigenpy_add_test name)
   )
   set_property(
     TEST ${test_name}
-    PROPERTY ENVIRONMENT_MODIFICATION
+    PROPERTY
+      ENVIRONMENT_MODIFICATION
         "PYTHONPATH=path_list_prepend:$<TARGET_FILE_DIR:nanoeigenpy>"
         "PYTHONPATH=path_list_prepend:$<TARGET_FILE_DIR:quaternion>"
   )
 endfunction()
-# gersemi: on
 
 nanoeigenpy_add_test(bdcsvd)
 nanoeigenpy_add_test(complex_eigen_solver)
