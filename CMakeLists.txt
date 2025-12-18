@@ -28,7 +28,7 @@ endif()
 jrl_find_package(Eigen3 CONFIG REQUIRED)
 
 jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
-jrl_find_nanobind(CONFIG REQUIRED)
+jrl_find_nanobind(2.5.0 CONFIG REQUIRED)
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
   jrl_find_package(CHOLMOD CONFIG REQUIRED)
