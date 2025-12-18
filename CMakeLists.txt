@@ -30,15 +30,27 @@ jrl_find_package(Eigen3 CONFIG REQUIRED)
 jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
 jrl_find_nanobind(2.5.0 CONFIG QUIET)
 
+if(nanobind_ROOT AND NOT nanobind_FOUND)
+  message(WARNING "nanobind found at ${nanobind_ROOT} but too old")
+endif()
+
 # On Ubuntu 24.04, the nanobind-dev package ships nanobind 1.9.2.
 # We require >=2.5.0 for nanobind_add_stub,
 # NB_SUPPRESS_WARNINGS, and visitor pattern (c++)
 if(NOT nanobind_FOUND)
+  set(nanobind_GIT_REPOSITORY "https://github.com/wjakob/nanobind.git")
+  set(nanobind_GIT_TAG "v2.10.1")
+
+  message(
+    STATUS
+    "nanobind: fallback to FetchContent from ${nanobind_GIT_REPOSITORY} (tag: ${nanobind_GIT_TAG})"
+  )
+
   include(FetchContent)
   FetchContent_Declare(
     nanobind
-    GIT_REPOSITORY https://github.com/wjakob/nanobind.git
-    GIT_TAG v2.10.1
+    GIT_REPOSITORY ${nanobind_GIT_REPOSITORY}
+    GIT_TAG ${nanobind_GIT_TAG}
     GIT_SHALLOW True
   )
   FetchContent_MakeAvailable(nanobind)
