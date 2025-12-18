@@ -11,6 +11,8 @@ include(cmake/get-jrl-cmakemodules.cmake)
 
 jrl_configure_defaults()
 
+jrl_option(BUILD_TESTING "Build the tests" OFF)
+
 jrl_option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
 
 jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
@@ -30,15 +32,27 @@ jrl_find_package(Eigen3 CONFIG REQUIRED)
 jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
 jrl_find_nanobind(2.5.0 CONFIG QUIET)
 
+if(nanobind_ROOT AND NOT nanobind_FOUND)
+  message(WARNING "nanobind found at ${nanobind_ROOT} but too old")
+endif()
+
 # On Ubuntu 24.04, the nanobind-dev package ships nanobind 1.9.2.
 # We require >=2.5.0 for nanobind_add_stub,
 # NB_SUPPRESS_WARNINGS, and visitor pattern (c++)
 if(NOT nanobind_FOUND)
+  set(nanobind_GIT_REPOSITORY "https://github.com/wjakob/nanobind.git")
+  set(nanobind_GIT_TAG "v2.10.1")
+
+  message(
+    STATUS
+    "nanobind: fallback to FetchContent from ${nanobind_GIT_REPOSITORY} (tag: ${nanobind_GIT_TAG})"
+  )
+
   include(FetchContent)
   FetchContent_Declare(
     nanobind
-    GIT_REPOSITORY https://github.com/wjakob/nanobind.git
-    GIT_TAG v2.10.1
+    GIT_REPOSITORY ${nanobind_GIT_REPOSITORY}
+    GIT_TAG ${nanobind_GIT_TAG}
     GIT_SHALLOW True
   )
   FetchContent_MakeAvailable(nanobind)
@@ -176,14 +190,18 @@ if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
   target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
 endif()
 
-nanobind_add_stub(
-  nanoeigenpy_stub
-  VERBOSE
-  MODULE nanoeigenpy
-  OUTPUT ${CMAKE_BINARY_DIR}/lib/site-packages/nanoeigenpy.pyi
-  PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
-  DEPENDS nanoeigenpy
-)
+# Stub generation requires typing-extensions
+# ROS Humble ships an incompatible typing-extensions with python3.10
+if(Python_VERSION VERSION_GREATER_EQUAL 3.11.0)
+  nanobind_add_stub(
+    nanoeigenpy_stub
+    VERBOSE
+    MODULE nanoeigenpy
+    OUTPUT ${CMAKE_BINARY_DIR}/lib/site-packages/nanoeigenpy.pyi
+    PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
+    DEPENDS nanoeigenpy
+  )
+endif()
 
 jrl_python_compute_install_dir(python_install_dir)
 # NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
