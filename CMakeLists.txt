@@ -28,7 +28,21 @@ endif()
 jrl_find_package(Eigen3 CONFIG REQUIRED)
 
 jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
-jrl_find_nanobind(CONFIG REQUIRED)
+jrl_find_nanobind(2.5.0 CONFIG QUIET)
+
+# On Ubuntu 24.04, the nanobind-dev package ships nanobind 1.9.2.
+# We require >=2.5.0 for nanobind_add_stub,
+# NB_SUPPRESS_WARNINGS, and visitor pattern (c++)
+if(NOT nanobind_FOUND)
+  include(FetchContent)
+  FetchContent_Declare(
+    nanobind
+    GIT_REPOSITORY https://github.com/wjakob/nanobind.git
+    GIT_TAG v2.10.1
+    GIT_SHALLOW True
+  )
+  FetchContent_MakeAvailable(nanobind)
+endif()
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
   jrl_find_package(CHOLMOD CONFIG REQUIRED)
@@ -162,16 +176,14 @@ if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
   target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
 endif()
 
-if(COMMAND nanobind_add_stub)
-  nanobind_add_stub(
-    nanoeigenpy_stub
-    VERBOSE
-    MODULE nanoeigenpy
-    OUTPUT ${CMAKE_BINARY_DIR}/lib/site-packages/nanoeigenpy.pyi
-    PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
-    DEPENDS nanoeigenpy
-  )
-endif()
+nanobind_add_stub(
+  nanoeigenpy_stub
+  VERBOSE
+  MODULE nanoeigenpy
+  OUTPUT ${CMAKE_BINARY_DIR}/lib/site-packages/nanoeigenpy.pyi
+  PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
+  DEPENDS nanoeigenpy
+)
 
 jrl_python_compute_install_dir(python_install_dir)
 # NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
