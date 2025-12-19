@@ -195,7 +195,7 @@ endif()
 
 # Stub generation requires typing-extensions
 # ROS Humble ships an incompatible typing-extensions with python3.10
-if(PYTHON_VERSION_MAJOR EQUAL 3 AND PYTHON_VERSION_MINOR GREATER_EQUAL 11)
+if(Python_VERSION VERSION_GREATER_EQUAL 3.11.0)
   nanobind_add_stub(
     nanoeigenpy_stub
     VERBOSE
