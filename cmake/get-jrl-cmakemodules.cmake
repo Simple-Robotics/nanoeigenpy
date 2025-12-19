@@ -30,8 +30,8 @@ if(ENV{JRL_CMAKEMODULES_SOURCE_DIR})
 endif()
 
 # Option 3: Try to look for the installed package
-message(STATUS "Looking for jrl-cmakemodules (version: >=2.0.0) package...")
-find_package(jrl-cmakemodules 2.0.0 CONFIG QUIET)
+message(STATUS "Looking for jrl-cmakemodules (version: >=1.1.2) package...")
+find_package(jrl-cmakemodules 1.1.2 CONFIG QUIET)
 
 # If we have the package, we are done here.
 if(jrl-cmakemodules_FOUND)
