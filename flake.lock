@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766158906,
-        "narHash": "sha256-VqlH9wYZLHB4R31KcRt1cBEZwhjtX5xsfyCXK03V0T8=",
+        "lastModified": 1766164989,
+        "narHash": "sha256-r1Z6g19BMuYC7mVszlQCA6cbnZgFF8OkJY3H4iZffoM=",
         "owner": "ahoarau",
         "repo": "jrl-cmakemodules",
-        "rev": "94717f5c16cd3c476adac7a7d14e704c4e6c85af",
+        "rev": "4e63e16e2aa008004e83c3d3ea7a31aa96ed6789",
         "type": "github"
       },
       "original": {
