@@ -24,7 +24,11 @@
             pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
               (python-final: python-prev: {
                 nanoeigenpy = python-prev.nanoeigenpy.overrideAttrs {
+                  cmakeFlags = [
+                    "-DBUILD_WITH_CHOLMOD_SUPPORT=OFF"
+                  ];
                   postPatch = "";
+                  postFixup = "";
                   src = lib.fileset.toSource {
                     root = ./.;
                     fileset = lib.fileset.unions [
