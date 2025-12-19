@@ -17,7 +17,6 @@
   <depend condition="$ROS_PYTHON_VERSION == 3">python3</depend>
   <depend condition="$ROS_PYTHON_VERSION == 3">python3-numpy</depend>
   <depend condition="$ROS_PYTHON_VERSION == 3">python3-scipy</depend>
-  <depend condition="$ROS_PYTHON_VERSION == 3">python3-typing-extensions</depend>
   <depend>eigen</depend>
   <depend>nanobind-dev</depend>
 
