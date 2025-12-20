@@ -1,75 +1,77 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 100
-rng = np.random.default_rng()
-A = rng.random((dim, dim))
-A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
-partialpivlu = nanoeigenpy.PartialPivLU(A)
 
-X = rng.random((dim, 20))
-B = A.dot(X)
-X_est = partialpivlu.solve(B)
-assert nanoeigenpy.is_approx(X, X_est)
-assert nanoeigenpy.is_approx(A.dot(X_est), B)
+def test_partial_piv_lu():
+    dim = 100
+    rng = np.random.default_rng()
+    A = rng.random((dim, dim))
+    A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
+    partialpivlu = nanoeigenpy.PartialPivLU(A)
 
-x = rng.random(dim)
-b = A.dot(x)
-x_est = partialpivlu.solve(b)
-assert nanoeigenpy.is_approx(x, x_est)
-assert nanoeigenpy.is_approx(A.dot(x_est), b)
+    X = rng.random((dim, 20))
+    B = A.dot(X)
+    X_est = partialpivlu.solve(B)
+    assert nanoeigenpy.is_approx(X, X_est)
+    assert nanoeigenpy.is_approx(A.dot(X_est), B)
 
-rows = partialpivlu.rows()
-cols = partialpivlu.cols()
-assert cols == dim
-assert rows == dim
+    x = rng.random(dim)
+    b = A.dot(x)
+    x_est = partialpivlu.solve(b)
+    assert nanoeigenpy.is_approx(x, x_est)
+    assert nanoeigenpy.is_approx(A.dot(x_est), b)
 
-partialpivlu_compute = partialpivlu.compute(A)
-A_reconstructed = partialpivlu.reconstructedMatrix()
-assert nanoeigenpy.is_approx(A_reconstructed, A)
+    rows = partialpivlu.rows()
+    cols = partialpivlu.cols()
+    assert cols == dim
+    assert rows == dim
 
-LU = partialpivlu.matrixLU()
-P_perm = partialpivlu.permutationP()
-P = P_perm.toDenseMatrix()
+    partialpivlu_compute = partialpivlu.compute(A)  # noqa
+    A_reconstructed = partialpivlu.reconstructedMatrix()
+    assert nanoeigenpy.is_approx(A_reconstructed, A)
 
-U = np.triu(LU)
-L = np.eye(dim) + np.tril(LU, -1)
-assert nanoeigenpy.is_approx(P @ A, L @ U)
+    LU = partialpivlu.matrixLU()
+    P_perm = partialpivlu.permutationP()
+    P = P_perm.toDenseMatrix()
 
-inverse = partialpivlu.inverse()
-assert nanoeigenpy.is_approx(A @ inverse, np.eye(dim))
-assert nanoeigenpy.is_approx(inverse @ A, np.eye(dim))
+    U = np.triu(LU)
+    L = np.eye(dim) + np.tril(LU, -1)
+    assert nanoeigenpy.is_approx(P @ A, L @ U)
 
-rcond = partialpivlu.rcond()
-determinant = partialpivlu.determinant()
-det_numpy = np.linalg.det(A)
-assert rcond > 0
-assert abs(determinant - det_numpy) / abs(det_numpy) < 1e-10
+    inverse = partialpivlu.inverse()
+    assert nanoeigenpy.is_approx(A @ inverse, np.eye(dim))
+    assert nanoeigenpy.is_approx(inverse @ A, np.eye(dim))
 
-P_inv = P_perm.inverse().toDenseMatrix()
-assert nanoeigenpy.is_approx(P @ P_inv, np.eye(dim))
-assert nanoeigenpy.is_approx(P_inv @ P, np.eye(dim))
+    rcond = partialpivlu.rcond()
+    determinant = partialpivlu.determinant()
+    det_numpy = np.linalg.det(A)
+    assert rcond > 0
+    assert abs(determinant - det_numpy) / abs(det_numpy) < 1e-10
 
-decomp1 = nanoeigenpy.PartialPivLU()
-decomp2 = nanoeigenpy.PartialPivLU()
-id1 = decomp1.id()
-id2 = decomp2.id()
-assert id1 != id2
-assert id1 == decomp1.id()
-assert id2 == decomp2.id()
+    P_inv = P_perm.inverse().toDenseMatrix()
+    assert nanoeigenpy.is_approx(P @ P_inv, np.eye(dim))
+    assert nanoeigenpy.is_approx(P_inv @ P, np.eye(dim))
 
-decomp3 = nanoeigenpy.PartialPivLU(dim)
-decomp4 = nanoeigenpy.PartialPivLU(dim)
-id3 = decomp3.id()
-id4 = decomp4.id()
-assert id3 != id4
-assert id3 == decomp3.id()
-assert id4 == decomp4.id()
+    decomp1 = nanoeigenpy.PartialPivLU()
+    decomp2 = nanoeigenpy.PartialPivLU()
+    id1 = decomp1.id()
+    id2 = decomp2.id()
+    assert id1 != id2
+    assert id1 == decomp1.id()
+    assert id2 == decomp2.id()
 
-decomp5 = nanoeigenpy.PartialPivLU(A)
-decomp6 = nanoeigenpy.PartialPivLU(A)
-id5 = decomp5.id()
-id6 = decomp6.id()
-assert id5 != id6
-assert id5 == decomp5.id()
-assert id6 == decomp6.id()
+    decomp3 = nanoeigenpy.PartialPivLU(dim)
+    decomp4 = nanoeigenpy.PartialPivLU(dim)
+    id3 = decomp3.id()
+    id4 = decomp4.id()
+    assert id3 != id4
+    assert id3 == decomp3.id()
+    assert id4 == decomp4.id()
+
+    decomp5 = nanoeigenpy.PartialPivLU(A)
+    decomp6 = nanoeigenpy.PartialPivLU(A)
+    id5 = decomp5.id()
+    id6 = decomp6.id()
+    assert id5 != id6
+    assert id5 == decomp5.id()
+    assert id6 == decomp6.id()

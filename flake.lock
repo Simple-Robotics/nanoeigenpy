@@ -5,11 +5,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1754487366,
-        "narHash": "sha256-pHYj8gUBapuUzKV/kN/tR3Zvqc7o6gdFB9XKXIp1SQ8=",
+        "lastModified": 1765835352,
+        "narHash": "sha256-XswHlK/Qtjasvhd1nOa1e8MgZ8GS//jBoTqWtrS1Giw=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "af66ad14b28a127c5c0f3bbb298218fc63528a18",
+        "rev": "a34fae9c08a15ad73f295041fec82323541400a9",
         "type": "github"
       },
       "original": {
@@ -18,13 +18,37 @@
         "type": "github"
       }
     },
+    "jrl-cmakemodules": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766168186,
+        "narHash": "sha256-t4hNCMp9NxqHL/S3T9qO9W2YTo8SK9vjJJgzt3PMar8=",
+        "owner": "ahoarau",
+        "repo": "jrl-cmakemodules",
+        "rev": "68b07aaedacee648d77f5fb98962a87cb572130c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ahoarau",
+        "ref": "jrl-next",
+        "repo": "jrl-cmakemodules",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1756266583,
-        "narHash": "sha256-cr748nSmpfvnhqSXPiCfUPxRz2FJnvf/RjJGvFfaCsM=",
-        "owner": "NixOS",
+        "lastModified": 1766153546,
+        "narHash": "sha256-lIagbRYXHD1DClqzuqmkC3N/GOxZrwTh13eRtmNUyEg=",
+        "owner": "nim65s",
         "repo": "nixpkgs",
-        "rev": "8a6d5427d99ec71c64f0b93d45778c889005d9c2",
+        "rev": "a945047facf45faddcbfa2315207950334c62720",
         "type": "github"
       },
       "original": {
@@ -36,11 +60,11 @@
     },
     "nixpkgs-lib": {
       "locked": {
-        "lastModified": 1753579242,
-        "narHash": "sha256-zvaMGVn14/Zz8hnp4VWT9xVnhc8vuL3TStRqwk22biA=",
+        "lastModified": 1765674936,
+        "narHash": "sha256-k00uTP4JNfmejrCLJOwdObYC9jHRrr/5M/a/8L2EIdo=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "0f36c44e01a6129be94e3ade315a5883f0228a6e",
+        "rev": "2075416fcb47225d9b68ac469a5c4801a9c4dd85",
         "type": "github"
       },
       "original": {
@@ -52,6 +76,7 @@
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
+        "jrl-cmakemodules": "jrl-cmakemodules",
         "nixpkgs": "nixpkgs"
       }
     }

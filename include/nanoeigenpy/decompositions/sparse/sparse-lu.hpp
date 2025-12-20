@@ -63,8 +63,13 @@ void exposeSparseLU(nb::module_ m, const char *name) {
   using RealScalar = typename MatrixType::RealScalar;
   using StorageIndex = typename MatrixType::StorageIndex;
   using SCMatrix = typename Solver::SCMatrix;
+#if EIGEN_VERSION_AT_LEAST(3, 5, 0)
+  using MappedSparseMatrix = typename Eigen::Map<
+      Eigen::SparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>>;
+#else
   using MappedSparseMatrix =
       typename Eigen::MappedSparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>;
+#endif
   using LType = Eigen::SparseLUMatrixLReturnType<SCMatrix>;
   using UType = Eigen::SparseLUMatrixUReturnType<SCMatrix, MappedSparseMatrix>;
 
