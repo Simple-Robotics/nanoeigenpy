@@ -11,6 +11,8 @@ include(cmake/get-jrl-cmakemodules.cmake)
 
 jrl_configure_defaults()
 
+jrl_option(BUILD_TESTING "Build the tests" OFF)
+
 jrl_option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
 
 jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
