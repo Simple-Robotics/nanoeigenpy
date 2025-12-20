@@ -1,26 +1,25 @@
-import nanoeigenpy
 import numpy as np
 from scipy.sparse import csc_matrix
 
+import nanoeigenpy
 
-def test_cholmod_simplicial_llt():
-    dim = 100
-    rng = np.random.default_rng()
+dim = 100
+rng = np.random.default_rng()
 
-    A = rng.random((dim, dim))
-    A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
+A = rng.random((dim, dim))
+A = (A + A.T) * 0.5 + np.diag(10.0 + rng.random(dim))
 
-    A = csc_matrix(A)
+A = csc_matrix(A)
 
-    llt = nanoeigenpy.CholmodSimplicialLLT(A)
+llt = nanoeigenpy.CholmodSimplicialLLT(A)
 
-    assert llt.info() == nanoeigenpy.ComputationInfo.Success
+assert llt.info() == nanoeigenpy.ComputationInfo.Success
 
-    X = rng.random((dim, 20))
-    B = A.dot(X)
-    X_est = llt.solve(B)
-    assert nanoeigenpy.is_approx(X, X_est)
-    assert nanoeigenpy.is_approx(A.dot(X_est), B)
+X = rng.random((dim, 20))
+B = A.dot(X)
+X_est = llt.solve(B)
+assert nanoeigenpy.is_approx(X, X_est)
+assert nanoeigenpy.is_approx(A.dot(X_est), B)
 
-    llt.analyzePattern(A)
-    llt.factorize(A)
+llt.analyzePattern(A)
+llt.factorize(A)
