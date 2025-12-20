@@ -1,241 +1,248 @@
-cmake_minimum_required(VERSION 3.22...4.2)
+#
+# Copyright 2025 INRIA
+#
 
-project(
-  nanoeigenpy
-  VERSION 0.12.0
-  DESCRIPTION "A support library for bindings between Eigen in C++ and Python, based on nanobind"
-  HOMEPAGE_URL "https://github.com/Simple-Robotics/nanoeigenpy"
-)
+cmake_minimum_required(VERSION 3.22)
 
-include(cmake/get-jrl-cmakemodules.cmake)
-
-jrl_configure_defaults()
-
-jrl_option(BUILD_TESTING "Build the tests" OFF)
-
-jrl_option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
-
-jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
-      "Build EigenPy with the Cholmod (LGPL) support. See CHOLMOD/Doc/License.txt for further details." OFF
-)
-
-jrl_option(BUILD_WITH_ACCELERATE_SUPPORT
-        "Build EigenPy with the Accelerate support (Apple only)" OFF
-)
-
-if(BUILD_WITH_ACCELERATE_SUPPORT AND NOT APPLE)
-  message(WARNING "Accelerate support is only available on APPLE systems")
-endif()
-
-jrl_find_package(Eigen3 CONFIG REQUIRED)
-
-jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
-jrl_find_nanobind(2.5.0 CONFIG QUIET)
-
-if(nanobind_ROOT AND NOT nanobind_FOUND)
-  message(WARNING "nanobind found at ${nanobind_ROOT} but too old")
-endif()
-
-# On Ubuntu 24.04, the nanobind-dev package ships nanobind 1.9.2.
-# We require >=2.5.0 for nanobind_add_stub,
-# NB_SUPPRESS_WARNINGS, and visitor pattern (c++)
-if(NOT nanobind_FOUND)
-  set(nanobind_GIT_REPOSITORY "https://github.com/wjakob/nanobind.git")
-  set(nanobind_GIT_TAG "v2.10.1")
-
-  message(
-    STATUS
-    "nanobind: fallback to FetchContent from ${nanobind_GIT_REPOSITORY} (tag: ${nanobind_GIT_TAG})"
-  )
-
-  include(FetchContent)
-  FetchContent_Declare(
-    nanobind
-    GIT_REPOSITORY ${nanobind_GIT_REPOSITORY}
-    GIT_TAG ${nanobind_GIT_TAG}
-    GIT_SHALLOW True
-  )
-  FetchContent_MakeAvailable(nanobind)
-endif()
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  jrl_find_package(CHOLMOD CONFIG REQUIRED)
-endif()
-
-if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
-  jrl_find_package(Accelerate REQUIRED)
-endif()
-
-if(BUILD_TESTING)
-  jrl_find_package(Pytest REQUIRED)
-endif()
-
+set(PROJECT_NAME nanoeigenpy)
+set(PROJECT_URL https://github.com/Simple-Robotics/nanoeigenpy)
 set(
-  nanoeigenpy_HEADERS
-  include/nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp
-  include/nanoeigenpy/decompositions/sparse/simplicial-ldlt.hpp
-  include/nanoeigenpy/decompositions/sparse/simplicial-llt.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-lu.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-qr.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp
-  include/nanoeigenpy/decompositions/bdcsvd.hpp
-  include/nanoeigenpy/decompositions/col-piv-householder-qr.hpp
-  include/nanoeigenpy/decompositions/complete-orthogonal-decomposition.hpp
-  include/nanoeigenpy/decompositions/complex-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/complex-schur.hpp
-  include/nanoeigenpy/decompositions/eigen-solver.hpp
-  include/nanoeigenpy/decompositions/full-piv-householder-qr.hpp
-  include/nanoeigenpy/decompositions/full-piv-lu.hpp
-  include/nanoeigenpy/decompositions/generalized-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/generalized-self-adjoint-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/hessenberg-decomposition.hpp
-  include/nanoeigenpy/decompositions/householder-qr.hpp
-  include/nanoeigenpy/decompositions/jacobi-svd.hpp
-  include/nanoeigenpy/decompositions/ldlt.hpp
-  include/nanoeigenpy/decompositions/llt.hpp
-  include/nanoeigenpy/decompositions/partial-piv-lu.hpp
-  include/nanoeigenpy/decompositions/permutation-matrix.hpp
-  include/nanoeigenpy/decompositions/real-qz.hpp
-  include/nanoeigenpy/decompositions/real-schur.hpp
-  include/nanoeigenpy/decompositions/self-adjoint-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/svd-base.hpp
-  include/nanoeigenpy/decompositions/tridiagonalization.hpp
-  include/nanoeigenpy/geometry/detail/rotation-base.hpp
-  include/nanoeigenpy/geometry/angle-axis.hpp
-  include/nanoeigenpy/geometry/hyperplane.hpp
-  include/nanoeigenpy/geometry/jacobi-rotation.hpp
-  include/nanoeigenpy/geometry/parametrized-line.hpp
-  include/nanoeigenpy/geometry/quaternion.hpp
-  include/nanoeigenpy/geometry/rotation-2d.hpp
-  include/nanoeigenpy/geometry/scaling.hpp
-  include/nanoeigenpy/geometry/translation.hpp
-  include/nanoeigenpy/solvers/basic-preconditioners.hpp
-  include/nanoeigenpy/solvers/bfgs-preconditioners.hpp
-  include/nanoeigenpy/solvers/bicgstab.hpp
-  include/nanoeigenpy/solvers/conjugate-gradient.hpp
-  include/nanoeigenpy/solvers/incomplete-cholesky.hpp
-  include/nanoeigenpy/solvers/incomplete-lut.hpp
-  include/nanoeigenpy/solvers/iterative-solver-base.hpp
-  include/nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp
-  include/nanoeigenpy/solvers/minres.hpp
-  include/nanoeigenpy/utils/helpers.hpp
-  include/nanoeigenpy/utils/is-approx.hpp
-  include/nanoeigenpy/constants.hpp
-  include/nanoeigenpy/decompositions.hpp
-  include/nanoeigenpy/eigen-base.hpp
-  include/nanoeigenpy/fwd.hpp
-  include/nanoeigenpy/geometry.hpp
-  include/nanoeigenpy/id.hpp
-  include/nanoeigenpy/nanoeigenpy.hpp
-  include/nanoeigenpy/solvers.hpp
+  PROJECT_DESCRIPTION
+  "A support library for bindings between Eigen in C++ and Python, based on nanobind"
+)
+set(PROJECT_CUSTOM_HEADER_EXTENSION "hpp")
+set(PROJECT_USE_CMAKE_EXPORT True)
+
+# To enable jrl-cmakemodules compatibility with workspace we must define the two
+# following lines
+set(PROJECT_AUTO_RUN_FINALIZE FALSE)
+set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+
+# Check if the submodule cmake have been initialized
+set(JRL_CMAKE_MODULES "${CMAKE_CURRENT_LIST_DIR}/cmake")
+if(EXISTS "${JRL_CMAKE_MODULES}/base.cmake")
+  message(STATUS "JRL cmakemodules found in 'cmake/' git submodule")
+else()
+  find_package(jrl-cmakemodules QUIET CONFIG)
+  if(jrl-cmakemodules_FOUND)
+    get_property(
+      JRL_CMAKE_MODULES
+      TARGET jrl-cmakemodules::jrl-cmakemodules
+      PROPERTY INTERFACE_INCLUDE_DIRECTORIES
+    )
+    message(STATUS "JRL cmakemodules found on system at ${JRL_CMAKE_MODULES}")
+  elseif(${CMAKE_VERSION} VERSION_LESS "3.14.0")
+    message(
+      FATAL_ERROR
+      "\nCan't find jrl-cmakemodules. Please either:\n"
+      "  - use git submodule: 'git submodule update --init'\n"
+      "  - or install https://github.com/jrl-umi3218/jrl-cmakemodules\n"
+      "  - or upgrade your CMake version to >= 3.14 to allow automatic fetching\n"
+    )
+  else()
+    message(STATUS "JRL cmakemodules not found. Let's fetch it.")
+    include(FetchContent)
+    FetchContent_Declare(
+      "jrl-cmakemodules"
+      GIT_REPOSITORY "https://github.com/jrl-umi3218/jrl-cmakemodules.git"
+    )
+    FetchContent_MakeAvailable("jrl-cmakemodules")
+    FetchContent_GetProperties("jrl-cmakemodules" SOURCE_DIR JRL_CMAKE_MODULES)
+  endif()
+endif()
+
+option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
+
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+  set(CMAKE_POLICY_DEFAULT_CMP0167 NEW)
+endif()
+if(POLICY CMP0177)
+  cmake_policy(SET CMP0177 NEW)
+  set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
+endif()
+include("${JRL_CMAKE_MODULES}/base.cmake")
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
+include("${JRL_CMAKE_MODULES}/ide.cmake")
+include("${JRL_CMAKE_MODULES}/apple.cmake")
+project(${PROJECT_NAME} ${PROJECT_ARGS})
+
+string(REPLACE "-pedantic" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+string(REPLACE "-Wcast-qual" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+string(REPLACE "-Wconversion" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  set_property(
+    CACHE CMAKE_BUILD_TYPE
+    PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo"
+  )
+endif()
+
+option(
+  BUILD_WITH_CHOLMOD_SUPPORT
+  "Build NanoEigenPy with the Cholmod support"
+  OFF
 )
 
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  list(
-    APPEND
-    nanoeigenpy_HEADERS
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-base.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-decomposition.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-ldlt.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-llt.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-supernodal-llt.hpp
+if(APPLE)
+  option(
+    BUILD_WITH_ACCELERATE_SUPPORT
+    "Build EigenPy with the Accelerate support"
+    OFF
   )
+endif(APPLE)
+
+# Find dependencies
+ADD_PROJECT_DEPENDENCY(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
+
+find_package(Python REQUIRED COMPONENTS Interpreter Development)
+# On Windows Python_SITELIB contains \ that can create installation issues
+if(WIN32)
+  string(REPLACE "\\" "/" Python_SITELIB "${Python_SITELIB}")
 endif()
 
-if(BUILD_WITH_ACCELERATE_SUPPORT)
-  list(
-    APPEND
-    nanoeigenpy_HEADERS
-    include/nanoeigenpy/decompositions/sparse/accelerate/accelerate.hpp
-  )
+# Detect the installed nanobind package and import it into CMake
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  OUTPUT_VARIABLE nanobind_ROOT
+)
+find_package(nanobind 2.5.0 CONFIG)
+if(NOT nanobind_FOUND)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/nanobind)
 endif()
 
-# ----------------------------------------------------------------------- #
+# Setup main targets
+file(
+  GLOB_RECURSE ${PROJECT_NAME}_HEADERS
+  CONFIGURE_DEPENDS
+  include/nanoeigenpy/*.hpp
+)
 
 add_library(nanoeigenpy_headers INTERFACE)
-add_library(nanoeigenpy::nanoeigenpy_headers ALIAS nanoeigenpy_headers)
-target_compile_features(nanoeigenpy_headers INTERFACE cxx_std_17)
-
 target_include_directories(
   nanoeigenpy_headers
   INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
+target_link_libraries(nanoeigenpy_headers INTERFACE Eigen3::Eigen)
 
-set(nanoeigenpy_SOURCES src/module.cpp)
+set(${PROJECT_NAME}_SOURCES src/module.cpp)
+nanobind_add_module(nanoeigenpy NB_STATIC NB_SUPPRESS_WARNINGS ${nanoeigenpy_SOURCES} ${nanoeigenpy_HEADERS})
+target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers)
 
-# NB_SUPPRESS_WARNINGS appeard on nanobind >= 2.5.0
-if(nanobind_VERSION VERSION_GREATER_EQUAL "2.5.0")
-  set(nb_suppress_warnings "NB_SUPPRESS_WARNINGS")
-endif()
-
-nanobind_add_module(nanoeigenpy
-  NB_STATIC LTO ${nb_suppress_warnings}
-  ${nanoeigenpy_SOURCES}
-  ${nanoeigenpy_HEADERS}
-)
-jrl_target_set_output_directory(nanoeigenpy OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages)
-
-jrl_target_enforce_msvc_conformance(nanoeigenpy PRIVATE)
-jrl_target_generate_config_header(nanoeigenpy PRIVATE VERSION ${PROJECT_VERSION})
-jrl_target_generate_warning_header(nanoeigenpy PRIVATE)
-jrl_target_generate_deprecated_header(nanoeigenpy PRIVATE)
-jrl_check_python_module_name(nanoeigenpy)
-
-target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers Eigen3::Eigen)
-
+# Cholmod
 if(BUILD_WITH_CHOLMOD_SUPPORT)
-  target_link_libraries(nanoeigenpy PRIVATE SuiteSparse::CHOLMOD)
-  target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_CHOLMOD)
-endif()
-
-if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
-  target_link_libraries(nanoeigenpy PRIVATE Accelerate::Accelerate)
-  target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
-endif()
-
-# Stub generation requires typing-extensions
-# ROS Humble ships an incompatible typing-extensions with python3.10
-if(Python_VERSION VERSION_GREATER_EQUAL 3.11.0)
-  nanobind_add_stub(
-    nanoeigenpy_stub
-    VERBOSE
-    MODULE nanoeigenpy
-    OUTPUT ${CMAKE_BINARY_DIR}/lib/site-packages/nanoeigenpy.pyi
-    PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
-    DEPENDS nanoeigenpy
+  set(
+    CMAKE_MODULE_PATH
+    ${JRL_CMAKE_MODULES}/find-external/CHOLMOD
+    ${CMAKE_MODULE_PATH}
   )
+  ADD_PROJECT_DEPENDENCY(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
+  message(
+    STATUS
+    "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
+  )
+  file(
+    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS
+    include/nanoeigenpy/decompositions/sparse/cholmod/*.hpp
+  )
+  list(
+    APPEND
+    ${PROJECT_NAME}_HEADERS
+    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_CHOLMOD_HEADERS}
+  )
+  target_link_libraries(nanoeigenpy PRIVATE CHOLMOD::CHOLMOD)
+else()
+  list(
+    FILTER ${PROJECT_NAME}_HEADERS
+    EXCLUDE
+    REGEX "include/nanoeigenpy/decompositions/sparse/cholmod/.*"
+  )
+endif(BUILD_WITH_CHOLMOD_SUPPORT)
+
+# Apple accelerate
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  if(NOT ${Eigen3_VERSION} VERSION_GREATER_EQUAL "3.4.90")
+    message(
+      FATAL_ERROR
+      "Your version of Eigen is too low. Should be at least 3.4.90. Current version is ${Eigen3_VERSION}."
+    )
+  endif()
+
+  set(
+    CMAKE_MODULE_PATH
+    ${JRL_CMAKE_MODULES}/find-external/Accelerate
+    ${CMAKE_MODULE_PATH}
+  )
+  find_package(Accelerate REQUIRED)
+  message(STATUS "Build with Accelerate support framework.")
+  target_compile_definitions(
+    nanoeigenpy_headers
+    INTERFACE -DNANOEIGENPY_WITH_ACCELERATE_SUPPORT
+  )
+endif(BUILD_WITH_ACCELERATE_SUPPORT)
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  file(
+    GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_ACCELERATE_HEADERS
+    include/nanoeigenpy/decompositions/sparse/accelerate/*.hpp
+  )
+  list(
+    APPEND
+    ${PROJECT_NAME}_HEADERS
+    ${${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_ACCELERATE_HEADERS}
+  )
+else()
+  list(
+    FILTER ${PROJECT_NAME}_HEADERS
+    EXCLUDE
+    REGEX "include/nanoeigenpy/decompositions/sparse/accelerate/.*"
+  )
+endif(BUILD_WITH_ACCELERATE_SUPPORT)
+
+if(BUILD_WITH_ACCELERATE_SUPPORT)
+  target_link_libraries(nanoeigenpy PRIVATE Accelerate)
 endif()
 
-jrl_python_compute_install_dir(python_install_dir)
-# NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
-# In a next version, we might install in a nanoeigenpy directory, which contains all the files.
-install(
-  DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages/
-  DESTINATION ${python_install_dir}
-  FILES_MATCHING
-  PATTERN "*.py"
-  PATTERN "*.pyc"
-  PATTERN "*.pyi"
-  PATTERN "*.typed"
-  PATTERN "*.so"
-  PATTERN "*.pyd"
-)
-# ------------------------------------------------------------------------ #
-jrl_target_headers(nanoeigenpy_headers INTERFACE
-  HEADERS ${nanoeigenpy_HEADERS}
-  BASE_DIRS include
-)
-
-jrl_add_export_component(NAME nanoeigenpy_headers TARGETS nanoeigenpy_headers)
-jrl_export_package()
-
-# ------------------------------------------------------------------------ #
 if(BUILD_TESTING)
-  enable_testing()
   add_subdirectory(tests)
 endif()
 
-jrl_print_dependencies_summary()
-jrl_print_options_summary()
+nanobind_add_stub(
+  nanoeigenpy_stub
+  INSTALL_TIME
+  VERBOSE
+  MODULE nanoeigenpy
+  OUTPUT ${Python_SITELIB}/nanoeigenpy.pyi
+  PYTHON_PATH $<TARGET_FILE_DIR:nanoeigenpy>
+)
+
+# Install targets
+install(
+  TARGETS ${PROJECT_NAME}_headers
+  EXPORT ${TARGETS_EXPORT_NAME}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${TARGETS_EXPORT_NAME}
+  LIBRARY DESTINATION ${Python_SITELIB}
+)
+
+ADD_HEADER_GROUP(${PROJECT_NAME}_HEADERS)
+ADD_SOURCE_GROUP(${PROJECT_NAME}_SOURCES)
+
+SETUP_PROJECT_FINALIZE()
