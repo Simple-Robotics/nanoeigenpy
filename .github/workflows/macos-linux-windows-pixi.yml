@@ -109,7 +109,7 @@ jobs:
       env:
         CMAKE_BUILD_PARALLEL_LEVEL: 2
       with:
-        cache: true
+        cache: false # ⚠️ Disabling cache for testing ⚠️
         environments: test-pixi-build
 
     - name: Test package [MacOS/Linux/Windows]
