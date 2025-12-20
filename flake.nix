@@ -23,10 +23,16 @@
           default = final: prev: {
             pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
               (python-final: python-prev: {
-                nanoeigenpy = python-prev.nanoeigenpy.overrideAttrs {
-                  cmakeFlags = [
+                nanoeigenpy = python-prev.nanoeigenpy.overrideAttrs (old: {
+                  cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+                    "-DBUILD_TESTING=ON"
                     "-DBUILD_WITH_CHOLMOD_SUPPORT=OFF"
                   ];
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+                    python-final.pytest
+                  ];
+                  # Don’t produce/require a separate doc output
+                  outputs = [ "out" ];
                   postPatch = "";
                   postFixup = "";
                   src = lib.fileset.toSource {
@@ -40,7 +46,7 @@
                       ./tests
                     ];
                   };
-                };
+                });
               })
             ];
           };
