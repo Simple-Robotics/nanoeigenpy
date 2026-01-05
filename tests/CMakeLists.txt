@@ -2,6 +2,7 @@ nanobind_add_module(quaternion
   NB_STATIC LTO NB_SUPPRESS_WARNINGS
   quaternion.cpp
 )
+jrl_check_python_module_name(quaternion)
 target_link_libraries(quaternion PRIVATE Eigen3::Eigen)
 jrl_target_set_output_directory(quaternion OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test-quaternion)
 
