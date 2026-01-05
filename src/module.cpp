@@ -31,8 +31,13 @@ using SparseQR = Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<int>>;
 using SparseLU = Eigen::SparseLU<SparseMatrix>;
 using SCMatrix = typename SparseLU::SCMatrix;
 using StorageIndex = typename Matrix::StorageIndex;
+#if EIGEN_VERSION_AT_LEAST(5, 0, 0)
 using MappedSparseMatrix =
-    typename Eigen::MappedSparseMatrix<Scalar, Options, StorageIndex>;
+    Eigen::Map<Eigen::SparseMatrix<Scalar, Options, StorageIndex>>;
+#else
+using MappedSparseMatrix =
+    Eigen::MappedSparseMatrix<Scalar, Options, StorageIndex>;
+#endif
 
 NB_MAKE_OPAQUE(ColPivHhJacobiSVD)
 NB_MAKE_OPAQUE(FullPivHhJacobiSVD)
