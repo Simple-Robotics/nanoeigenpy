@@ -8,7 +8,7 @@ Xcode*
 *.pyc
 *~
 *.egg-info
-.ruff_cache
+.ruff_cache/
 .DS_Store
 compile_commands.json
 cmake-profiling.json
