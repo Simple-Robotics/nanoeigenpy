@@ -92,6 +92,29 @@ test = { cmd = "ctest --output-on-failure --test-dir build", depends-on = [
   "build",
 ] }
 
+test-import-python = { depends-on = [
+  "install",
+], cmd = [
+  "python",
+  "-c",
+  "import nanoeigenpy; print(nanoeigenpy.__version__)",
+] }
+_test-packaging-configure = { cmd = [
+  "cmake",
+  "-G",
+  "Ninja",
+  "-S",
+  "tests/packaging/cmake",
+  "-B",
+  "build/test-packaging",
+], depends-on = [
+  "install",
+] }
+_test-packaging-build = { cmd = "cmake --build build/test-packaging", depends-on = [
+  "_test-packaging-configure",
+] }
+test-packaging = { depends-on = ["_test-packaging-build"] }
+
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
@@ -155,8 +178,8 @@ dependencies = { clangxx = "*", lld = "*" }
 dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
 
 [feature.test-pixi-build.tasks]
-test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
-test-python = "python -c 'import nanoeigenpy'"
+test-cmake = "cmake -S tests/packaging/cmake -B build/test_pixi_build"
+test-python = "python -c 'import nanoeigenpy; print(nanoeigenpy.__version__)'"
 test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
