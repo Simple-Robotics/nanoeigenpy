@@ -21,6 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Removed
 - Remove pixi 0.57 warnings ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
 
+### Fixed
+- Redefine typedefs for mapped sparse matrix for Eigen 5.x ([#39](https://github.com/Simple-Robotics/nanoeigenpy/pull/39))
+
 ## [0.4.0] - 2025-07-25
 
 ### Added
