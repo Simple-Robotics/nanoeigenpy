@@ -33,10 +33,10 @@ using SCMatrix = typename SparseLU::SCMatrix;
 using StorageIndex = typename Matrix::StorageIndex;
 #if EIGEN_VERSION_AT_LEAST(5, 0, 0)
 using MappedSparseMatrix =
-    Eigen::Map<Eigen::SparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>>;
+    Eigen::Map<Eigen::SparseMatrix<Scalar, Options, StorageIndex>>;
 #else
 using MappedSparseMatrix =
-    Eigen::MappedSparseMatrix<Scalar, Eigen::ColMajor, StorageIndex>;
+    Eigen::MappedSparseMatrix<Scalar, Options, StorageIndex>;
 #endif
 
 NB_MAKE_OPAQUE(ColPivHhJacobiSVD)
