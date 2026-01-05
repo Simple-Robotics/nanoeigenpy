@@ -96,6 +96,29 @@ test = { cmd = "ctest --output-on-failure --test-dir build", depends-on = [
   "build",
 ] }
 
+test-import-python = { depends-on = [
+  "install",
+], cmd = [
+  "python",
+  "-c",
+  "import nanoeigenpy; print(nanoeigenpy.__version__)",
+] }
+_test-packaging-configure = { cmd = [
+  "cmake",
+  "-G",
+  "Ninja",
+  "-S",
+  "tests/packaging/cmake",
+  "-B",
+  "build/test-packaging",
+], depends-on = [
+  "install",
+] }
+_test-packaging-build = { cmd = "cmake --build build/test-packaging", depends-on = [
+  "_test-packaging-configure",
+] }
+test-packaging = { depends-on = ["_test-packaging-build"] }
+
 [feature.eigen3.dependencies]
 eigen = "3.4.*"
 
@@ -162,13 +185,13 @@ platforms = ["linux-64"]
 activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
 dependencies = { clangxx = "*", lld = "*" }
 
-# [feature.test-pixi-build]
-# dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
+[feature.test-pixi-build]
+dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*", cxx-compiler = "*" }
 
-# [feature.test-pixi-build.tasks]
-# test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
-# test-python = "python -c 'import nanoeigenpy'"
-# test = { depends-on = ["test-cmake", "test-python"] }
+[feature.test-pixi-build.tasks]
+test-cmake = "cmake -S tests/packaging/cmake -B build/test_pixi_build"
+test-python = "python -c 'import nanoeigenpy; print(nanoeigenpy.__version__)'"
+test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
 default = { features = ["test", "python-latest"], solve-group = "py-latest" }
