@@ -22,6 +22,7 @@ concurrency:
 jobs:
   CI:
     strategy:
+      fail-fast: false
       matrix:
         env:
           - {ROS_DISTRO: humble}
