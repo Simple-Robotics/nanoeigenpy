@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   CI:
+    name: ROS CI - ${{ matrix.env.ROS_DISTRO }}
     strategy:
       fail-fast: false
       matrix:
