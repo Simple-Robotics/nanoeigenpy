@@ -30,12 +30,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  nanoeigenpy-pixi:
-    name: Standard - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
+  pixi:
+    name: Pixi - Standard - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.os }}
     env:
-      CCACHE_BASEDIR: "${GITHUB_WORKSPACE}"
-      CCACHE_DIR: "${GITHUB_WORKSPACE}/.ccache"
+      CCACHE_BASEDIR: "${{ github.workspace }}"
+      CCACHE_DIR: "${{ github.workspace }}/.ccache"
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 6
       # Since pixi will install a compiler, the compiler mtime will be changed.
@@ -58,7 +58,7 @@ jobs:
 
     - uses: actions/cache@v5
       with:
-        path: .ccache
+        path: ${{ env.CCACHE_DIR }}
         key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
         restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-
 
@@ -92,7 +92,7 @@ jobs:
       run: |
         pixi run -e ${{ matrix.environment }} ccache -sv
 
-  nanoeigenpy-pixi-build:
+  pixi-build:
     name: Pixi build - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
@@ -119,9 +119,10 @@ jobs:
     name: check-macos-linux-windows-pixi
 
     needs:
-    - nanoeigenpy-pixi
+    - pixi
+    - pixi-build
 
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Decide whether the needed jobs succeeded or failed
