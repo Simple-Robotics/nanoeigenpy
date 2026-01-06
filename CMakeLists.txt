@@ -43,7 +43,7 @@ endif()
 # NB_SUPPRESS_WARNINGS, and visitor pattern (c++)
 if(NOT nanobind_FOUND)
   set(nanobind_GIT_REPOSITORY "https://github.com/wjakob/nanobind.git")
-  set(nanobind_GIT_TAG "v2.10.1")
+  set(nanobind_GIT_TAG "v2.10.2")
 
   message(
     STATUS
