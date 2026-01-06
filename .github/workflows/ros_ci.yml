@@ -29,11 +29,12 @@ jobs:
           - {ROS_DISTRO: kilted}
           - {ROS_DISTRO: rolling}
     env:
-      # PRERELEASE: true  # Fails due to issues in the underlying Docker image
+      PRERELEASE: true
       BUILDER: colcon
       ROS_DISTRO: ${{ matrix.env.ROS_DISTRO }}
       VERBOSE_OUTPUT: true
       VERBOSE_TESTS: true
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
