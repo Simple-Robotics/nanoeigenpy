@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, macos]
+        eigen: ["", "-eigen_5"]
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
@@ -21,7 +22,7 @@ jobs:
         with:
           name: gepetto
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build -L
+      - run: nix build -L ".#nanoeigenpy${{ matrix.eigen }}"
 
   check:
     if: always()
