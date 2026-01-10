@@ -16,7 +16,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Python 3.10 is the minimal supported Python version
 - Switch to [JRL CMake modules v2](https://github.com/jrl-umi3218/jrl-cmakemodules/pull/798) ([#28](https://github.com/Simple-Robotics/nanoeigenpy/pull/28))
 - Remove submodules: archives can now be used
-- `c++17` is now required
 - Migrate python tests to pytest
 
 ### Added
