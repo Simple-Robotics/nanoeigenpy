@@ -64,7 +64,7 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
   jrl_find_package(CHOLMOD CONFIG REQUIRED)
 endif()
 
-if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
+if(BUILD_WITH_ACCELERATE_SUPPORT)
   jrl_find_package(Accelerate REQUIRED)
 endif()
 
@@ -165,6 +165,21 @@ target_include_directories(
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+target_link_libraries(
+  nanoeigenpy_headers
+  INTERFACE
+    Eigen3::Eigen
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:SuiteSparse::CHOLMOD>
+    $<$<BOOL:${BUILD_WITH_ACCELERATE_SUPPORT}>:Accelerate::Accelerate>
+)
+
+target_compile_definitions(
+  nanoeigenpy_headers
+  INTERFACE
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:NANOEIGENPY_HAS_CHOLMOD>
+    $<$<BOOL:${BUILD_WITH_ACCELERATE_SUPPORT}>:NANOEIGENPY_HAS_ACCELERATE>
+)
+
 set(nanoeigenpy_SOURCES src/module.cpp)
 
 nanobind_add_module(nanoeigenpy
@@ -180,17 +195,7 @@ jrl_target_generate_warning_header(nanoeigenpy PRIVATE)
 jrl_target_generate_deprecated_header(nanoeigenpy PRIVATE)
 jrl_check_python_module_name(nanoeigenpy)
 
-target_link_libraries(nanoeigenpy PRIVATE nanoeigenpy_headers Eigen3::Eigen)
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  target_link_libraries(nanoeigenpy PRIVATE SuiteSparse::CHOLMOD)
-  target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_CHOLMOD)
-endif()
-
-if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
-  target_link_libraries(nanoeigenpy PRIVATE Accelerate::Accelerate)
-  target_compile_definitions(nanoeigenpy PRIVATE NANOEIGENPY_HAS_ACCELERATE)
-endif()
+target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
 # Stub generation requires typing-extensions
 # ROS Humble ships an incompatible typing-extensions with python3.10
