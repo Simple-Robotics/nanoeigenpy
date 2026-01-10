@@ -18,11 +18,11 @@ jrl_option(BUILD_TESTING "Build the tests" OFF)
 jrl_option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
 
 jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
-      "Build EigenPy with the Cholmod (LGPL) support. See CHOLMOD/Doc/License.txt for further details." OFF
+      "Build with SparseSuite's Cholmod (LGPL). See CHOLMOD/Doc/License.txt for further details." OFF
 )
 
 jrl_option(BUILD_WITH_ACCELERATE_SUPPORT
-        "Build EigenPy with the Accelerate support (Apple only)" OFF
+        "Build with the Accelerate framework (Apple only)" OFF
 )
 
 if(BUILD_WITH_ACCELERATE_SUPPORT AND NOT APPLE)
