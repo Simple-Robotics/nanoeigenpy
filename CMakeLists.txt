@@ -224,7 +224,7 @@ install(
   PATTERN "*.so"
   PATTERN "*.pyd"
 )
-# ------------------------------------------------------------------------ #
+
 jrl_target_headers(nanoeigenpy_headers INTERFACE
   HEADERS ${nanoeigenpy_HEADERS}
   BASE_DIRS include
@@ -233,11 +233,15 @@ jrl_target_headers(nanoeigenpy_headers INTERFACE
 jrl_add_export_component(NAME nanoeigenpy_headers TARGETS nanoeigenpy_headers)
 jrl_export_package()
 
-# ------------------------------------------------------------------------ #
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)
 endif()
+
+jrl_generate_ros2_package_files(
+  INSTALL_CPP_PACKAGE_FILES [[NOT BUILD_STANDALONE_PYTHON_INTERFACE]]
+  INSTALL_PYTHON_PACKAGE_FILES [[BUILD_PYTHON_INTERFACE]]
+)
 
 jrl_print_dependencies_summary()
 jrl_print_options_summary()
