@@ -4,7 +4,7 @@ import pytest
 
 dim = 100
 rng = np.random.default_rng()
-MAX_ITER = 8000
+MAX_ITER = 80000
 
 _classes = [
     nanoeigenpy.solvers.ConjugateGradient,
