@@ -157,6 +157,19 @@ endif()
 add_library(nanoeigenpy_headers INTERFACE)
 add_library(nanoeigenpy::nanoeigenpy_headers ALIAS nanoeigenpy_headers)
 target_compile_features(nanoeigenpy_headers INTERFACE cxx_std_17)
+set_target_properties(nanoeigenpy_headers PROPERTIES VERSION ${PROJECT_VERSION})
+
+jrl_target_generate_config_header(nanoeigenpy_headers INTERFACE
+  LIBRARY_NAME nanoeigenpy
+)
+
+jrl_target_generate_warning_header(nanoeigenpy_headers INTERFACE
+  LIBRARY_NAME nanoeigenpy
+)
+
+jrl_target_generate_deprecated_header(nanoeigenpy_headers INTERFACE
+  LIBRARY_NAME nanoeigenpy
+)
 
 target_include_directories(
   nanoeigenpy_headers
@@ -188,11 +201,7 @@ nanobind_add_module(nanoeigenpy
   ${nanoeigenpy_HEADERS}
 )
 jrl_target_set_output_directory(nanoeigenpy OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages)
-
 jrl_target_enforce_msvc_conformance(nanoeigenpy PRIVATE)
-jrl_target_generate_config_header(nanoeigenpy PRIVATE VERSION ${PROJECT_VERSION})
-jrl_target_generate_warning_header(nanoeigenpy PRIVATE)
-jrl_target_generate_deprecated_header(nanoeigenpy PRIVATE)
 jrl_check_python_module_name(nanoeigenpy)
 
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
