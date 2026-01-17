@@ -68,7 +68,7 @@ jobs:
 
     - name: Clear ccache statistics [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} ccache -z
+        pixi run -e ${{ matrix.environment }} ccache -svz
 
     - name: Configure nanoeigenpy [MacOS/Linux/Windows]
       env:
