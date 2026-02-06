@@ -22,6 +22,12 @@ extra-args = [
   "-DBUILD_WITH_ACCELERATE_SUPPORT=OFF",
 ]
 
+# Override python install dir for Conda on Windows
+[package.build.target.win-64.config]
+extra-args = [
+  "-Dnanoeigenpy_PYTHON_INSTALL_DIR=%PREFIX%/Lib/site-packages",
+]
+
 [package.host-dependencies]
 nanobind = ">=2.5.0"
 python = ">=3.10"
@@ -43,6 +49,7 @@ python = ">=3.10"
 eigen = ">=3.4"
 numpy = ">=1.22"
 scipy = ">=1.10.0"
+pytest = ">=9.0.2,<10"
 
 # nanobind need to use OSX SDK >= 10.13.
 # But default version setup by rattler is 10.9
@@ -77,13 +84,42 @@ configure = { cmd = [
   "build",
   "-S",
   ".",
+  "-DJRL_CMAKEMODULES_SOURCE_DIR=$JRL_CMAKEMODULES_SOURCE_DIR",
   "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
+  "-DBUILD_TESTING=ON",
   "-DCMAKE_BUILD_TYPE=$NANOEIGENPY_BUILD_TYPE",
   "-DBUILD_WITH_CHOLMOD_SUPPORT=$NANOEIGENPY_CHOLMOD_SUPPORT",
   "-DBUILD_WITH_ACCELERATE_SUPPORT=$NANOEIGENPY_ACCELERATE_SUPPORT",
 ] }
-build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
+build = { cmd = "cmake --build build", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
+install = { cmd = "cmake --install build", depends-on = ["build"] }
+test = { cmd = "ctest --output-on-failure --test-dir build", depends-on = [
+  "build",
+] }
+
+test-import-python = { depends-on = [
+  "install",
+], cmd = [
+  "python",
+  "-c",
+  "import nanoeigenpy; print(nanoeigenpy.__version__)",
+] }
+_test-packaging-configure = { cmd = [
+  "cmake",
+  "-G",
+  "Ninja",
+  "-S",
+  "tests/packaging/cmake",
+  "-B",
+  "build/test-packaging",
+], depends-on = [
+  "install",
+] }
+_test-packaging-build = { cmd = "cmake --build build/test-packaging", depends-on = [
+  "_test-packaging-configure",
+] }
+test-packaging = { depends-on = ["_test-packaging-build"] }
 
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
@@ -135,8 +171,8 @@ dependencies = { clangxx = "*", lld = "*" }
 
 # Absolute path is needed to avoid using system clang-cl
 [feature.clang-cl.activation.env]
-CC = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
-CXX = "%CONDA_PREFIX%\\Library\\bin\\clang-cl"
+CC = "%CONDA_PREFIX%/Library/bin/clang-cl"
+CXX = "%CONDA_PREFIX%/Library/bin/clang-cl"
 
 # Use clang on GNU/Linux
 [feature.clang]
@@ -148,8 +184,8 @@ dependencies = { clangxx = "*", lld = "*" }
 dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
 
 [feature.test-pixi-build.tasks]
-test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
-test-python = "python -c 'import nanoeigenpy'"
+test-cmake = "cmake -S tests/packaging/cmake -B build/test_pixi_build"
+test-python = "python -c 'import nanoeigenpy; print(nanoeigenpy.__version__)'"
 test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
