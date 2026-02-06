@@ -2884,7 +2884,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.44.35208-h818238b_34.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - conda: .
-        build: h2433df5_0
+        build: h659f713_0
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
   sha256: fe51de6107f9edc7aa4f786a70f4a883943bc9d39b3bb7307c04c41410990726
@@ -6628,21 +6628,6 @@ packages:
 - conda: .
   name: nanoeigenpy
   version: 0.4.0
-  build: h2433df5_0
-  subdir: win-64
-  variants:
-    cxx_compiler: vs2019
-    target_platform: win-64
-  depends:
-  - eigen >=3.4
-  - vc >=14.2,<15
-  - vc14_runtime >=14.29.30139
-  - ucrt >=10.0.20348.0
-  - python_abi 3.14.* *_cp314
-  - numpy >=1.23,<3
-- conda: .
-  name: nanoeigenpy
-  version: 0.4.0
   build: h60d57d3_0
   subdir: osx-arm64
   variants:
@@ -6650,6 +6635,21 @@ packages:
   depends:
   - eigen >=3.4
   - libcxx >=21
+  - python_abi 3.14.* *_cp314
+  - numpy >=1.23,<3
+- conda: .
+  name: nanoeigenpy
+  version: 0.4.0
+  build: h659f713_0
+  subdir: win-64
+  variants:
+    cxx_compiler: vs2022
+    target_platform: win-64
+  depends:
+  - eigen >=3.4
+  - vc >=14.3,<15
+  - vc14_runtime >=14.44.35208
+  - ucrt >=10.0.20348.0
   - python_abi 3.14.* *_cp314
   - numpy >=1.23,<3
 - conda: .
