@@ -2,72 +2,74 @@ import nanoeigenpy
 import numpy as np
 import scipy.sparse as spa
 
-dim = 100
-rng = np.random.default_rng()
 
-A_fac = spa.random(dim, dim, density=0.25, random_state=rng)
-A = A_fac.T @ A_fac
-A += spa.diags(10.0 * rng.standard_normal(dim) ** 2)
-A = A.tocsc(True)
-A.check_format()
+def test_sparse_qr():
+    dim = 100
+    rng = np.random.default_rng()
 
-spqr = nanoeigenpy.SparseQR(A)
+    A_fac = spa.random(dim, dim, density=0.25, random_state=rng)
+    A = A_fac.T @ A_fac
+    A += spa.diags(10.0 * rng.standard_normal(dim) ** 2)
+    A = A.tocsc(True)
+    A.check_format()
 
-assert spqr.info() == nanoeigenpy.ComputationInfo.Success
+    spqr = nanoeigenpy.SparseQR(A)
 
-X = rng.random((dim, 20))
-B = A.dot(X)
-X_est = spqr.solve(B)
-assert isinstance(X_est, np.ndarray)
-assert nanoeigenpy.is_approx(X, X_est)
-assert nanoeigenpy.is_approx(A.dot(X_est), B)
+    assert spqr.info() == nanoeigenpy.ComputationInfo.Success
 
-spqr.analyzePattern(A)
-spqr.factorize(A)
+    X = rng.random((dim, 20))
+    B = A.dot(X)
+    X_est = spqr.solve(B)
+    assert isinstance(X_est, np.ndarray)
+    assert nanoeigenpy.is_approx(X, X_est)
+    assert nanoeigenpy.is_approx(A.dot(X_est), B)
 
-X_sparse = spa.random(dim, 10, random_state=rng)
-B_sparse = A.dot(X_sparse)
-B_sparse: spa.csc_matrix = B_sparse.tocsc(True)
-if not B_sparse.has_sorted_indices:
-    B_sparse.sort_indices()
+    spqr.analyzePattern(A)
+    spqr.factorize(A)
 
-X_est = spqr.solve(B_sparse)
-assert isinstance(X_est, spa.csc_matrix)
-assert nanoeigenpy.is_approx(X_est.toarray(), X_sparse.toarray())
-assert nanoeigenpy.is_approx(A.dot(X_est.toarray()), B_sparse.toarray())
+    X_sparse = spa.random(dim, 10, random_state=rng)
+    B_sparse = A.dot(X_sparse)
+    B_sparse: spa.csc_matrix = B_sparse.tocsc(True)
+    if not B_sparse.has_sorted_indices:
+        B_sparse.sort_indices()
 
-Q = spqr.matrixQ()
-R = spqr.matrixR()
-P = spqr.colsPermutation()
+    X_est = spqr.solve(B_sparse)
+    assert isinstance(X_est, spa.csc_matrix)
+    assert nanoeigenpy.is_approx(X_est.toarray(), X_sparse.toarray())
+    assert nanoeigenpy.is_approx(A.dot(X_est.toarray()), B_sparse.toarray())
 
-assert spqr.matrixQ().rows() == dim
-assert spqr.matrixQ().cols() == dim
-assert R.shape[0] == dim
-assert R.shape[1] == dim
-assert P.indices().size == dim
+    Q = spqr.matrixQ()
+    R = spqr.matrixR()
+    P = spqr.colsPermutation()
 
-test_vec = rng.random(dim)
-test_matrix = rng.random((dim, 20))
+    assert spqr.matrixQ().rows() == dim
+    assert spqr.matrixQ().cols() == dim
+    assert R.shape[0] == dim
+    assert R.shape[1] == dim
+    assert P.indices().size == dim
 
-Qv = Q @ test_vec
-QM = Q @ test_matrix
-Qt = Q.transpose()
-QtV = Qt @ test_vec
-QtM = Qt @ test_matrix
+    test_vec = rng.random(dim)
+    test_matrix = rng.random((dim, 20))
 
-assert Qv.shape == (dim,)
-assert QM.shape == (dim, 20)
-assert QtV.shape == (dim,)
-assert QtM.shape == (dim, 20)
+    Qv = Q @ test_vec
+    QM = Q @ test_matrix
+    Qt = Q.transpose()
+    QtV = Qt @ test_vec
+    QtM = Qt @ test_matrix
 
-Qa_real_mat = Q.adjoint()
-QaV = Qa_real_mat @ test_vec
-assert nanoeigenpy.is_approx(QtV, QaV)
+    assert Qv.shape == (dim,)
+    assert QM.shape == (dim, 20)
+    assert QtV.shape == (dim,)
+    assert QtM.shape == (dim, 20)
 
-A_dense = A.toarray()
-P_indices = np.array([P.indices()[i] for i in range(dim)])
-A_permuted = A_dense[:, P_indices]
+    Qa_real_mat = Q.adjoint()
+    QaV = Qa_real_mat @ test_vec
+    assert nanoeigenpy.is_approx(QtV, QaV)
 
-QtAP = Qt @ A_permuted
-R_dense = spqr.matrixR().toarray()
-assert nanoeigenpy.is_approx(QtAP, R_dense)
+    A_dense = A.toarray()
+    P_indices = np.array([P.indices()[i] for i in range(dim)])
+    A_permuted = A_dense[:, P_indices]
+
+    QtAP = Qt @ A_permuted
+    R_dense = spqr.matrixR().toarray()
+    assert nanoeigenpy.is_approx(QtAP, R_dense)

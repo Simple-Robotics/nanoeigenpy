@@ -1,4 +1,4 @@
-name: CI - MacOS/Linux/Windows via Pixi
+name: CI - Pixi (MacOS/Linux/Windows)
 
 on:
   push:
@@ -30,12 +30,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  nanoeigenpy-pixi:
-    name: Standard - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
+  pixi:
+    name: Pixi - ${{ matrix.os }} - Env ${{ matrix.environment }} ${{ matrix.build_type }}
     runs-on: ${{ matrix.os }}
     env:
-      CCACHE_BASEDIR: "${GITHUB_WORKSPACE}"
-      CCACHE_DIR: "${GITHUB_WORKSPACE}/.ccache"
+      CCACHE_BASEDIR: "${{ github.workspace }}"
+      CCACHE_DIR: "${{ github.workspace }}/.ccache"
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 6
       # Since pixi will install a compiler, the compiler mtime will be changed.
@@ -55,43 +55,44 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
-      with:
-        submodules: recursive
 
     - uses: actions/cache@v5
       with:
-        path: .ccache
-        key: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-${{ github.sha }}
-        restore-keys: ccache-macos-linux-windows-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.environment }}-
+        path: ${{ env.CCACHE_DIR }}
+        key: ccache-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ github.sha }}
+        restore-keys: ccache-pixi-${{ matrix.os }}-${{ matrix.build_type }}-
 
     - uses: prefix-dev/setup-pixi@v0.9.4
       with:
-        cache: true
         environments: ${{ matrix.environment }}
 
     - name: Clear ccache statistics [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} ccache -z
+        pixi run -e ${{ matrix.environment }} ccache -svz
 
-    - name: Build nanoeigenpy [MacOS/Linux/Windows]
+    - name: Configure nanoeigenpy [MacOS/Linux/Windows]
       env:
         NANOEIGENPY_BUILD_TYPE: ${{ matrix.build_type }}
+      run: |
+        pixi run -e ${{ matrix.environment }} configure
+
+    - name: Build nanoeigenpy [MacOS/Linux/Windows]
       run: |
         pixi run -e ${{ matrix.environment }} build
 
     - name: Test nanoeigenpy [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} ctest --test-dir build --output-on-failure
+        pixi run -e ${{ matrix.environment }} test
 
     - name: Install nanoeigenpy [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} cmake --build build --target install
+        pixi run -e ${{ matrix.environment }} install
 
     - name: Show ccache statistics [MacOS/Linux/Windows]
       run: |
         pixi run -e ${{ matrix.environment }} ccache -sv
 
-  nanoeigenpy-pixi-build:
+  pixi-build:
     name: Pixi build - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
@@ -102,14 +103,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
-      with:
-        submodules: recursive
 
     - uses: prefix-dev/setup-pixi@v0.9.4
       env:
         CMAKE_BUILD_PARALLEL_LEVEL: 2
       with:
-        cache: true
         environments: test-pixi-build
 
     - name: Test package [MacOS/Linux/Windows]
@@ -121,9 +119,10 @@ jobs:
     name: check-macos-linux-windows-pixi
 
     needs:
-    - nanoeigenpy-pixi
+    - pixi
+    - pixi-build
 
-    runs-on: Ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Decide whether the needed jobs succeeded or failed
