@@ -31,7 +31,7 @@ endif()
 
 jrl_find_package(Eigen3 CONFIG REQUIRED)
 
-jrl_find_python(3.8 REQUIRED COMPONENTS Interpreter Development.Module)
+jrl_find_python(3.10 REQUIRED COMPONENTS Interpreter Development.Module)
 jrl_find_nanobind(2.5.0 CONFIG QUIET)
 
 if(nanobind_ROOT AND NOT nanobind_FOUND)
