@@ -175,7 +175,7 @@ activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
 dependencies = { clangxx = "*", lld = "*" }
 
 [feature.test-pixi-build]
-dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
+dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*", cxx-compiler = ">=1.7.0" }
 
 [feature.test-pixi-build.tasks]
 test-cmake = "cmake -S tests/packaging/cmake -B build/test_pixi_build"
