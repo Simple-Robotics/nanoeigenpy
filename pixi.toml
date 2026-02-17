@@ -14,18 +14,12 @@ name = { workspace = true }
 version = { workspace = true }
 
 [package.build]
-backend = { name = "pixi-build-cmake", version = "0.3.*" }
+backend = { name = "pixi-build-cmake", version = "*" }
 
 [package.build.config]
 extra-args = [
   "-DBUILD_WITH_CHOLMOD_SUPPORT=OFF",
   "-DBUILD_WITH_ACCELERATE_SUPPORT=OFF",
-]
-
-# Override python install dir for Conda on Windows
-[package.build.target.win-64.config]
-extra-args = [
-  "-Dnanoeigenpy_PYTHON_INSTALL_DIR=%PREFIX%/Lib/site-packages",
 ]
 
 [package.host-dependencies]
