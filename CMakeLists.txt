@@ -157,10 +157,10 @@ endif()
 add_library(nanoeigenpy_headers INTERFACE)
 add_library(nanoeigenpy::nanoeigenpy_headers ALIAS nanoeigenpy_headers)
 target_compile_features(nanoeigenpy_headers INTERFACE cxx_std_17)
-set_target_properties(nanoeigenpy_headers PROPERTIES VERSION ${PROJECT_VERSION})
 
 jrl_target_generate_config_header(nanoeigenpy_headers INTERFACE
   LIBRARY_NAME nanoeigenpy
+  VERSION ${PROJECT_VERSION}
 )
 
 jrl_target_generate_warning_header(nanoeigenpy_headers INTERFACE
