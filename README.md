@@ -100,6 +100,14 @@ f(quat)
 > [!NOTE]
 > If you have a specific scalar type (e.g. `float16`) with which you want to use `Eigen::Quaternion`, or matrix solvers, or other features in **nanoeigenpy**, you should refer to the first approach and use **nanoeigenpy** from C++ directly.
 
+Furthermore, you can check the available SIMD instruction sets from the Python extension module itself:
+
+```python
+>>> import nanoeigenpy
+>>> print(nanoeigenpy.SimdInstructionSetsInUse())
+>>> SSE, SSE2  # no optimizations
+```
+
 
 ## Installation
 

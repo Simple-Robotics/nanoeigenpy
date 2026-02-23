@@ -197,6 +197,7 @@ NB_MODULE(nanoeigenpy, m) {
 
   m.attr("__version__") = NANOEIGENPY_VERSION;
   m.attr("__eigen_version__") = printEigenVersion();
+  m.attr("__eigen_max_align_bytes__") = EIGEN_MAX_ALIGN_BYTES;
 
   m.def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
         "Get the set of SIMD instructions used in Eigen when this module was "
