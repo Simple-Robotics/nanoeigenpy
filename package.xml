@@ -15,10 +15,12 @@
 
   <!-- The following tag is recommended by REP-136 -->
   <depend condition="$ROS_PYTHON_VERSION == 3">python3</depend>
+  <depend condition="$ROS_PYTHON_VERSION == 3">python3-pytest</depend>
   <depend condition="$ROS_PYTHON_VERSION == 3">python3-numpy</depend>
   <depend condition="$ROS_PYTHON_VERSION == 3">python3-scipy</depend>
   <depend>eigen</depend>
-  <depend>nanobind-dev</depend>
+  <!-- TODO: finish release of nanoeigenpy on ROS -->
+  <!-- <depend>nanobind-dev</depend> -->
 
   <buildtool_depend>cmake</buildtool_depend>
   <export>
