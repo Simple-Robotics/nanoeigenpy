@@ -26,6 +26,7 @@ extra-args = [
 nanobind = ">=2.5.0"
 python = ">=3.10"
 eigen = ">=3.4"
+eigen-abi-devel = ">=3.4"
 numpy = ">=1.22"
 
 [package.run-dependencies]
