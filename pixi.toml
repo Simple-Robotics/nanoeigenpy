@@ -127,6 +127,8 @@ activation = { env = { NANOEIGENPY_CHOLMOD_SUPPORT = "ON" } }
 
 # Accelerate only works on Apple ARM platforms
 [feature.accelerate]
+[feature.accelerate.dependencies]
+eigen = "5.*"
 # do not specify platform here; it would disallow the all-* envs on linux/win.
 [feature.accelerate.target.osx-arm64]
 activation = { env = { NANOEIGENPY_ACCELERATE_SUPPORT = "ON" } }
@@ -205,10 +207,10 @@ eigen3-all = { features = [
   "python-latest",
   "cholmod",
   "eigen3"
-], solve-group = "py-latest" }
+]}
 eigen3-py310 = { features = [
   "test",
   "python-oldest",
   "eigen3"
-], solve-group = "py-oldest" }
+]}
 # test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
