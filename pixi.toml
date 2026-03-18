@@ -89,6 +89,9 @@ configure = { cmd = [
 build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
 
+[feature.eigen3.dependencies]
+eigen = "3.4.*"
+
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
@@ -124,6 +127,7 @@ activation = { env = { NANOEIGENPY_CHOLMOD_SUPPORT = "ON" } }
 
 # Accelerate only works on Apple ARM platforms
 [feature.accelerate]
+# do not specify platform here; it would disallow the all-* envs on linux/win.
 [feature.accelerate.target.osx-arm64]
 activation = { env = { NANOEIGENPY_ACCELERATE_SUPPORT = "ON" } }
 
@@ -173,16 +177,17 @@ python-oldest = { features = [
   "test",
   "python-oldest",
 ], solve-group = "py-oldest" }
-# NB: accelerate not supported with the current Eigen release, will be in next one
 all = { features = [
   "test",
   "python-latest",
   "cholmod",
+  "accelerate",
 ], solve-group = "py-latest" }
 all-python-oldest = { features = [
   "test",
   "python-oldest",
   "cholmod",
+  "accelerate",
 ], solve-group = "py-oldest" }
 all-clang-cl = { features = [
   "test",
@@ -194,5 +199,17 @@ all-clang-cl = { features = [
 new-version = { features = [
   "new-version",
   "python-latest",
-], solve-group = "python-latest" }
+], solve-group = "py-latest" }
+eigen3-all = { features = [
+  "test",
+  "python-latest",
+  "cholmod",
+  "accelerate",
+  "eigen3"
+], solve-group = "py-latest" }
+eigen3-py310 = { features = [
+  "test",
+  "python-oldest",
+  "eigen3"
+], solve-group = "py-oldest" }
 # test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
