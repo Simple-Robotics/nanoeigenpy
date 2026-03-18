@@ -66,10 +66,7 @@ endif()
 
 if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
   if(Eigen3_VERSION VERSION_LESS 5.0.0)
-    message(
-      FATAL_ERROR
-      "Accelerate requires Eigen >= 5.0.0 (provided ${Eigen3_VERSION})"
-    )
+    message(FATAL_ERROR "Accelerate requires Eigen >= 5.0.0 (provided ${Eigen3_VERSION})")
   endif()
 
   jrl_find_package(Accelerate REQUIRED)
