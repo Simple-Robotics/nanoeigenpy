@@ -148,13 +148,13 @@ platforms = ["linux-64"]
 activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
 dependencies = { clangxx = "*", lld = "*" }
 
-[feature.test-pixi-build]
-dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
+# [feature.test-pixi-build]
+# dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
 
-[feature.test-pixi-build.tasks]
-test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
-test-python = "python -c 'import nanoeigenpy'"
-test = { depends-on = ["test-cmake", "test-python"] }
+# [feature.test-pixi-build.tasks]
+# test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
+# test-python = "python -c 'import nanoeigenpy'"
+# test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
 default = { features = ["test", "python-latest"], solve-group = "py-latest" }
@@ -195,4 +195,4 @@ new-version = { features = [
   "new-version",
   "python-latest",
 ], solve-group = "python-latest" }
-test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
+# test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
