@@ -173,12 +173,12 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
   if(NOT ${EIGEN_VERSION} VERSION_GREATER_EQUAL "5.0.0")
     message(
       FATAL_ERROR
-      "Your version of Eigen is too low. Should be at least 5.0.0. Current version is ${EIGEN_VERSION}."
+      "Your version of Eigen is too low. Should be at least 5.0.0. Current version is ${EIGEN_VERSION_NUMBER}."
     )
   else()
     message(
       STATUS
-      "Building with Accelerate support - Eigen version detected ${EIGEN_VERSION}"
+      "Building with Accelerate support - Eigen version detected ${EIGEN_VERSION_NUMBER}"
     )
   endif()
 
