@@ -175,6 +175,11 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
       FATAL_ERROR
       "Your version of Eigen is too low. Should be at least 5.0.0. Current version is ${EIGEN_VERSION}."
     )
+  else()
+    message(
+      STATUS
+      "Building with Accelerate support - Eigen version detected ${EIGEN_VERSION}"
+    )
   endif()
 
   set(
@@ -184,13 +189,11 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
   )
   find_package(Accelerate REQUIRED)
   message(STATUS "Build with Accelerate support framework.")
+  target_link_libraries(nanoeigenpy PRIVATE Accelerate)
   target_compile_definitions(
     nanoeigenpy_headers
     INTERFACE -DNANOEIGENPY_WITH_ACCELERATE_SUPPORT
   )
-endif(BUILD_WITH_ACCELERATE_SUPPORT)
-
-if(BUILD_WITH_ACCELERATE_SUPPORT)
   file(
     GLOB ${PROJECT_NAME}_DECOMPOSITIONS_SPARSE_ACCELERATE_HEADERS
     include/nanoeigenpy/decompositions/sparse/accelerate/*.hpp
@@ -207,10 +210,6 @@ else()
     REGEX "include/nanoeigenpy/decompositions/sparse/accelerate/.*"
   )
 endif(BUILD_WITH_ACCELERATE_SUPPORT)
-
-if(BUILD_WITH_ACCELERATE_SUPPORT)
-  target_link_libraries(nanoeigenpy PRIVATE Accelerate)
-endif()
 
 if(BUILD_TESTING)
   add_subdirectory(tests)
