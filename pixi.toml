@@ -25,21 +25,24 @@ extra-args = [
 [package.host-dependencies]
 nanobind = ">=2.5.0"
 python = ">=3.10"
-eigen = ">=3.4"
-eigen-abi-devel = ">=3.4"
+eigen = "*"
+eigen-abi-devel = "*"
 numpy = ">=1.22"
 
 [package.run-dependencies]
 eigen = ">=3.4"
 
+[workspace.build-variants]
+eigen = ["3.4.*", "5.*"]
+
 [dependencies]
 nanobind = ">=2.5.0"
-git = ">=2.49.0"
+git = ">=2.53.0,<3"
 doxygen = ">=1.13.2"
-ccache = ">=4.9.1"
+ccache = ">=4.13.1,<5"
 cmake = ">=3.22"
-cxx-compiler = ">=1.7.0"
-ninja = ">=1.11"
+cxx-compiler = ">=1.11.0,<2"
+ninja = ">=1.13.2,<2"
 python = ">=3.10"
 eigen = ">=3.4"
 numpy = ">=1.22"
@@ -86,6 +89,9 @@ configure = { cmd = [
 build = { cmd = "cmake --build build --target all", depends-on = ["configure"] }
 clean = { cmd = "rm -rf build" }
 
+[feature.eigen3.dependencies]
+eigen = "3.4.*"
+
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
@@ -121,6 +127,9 @@ activation = { env = { NANOEIGENPY_CHOLMOD_SUPPORT = "ON" } }
 
 # Accelerate only works on Apple ARM platforms
 [feature.accelerate]
+[feature.accelerate.dependencies]
+eigen = "5.*"
+# do not specify platform here; it would disallow the all-* envs on linux/win.
 [feature.accelerate.target.osx-arm64]
 activation = { env = { NANOEIGENPY_ACCELERATE_SUPPORT = "ON" } }
 
@@ -145,13 +154,13 @@ platforms = ["linux-64"]
 activation = { scripts = ["development/scripts/pixi/activation_clang.sh"] }
 dependencies = { clangxx = "*", lld = "*" }
 
-[feature.test-pixi-build]
-dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
+# [feature.test-pixi-build]
+# dependencies = { nanoeigenpy = { path = "." }, cmake = ">=3.22", python = "*" }
 
-[feature.test-pixi-build.tasks]
-test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
-test-python = "python -c 'import nanoeigenpy'"
-test = { depends-on = ["test-cmake", "test-python"] }
+# [feature.test-pixi-build.tasks]
+# test-cmake = "cmake -S tests/packaging/pixi_build -B build_test_pixi_build"
+# test-python = "python -c 'import nanoeigenpy'"
+# test = { depends-on = ["test-cmake", "test-python"] }
 
 [environments]
 default = { features = ["test", "python-latest"], solve-group = "py-latest" }
@@ -170,16 +179,17 @@ python-oldest = { features = [
   "test",
   "python-oldest",
 ], solve-group = "py-oldest" }
-# NB: accelerate not supported with the current Eigen release, will be in next one
 all = { features = [
   "test",
   "python-latest",
   "cholmod",
+  "accelerate",
 ], solve-group = "py-latest" }
 all-python-oldest = { features = [
   "test",
   "python-oldest",
   "cholmod",
+  "accelerate",
 ], solve-group = "py-oldest" }
 all-clang-cl = { features = [
   "test",
@@ -191,5 +201,16 @@ all-clang-cl = { features = [
 new-version = { features = [
   "new-version",
   "python-latest",
-], solve-group = "python-latest" }
-test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
+], solve-group = "py-latest" }
+eigen3-all = { features = [
+  "test",
+  "python-latest",
+  "cholmod",
+  "eigen3"
+]}
+eigen3-py310 = { features = [
+  "test",
+  "python-oldest",
+  "eigen3"
+]}
+# test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
