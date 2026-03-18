@@ -170,10 +170,10 @@ endif(BUILD_WITH_CHOLMOD_SUPPORT)
 
 # Apple accelerate
 if(BUILD_WITH_ACCELERATE_SUPPORT)
-  if(NOT ${Eigen3_VERSION} VERSION_GREATER_EQUAL "3.4.90")
+  if(NOT ${EIGEN_VERSION} VERSION_GREATER_EQUAL "5.0.0")
     message(
       FATAL_ERROR
-      "Your version of Eigen is too low. Should be at least 3.4.90. Current version is ${Eigen3_VERSION}."
+      "Your version of Eigen is too low. Should be at least 5.0.0. Current version is ${EIGEN_VERSION}."
     )
   endif()
 
