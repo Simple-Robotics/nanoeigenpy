@@ -2450,7 +2450,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/vswhere-3.1.7-h40126e0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/xxhash-0.8.3-hbba6f48_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
-  eigen3-py310:
+  eigen3-python-oldest:
     channels:
     - url: https://conda.anaconda.org/conda-forge/
     options:

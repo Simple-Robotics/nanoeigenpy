@@ -208,7 +208,7 @@ eigen3-all = { features = [
   "cholmod",
   "eigen3"
 ]}
-eigen3-py310 = { features = [
+eigen3-python-oldest = { features = [
   "test",
   "python-oldest",
   "eigen3"
