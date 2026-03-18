@@ -95,6 +95,7 @@ eigen = "3.4.*"
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
+pytest = ">=9.0.2,<10"
 
 [feature.new-version.tasks]
 configure-new-version = { cmd = [
