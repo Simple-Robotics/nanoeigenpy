@@ -204,7 +204,6 @@ eigen3-all = { features = [
   "test",
   "python-latest",
   "cholmod",
-  "accelerate",
   "eigen3"
 ], solve-group = "py-latest" }
 eigen3-py310 = { features = [
