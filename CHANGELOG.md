@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Add pixi-build support ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
 - Python extension: expose `__eigen_max_align_bytes__` ([#47](https://github.com/Simple-Robotics/nanoeigenpy/pull/47))
-- Support for Eigen 5.x ([#49](https://github.com/Simple-Robotics/nanoeigenpy/pull/49))
+- Support for Eigen 5.x in pixi envs ([#49](https://github.com/Simple-Robotics/nanoeigenpy/pull/49))
 
 ### Removed
 - Remove pixi 0.57 warnings ([#25](https://github.com/Simple-Robotics/nanoeigenpy/pull/25))
