@@ -25,12 +25,15 @@ extra-args = [
 [package.host-dependencies]
 nanobind = ">=2.5.0"
 python = ">=3.10"
-eigen = ">=3.4"
-eigen-abi-devel = ">=3.4"
+eigen = "*"
+eigen-abi-devel = "*"
 numpy = ">=1.22"
 
 [package.run-dependencies]
 eigen = ">=3.4"
+
+[workspace.build-variants]
+eigen = ["3.4.*", "5.*"]
 
 [dependencies]
 nanobind = ">=2.5.0"
