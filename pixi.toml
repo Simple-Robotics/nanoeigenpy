@@ -37,12 +37,12 @@ eigen = ["3.4.*", "5.*"]
 
 [dependencies]
 nanobind = ">=2.5.0"
-git = ">=2.49.0"
+git = ">=2.53.0,<3"
 doxygen = ">=1.13.2"
-ccache = ">=4.9.1"
+ccache = ">=4.13.1,<5"
 cmake = ">=3.22"
-cxx-compiler = ">=1.7.0"
-ninja = ">=1.11"
+cxx-compiler = ">=1.11.0,<2"
+ninja = ">=1.13.2,<2"
 python = ">=3.10"
 eigen = ">=3.4"
 numpy = ">=1.22"
