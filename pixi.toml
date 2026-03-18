@@ -244,4 +244,4 @@ eigen3-python-oldest = { features = [
   "python-oldest",
   "eigen3"
 ]}
-# test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
+test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
