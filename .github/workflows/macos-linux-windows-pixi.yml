@@ -59,8 +59,8 @@ jobs:
     - uses: actions/cache@v6
       with:
         path: ${{ env.CCACHE_DIR }}
-        key: ccache-pixi-${{ matrix.os }}-${{ matrix.build_type }}-${{ github.sha }}
-        restore-keys: ccache-pixi-${{ matrix.os }}-${{ matrix.build_type }}-
+        key: ccache-pixi-${{ matrix.environment }}-${{ matrix.os }}-${{ matrix.build_type }}-${{ github.sha }}
+        restore-keys: ccache-pixi-${{ matrix.environment }}-${{ matrix.os }}-${{ matrix.build_type }}-
 
     - uses: prefix-dev/setup-pixi@v0.11.2
       with:
