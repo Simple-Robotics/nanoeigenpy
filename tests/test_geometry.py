@@ -248,7 +248,11 @@ def test_geometry():
 
     # --- Rotation2D ------------------------------------------------
     verbose and print("[Rotation2D] Default constructor")
+    # Eigen's default constructor leaves the angle uninitialized (same as
+    # Eigen::Matrix), so only check that construction succeeds and the
+    # value is settable, otherwise we might read garbage on Release mode.
     r_default = nanoeigenpy.Rotation2D()
+    r_default.angle = 0.0
     assert isapprox(r_default.angle, 0.0)
 
     verbose and print("[Rotation2D] Angle constructor")
