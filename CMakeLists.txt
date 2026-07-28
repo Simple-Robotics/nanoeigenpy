@@ -61,7 +61,7 @@ if(NOT nanobind_FOUND)
 endif()
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
-  jrl_find_package(CHOLMOD CONFIG REQUIRED)
+  jrl_find_package(CHOLMOD REQUIRED)
 endif()
 
 if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
