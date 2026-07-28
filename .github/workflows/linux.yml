@@ -63,7 +63,8 @@ jobs:
             python3-dev \
             python3-numpy \
             python3-scipy \
-            python3-pytest
+            python3-pytest \
+            python3-typing-extensions
 
       - uses: actions/checkout@v7
 

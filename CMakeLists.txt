@@ -208,9 +208,43 @@ jrl_check_python_module_name(nanoeigenpy)
 
 target_link_libraries(nanoeigenpy PUBLIC nanoeigenpy_headers)
 
-# Stub generation requires typing-extensions
-# ROS Humble ships an incompatible typing-extensions with python3.10
-if(Python_VERSION VERSION_GREATER_EQUAL 3.11.0)
+# Stub generation requires typing-extensions >= 4.1.0 on python < 3.11
+# https://github.com/wjakob/nanobind/blob/v2.13.0/src/stubgen.py#L80
+# https://github.com/python/typing_extensions/blob/main/CHANGELOG.md#release-410-february-12-2022
+# Ubuntu 22.04 ships an incompatible version (3.10.0) of typing-extensions with python3.10
+# typing_extensions has no __version__ attribute, so query it via importlib.metadata instead.
+set(NANOEIGENPY_GENERATE_STUBS ON)
+if(Python_VERSION VERSION_LESS 3.11)
+  jrl_python_get_interpreter(python)
+  execute_process(
+    COMMAND
+      ${python} -c
+      "import importlib.metadata; print(importlib.metadata.version('typing_extensions'), end='')"
+    RESULT_VARIABLE typing_extensions_found
+    OUTPUT_VARIABLE typing_extensions_VERSION
+    ERROR_QUIET
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  if(NOT typing_extensions_found EQUAL 0)
+    message(WARNING "[nanoeigenpy] typing_extensions not found, disabling stub generation")
+    set(NANOEIGENPY_GENERATE_STUBS OFF)
+  elseif(typing_extensions_VERSION VERSION_GREATER_EQUAL 4.1.0)
+    set(NANOEIGENPY_GENERATE_STUBS ON)
+    message(
+      STATUS
+      "[nanoeigenpy] typing_extensions version ${typing_extensions_VERSION} (needs >= 4.1.0) found, enabling stub generation"
+    )
+  else()
+    message(
+      WARNING
+      "[nanoeigenpy] typing_extensions version ${typing_extensions_VERSION} (needs >= 4.1.0) found, disabling stub generation"
+    )
+    set(NANOEIGENPY_GENERATE_STUBS OFF)
+  endif()
+endif()
+
+if(NANOEIGENPY_GENERATE_STUBS)
   nanobind_add_stub(
     nanoeigenpy_stub
     VERBOSE
