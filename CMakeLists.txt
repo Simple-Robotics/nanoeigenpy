@@ -29,7 +29,7 @@ if(BUILD_WITH_ACCELERATE_SUPPORT AND NOT APPLE)
   message(WARNING "Accelerate support is only available on APPLE systems")
 endif()
 
-jrl_find_package(Eigen3 CONFIG REQUIRED)
+jrl_find_package(Eigen3 CONFIG REQUIRED EXPECTED_TARGETS Eigen3::Eigen)
 
 jrl_find_python(3.10 REQUIRED COMPONENTS Interpreter Development.Module)
 jrl_find_nanobind(2.5.0 CONFIG QUIET)
@@ -61,7 +61,7 @@ if(NOT nanobind_FOUND)
 endif()
 
 if(BUILD_WITH_CHOLMOD_SUPPORT)
-  jrl_find_package(CHOLMOD REQUIRED)
+  jrl_find_package(CHOLMOD REQUIRED EXPECTED_TARGETS SuiteSparse::CHOLMOD)
 endif()
 
 if(BUILD_WITH_ACCELERATE_SUPPORT AND APPLE)
