@@ -258,6 +258,7 @@ endif()
 jrl_python_compute_install_dir(python_install_dir)
 # NOTE: install the whole binary dir, we need the "/" at the end to copy the content.
 # In a next version, we might install in a nanoeigenpy directory, which contains all the files.
+install(TARGETS nanoeigenpy DESTINATION ${python_install_dir})
 install(
   DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages/
   DESTINATION ${python_install_dir}
