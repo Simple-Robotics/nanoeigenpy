@@ -76,84 +76,6 @@ if(BUILD_TESTING)
   jrl_find_package(Pytest REQUIRED)
 endif()
 
-set(
-  nanoeigenpy_HEADERS
-  include/nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp
-  include/nanoeigenpy/decompositions/sparse/simplicial-ldlt.hpp
-  include/nanoeigenpy/decompositions/sparse/simplicial-llt.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-lu.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-qr.hpp
-  include/nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp
-  include/nanoeigenpy/decompositions/bdcsvd.hpp
-  include/nanoeigenpy/decompositions/col-piv-householder-qr.hpp
-  include/nanoeigenpy/decompositions/complete-orthogonal-decomposition.hpp
-  include/nanoeigenpy/decompositions/complex-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/complex-schur.hpp
-  include/nanoeigenpy/decompositions/eigen-solver.hpp
-  include/nanoeigenpy/decompositions/full-piv-householder-qr.hpp
-  include/nanoeigenpy/decompositions/full-piv-lu.hpp
-  include/nanoeigenpy/decompositions/generalized-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/generalized-self-adjoint-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/hessenberg-decomposition.hpp
-  include/nanoeigenpy/decompositions/householder-qr.hpp
-  include/nanoeigenpy/decompositions/jacobi-svd.hpp
-  include/nanoeigenpy/decompositions/ldlt.hpp
-  include/nanoeigenpy/decompositions/llt.hpp
-  include/nanoeigenpy/decompositions/partial-piv-lu.hpp
-  include/nanoeigenpy/decompositions/permutation-matrix.hpp
-  include/nanoeigenpy/decompositions/real-qz.hpp
-  include/nanoeigenpy/decompositions/real-schur.hpp
-  include/nanoeigenpy/decompositions/self-adjoint-eigen-solver.hpp
-  include/nanoeigenpy/decompositions/svd-base.hpp
-  include/nanoeigenpy/decompositions/tridiagonalization.hpp
-  include/nanoeigenpy/geometry/detail/rotation-base.hpp
-  include/nanoeigenpy/geometry/angle-axis.hpp
-  include/nanoeigenpy/geometry/hyperplane.hpp
-  include/nanoeigenpy/geometry/jacobi-rotation.hpp
-  include/nanoeigenpy/geometry/parametrized-line.hpp
-  include/nanoeigenpy/geometry/quaternion.hpp
-  include/nanoeigenpy/geometry/rotation-2d.hpp
-  include/nanoeigenpy/geometry/scaling.hpp
-  include/nanoeigenpy/geometry/translation.hpp
-  include/nanoeigenpy/solvers/basic-preconditioners.hpp
-  include/nanoeigenpy/solvers/bfgs-preconditioners.hpp
-  include/nanoeigenpy/solvers/bicgstab.hpp
-  include/nanoeigenpy/solvers/conjugate-gradient.hpp
-  include/nanoeigenpy/solvers/incomplete-cholesky.hpp
-  include/nanoeigenpy/solvers/incomplete-lut.hpp
-  include/nanoeigenpy/solvers/iterative-solver-base.hpp
-  include/nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp
-  include/nanoeigenpy/solvers/minres.hpp
-  include/nanoeigenpy/utils/helpers.hpp
-  include/nanoeigenpy/utils/is-approx.hpp
-  include/nanoeigenpy/constants.hpp
-  include/nanoeigenpy/decompositions.hpp
-  include/nanoeigenpy/eigen-base.hpp
-  include/nanoeigenpy/fwd.hpp
-  include/nanoeigenpy/geometry.hpp
-  include/nanoeigenpy/id.hpp
-  include/nanoeigenpy/nanoeigenpy.hpp
-  include/nanoeigenpy/solvers.hpp
-)
-
-if(BUILD_WITH_CHOLMOD_SUPPORT)
-  list(
-    APPEND nanoeigenpy_HEADERS
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-base.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-decomposition.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-ldlt.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-llt.hpp
-    include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-supernodal-llt.hpp
-  )
-endif()
-
-if(BUILD_WITH_ACCELERATE_SUPPORT)
-  list(
-    APPEND nanoeigenpy_HEADERS
-    include/nanoeigenpy/decompositions/sparse/accelerate/accelerate.hpp
-  )
-endif()
-
 # ----------------------------------------------------------------------- #
 
 add_library(nanoeigenpy_headers INTERFACE)
@@ -196,12 +118,9 @@ target_compile_definitions(
     $<$<BOOL:${BUILD_WITH_ACCELERATE_SUPPORT}>:NANOEIGENPY_HAS_ACCELERATE>
 )
 
-set(nanoeigenpy_SOURCES src/module.cpp)
-
 nanobind_add_module(nanoeigenpy
   NB_STATIC LTO NB_SUPPRESS_WARNINGS
-  ${nanoeigenpy_SOURCES}
-  ${nanoeigenpy_HEADERS}
+  src/module.cpp
 )
 jrl_target_set_output_directory(nanoeigenpy OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/site-packages)
 jrl_target_enforce_msvc_conformance(nanoeigenpy PRIVATE)
@@ -268,12 +187,72 @@ install(
   PATTERN "*.pyc"
   PATTERN "*.pyi"
   PATTERN "*.typed"
-  PATTERN "*.so"
-  PATTERN "*.pyd"
 )
 
 jrl_target_headers(nanoeigenpy_headers INTERFACE
-  HEADERS ${nanoeigenpy_HEADERS}
+  HEADERS
+    include/nanoeigenpy/decompositions/sparse/simplicial-cholesky.hpp
+    include/nanoeigenpy/decompositions/sparse/simplicial-ldlt.hpp
+    include/nanoeigenpy/decompositions/sparse/simplicial-llt.hpp
+    include/nanoeigenpy/decompositions/sparse/sparse-lu.hpp
+    include/nanoeigenpy/decompositions/sparse/sparse-qr.hpp
+    include/nanoeigenpy/decompositions/sparse/sparse-solver-base.hpp
+    include/nanoeigenpy/decompositions/bdcsvd.hpp
+    include/nanoeigenpy/decompositions/col-piv-householder-qr.hpp
+    include/nanoeigenpy/decompositions/complete-orthogonal-decomposition.hpp
+    include/nanoeigenpy/decompositions/complex-eigen-solver.hpp
+    include/nanoeigenpy/decompositions/complex-schur.hpp
+    include/nanoeigenpy/decompositions/eigen-solver.hpp
+    include/nanoeigenpy/decompositions/full-piv-householder-qr.hpp
+    include/nanoeigenpy/decompositions/full-piv-lu.hpp
+    include/nanoeigenpy/decompositions/generalized-eigen-solver.hpp
+    include/nanoeigenpy/decompositions/generalized-self-adjoint-eigen-solver.hpp
+    include/nanoeigenpy/decompositions/hessenberg-decomposition.hpp
+    include/nanoeigenpy/decompositions/householder-qr.hpp
+    include/nanoeigenpy/decompositions/jacobi-svd.hpp
+    include/nanoeigenpy/decompositions/ldlt.hpp
+    include/nanoeigenpy/decompositions/llt.hpp
+    include/nanoeigenpy/decompositions/partial-piv-lu.hpp
+    include/nanoeigenpy/decompositions/permutation-matrix.hpp
+    include/nanoeigenpy/decompositions/real-qz.hpp
+    include/nanoeigenpy/decompositions/real-schur.hpp
+    include/nanoeigenpy/decompositions/self-adjoint-eigen-solver.hpp
+    include/nanoeigenpy/decompositions/svd-base.hpp
+    include/nanoeigenpy/decompositions/tridiagonalization.hpp
+    include/nanoeigenpy/geometry/detail/rotation-base.hpp
+    include/nanoeigenpy/geometry/angle-axis.hpp
+    include/nanoeigenpy/geometry/hyperplane.hpp
+    include/nanoeigenpy/geometry/jacobi-rotation.hpp
+    include/nanoeigenpy/geometry/parametrized-line.hpp
+    include/nanoeigenpy/geometry/quaternion.hpp
+    include/nanoeigenpy/geometry/rotation-2d.hpp
+    include/nanoeigenpy/geometry/scaling.hpp
+    include/nanoeigenpy/geometry/translation.hpp
+    include/nanoeigenpy/solvers/basic-preconditioners.hpp
+    include/nanoeigenpy/solvers/bfgs-preconditioners.hpp
+    include/nanoeigenpy/solvers/bicgstab.hpp
+    include/nanoeigenpy/solvers/conjugate-gradient.hpp
+    include/nanoeigenpy/solvers/incomplete-cholesky.hpp
+    include/nanoeigenpy/solvers/incomplete-lut.hpp
+    include/nanoeigenpy/solvers/iterative-solver-base.hpp
+    include/nanoeigenpy/solvers/least-squares-conjugate-gradient.hpp
+    include/nanoeigenpy/solvers/minres.hpp
+    include/nanoeigenpy/utils/helpers.hpp
+    include/nanoeigenpy/utils/is-approx.hpp
+    include/nanoeigenpy/constants.hpp
+    include/nanoeigenpy/decompositions.hpp
+    include/nanoeigenpy/eigen-base.hpp
+    include/nanoeigenpy/fwd.hpp
+    include/nanoeigenpy/geometry.hpp
+    include/nanoeigenpy/id.hpp
+    include/nanoeigenpy/nanoeigenpy.hpp
+    include/nanoeigenpy/solvers.hpp
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-base.hpp>
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-decomposition.hpp>
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-ldlt.hpp>
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-simplicial-llt.hpp>
+    $<$<BOOL:${BUILD_WITH_CHOLMOD_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/cholmod/cholmod-supernodal-llt.hpp>
+    $<$<BOOL:${BUILD_WITH_ACCELERATE_SUPPORT}>:include/nanoeigenpy/decompositions/sparse/accelerate/accelerate.hpp>
   BASE_DIRS include
 )
 
