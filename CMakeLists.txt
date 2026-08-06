@@ -22,7 +22,7 @@ jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
 )
 
 jrl_option(BUILD_WITH_ACCELERATE_SUPPORT
-        "Build with the Accelerate framework (Apple only)" OFF
+        "Build with the Accelerate framework (Apple only)" OFF CONDITION APPLE FALLBACK OFF
 )
 
 if(BUILD_WITH_ACCELERATE_SUPPORT AND NOT APPLE)
