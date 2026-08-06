@@ -78,15 +78,15 @@ jobs:
 
     - name: Build nanoeigenpy [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} build
+        pixi run -e ${{ matrix.environment }} --skip-deps build
 
     - name: Test nanoeigenpy [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} test
+        pixi run -e ${{ matrix.environment }} --skip-deps test
 
     - name: Install nanoeigenpy [MacOS/Linux/Windows]
       run: |
-        pixi run -e ${{ matrix.environment }} install
+        pixi run -e ${{ matrix.environment }} --skip-deps install
 
     - name: Show ccache statistics [MacOS/Linux/Windows]
       run: |
