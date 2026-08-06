@@ -7,7 +7,7 @@ target_link_libraries(quaternion PRIVATE Eigen3::Eigen)
 jrl_target_set_output_directory(quaternion OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/test-quaternion)
 
 function(nanoeigenpy_add_test name)
-  set(test_name "nanoeigenpy: ${name}")
+  set(test_name "nanoeigenpy-test-py-${name}")
   add_test(
     NAME ${test_name}
     COMMAND $<TARGET_FILE:Pytest::Pytest> ${CMAKE_CURRENT_SOURCE_DIR}/test_${name}.py
