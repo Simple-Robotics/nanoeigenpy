@@ -15,7 +15,11 @@ jrl_configure_defaults()
 
 jrl_option(BUILD_TESTING "Build the tests" OFF)
 
-jrl_option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
+jrl_option(BUILD_DOCUMENTATION "Build the Doxygen documentation" ON)
+
+jrl_option(INSTALL_DOCUMENTATION "Install the documentation" ON
+      CONDITION BUILD_DOCUMENTATION FALLBACK OFF
+)
 
 jrl_option(BUILD_WITH_CHOLMOD_SUPPORT
       "Build with SparseSuite's Cholmod (LGPL). See CHOLMOD/Doc/License.txt for further details." OFF
@@ -74,6 +78,10 @@ endif()
 
 if(BUILD_TESTING)
   jrl_find_package(Pytest REQUIRED)
+endif()
+
+if(BUILD_DOCUMENTATION)
+  jrl_find_package(Doxygen REQUIRED COMPONENTS dot)
 endif()
 
 # ----------------------------------------------------------------------- #
@@ -262,6 +270,10 @@ jrl_export_package()
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory(tests)
+endif()
+
+if(BUILD_DOCUMENTATION)
+  add_subdirectory(doc)
 endif()
 
 jrl_generate_ros2_package_files(

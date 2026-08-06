@@ -58,6 +58,8 @@ jobs:
             cmake \
             ninja-build \
             ccache \
+            doxygen \
+            graphviz \
             libeigen3-dev \
             libsuitesparse-dev \
             python3-dev \
@@ -83,7 +85,8 @@ jobs:
           cmake -G Ninja -B build -S . \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             -DBUILD_TESTING=ON \
-            -DBUILD_WITH_CHOLMOD_SUPPORT=ON
+            -DBUILD_WITH_CHOLMOD_SUPPORT=ON \
+            -DBUILD_DOCUMENTATION=ON
 
       - name: CMake Build
         run: cmake --build build --verbose --parallel 2

@@ -39,6 +39,7 @@ eigen = ["3.4.*", "5.*"]
 nanobind = ">=2.5.0"
 git = ">=2.53.0"
 doxygen = ">=1.13.2"
+graphviz = ">=14.1.2,<15"
 ccache = ">=4.13.1"
 cmake = ">=3.22"
 cxx-compiler = ">=1.11.0"
