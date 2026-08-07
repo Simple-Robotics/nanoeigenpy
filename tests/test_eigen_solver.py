@@ -1,40 +1,42 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 100
-rng = np.random.default_rng()
 
-A = rng.random((dim, dim))
+def test_eigen_solver():
+    dim = 100
+    rng = np.random.default_rng()
 
-es = nanoeigenpy.EigenSolver()
-es = nanoeigenpy.EigenSolver(dim)
-es = nanoeigenpy.EigenSolver(A)
-assert es.info() == nanoeigenpy.ComputationInfo.Success
+    A = rng.random((dim, dim))
 
-V = es.eigenvectors()
-D = es.eigenvalues()
+    es = nanoeigenpy.EigenSolver()
+    es = nanoeigenpy.EigenSolver(dim)
+    es = nanoeigenpy.EigenSolver(A)
+    assert es.info() == nanoeigenpy.ComputationInfo.Success
 
-assert nanoeigenpy.is_approx(A.dot(V).real, V.dot(np.diag(D)).real)
-assert nanoeigenpy.is_approx(A.dot(V).imag, V.dot(np.diag(D)).imag)
+    V = es.eigenvectors()
+    D = es.eigenvalues()
 
-es1 = nanoeigenpy.EigenSolver()
-es2 = nanoeigenpy.EigenSolver()
+    assert nanoeigenpy.is_approx(A.dot(V).real, V.dot(np.diag(D)).real)
+    assert nanoeigenpy.is_approx(A.dot(V).imag, V.dot(np.diag(D)).imag)
 
-id1 = es1.id()
-id2 = es2.id()
+    es1 = nanoeigenpy.EigenSolver()
+    es2 = nanoeigenpy.EigenSolver()
 
-assert id1 != id2
-assert id1 == es1.id()
-assert id2 == es2.id()
+    id1 = es1.id()
+    id2 = es2.id()
 
-dim_constructor = 3
+    assert id1 != id2
+    assert id1 == es1.id()
+    assert id2 == es2.id()
 
-es3 = nanoeigenpy.EigenSolver(dim_constructor)
-es4 = nanoeigenpy.EigenSolver(dim_constructor)
+    dim_constructor = 3
 
-id3 = es3.id()
-id4 = es4.id()
+    es3 = nanoeigenpy.EigenSolver(dim_constructor)
+    es4 = nanoeigenpy.EigenSolver(dim_constructor)
 
-assert id3 != id4
-assert id3 == es3.id()
-assert id4 == es4.id()
+    id3 = es3.id()
+    id4 = es4.id()
+
+    assert id3 != id4
+    assert id3 == es3.id()
+    assert id4 == es4.id()

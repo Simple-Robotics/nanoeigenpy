@@ -15,10 +15,16 @@ _classes = [
 ]
 
 
+# Conjugate gradient requires a symmetric positive definite matrix.
+def spd_matrix():
+    A = rng.random((dim, dim))
+    regularization = np.diag(10.0 + rng.random(dim))
+    return 0.5 * (A + A.T) + regularization
+
+
 @pytest.mark.parametrize("cls", _classes)
 def test_solver(cls):
-    Q = rng.standard_normal((dim, dim))
-    A = 0.5 * (Q.T + Q)
+    A = spd_matrix()
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
 
@@ -33,13 +39,13 @@ def test_solver(cls):
     B = A.dot(X)
     X_est = solver.solve(B)
 
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
     assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
 
 
 @pytest.mark.parametrize("cls", _classes)
 def test_solver_with_guess(cls):
-    Q = rng.standard_normal((dim, dim))
-    A = 0.5 * (Q.T + Q)
+    A = spd_matrix()
     solver = cls(A)
     solver.setMaxIterations(MAX_ITER)
 
@@ -55,6 +61,7 @@ def test_solver_with_guess(cls):
     B = A.dot(X)
     X_est = solver.solveWithGuess(B, X + 0.01)
 
+    assert solver.info() == nanoeigenpy.ComputationInfo.Success
     assert nanoeigenpy.is_approx(X, X_est, 1e-6)
     assert nanoeigenpy.is_approx(B, A.dot(X_est), 1e-6)
 

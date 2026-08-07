@@ -1,20 +1,22 @@
 import nanoeigenpy
 import numpy as np
 
-dim = 100
-rng = np.random.default_rng()
 
-A = rng.random((dim, dim))
-A = (A + A.T) * 0.5
+def test_self_adjoint_eigen_solver():
+    dim = 100
+    rng = np.random.default_rng()
 
-es = nanoeigenpy.SelfAdjointEigenSolver(A)
+    A = rng.random((dim, dim))
+    A = (A + A.T) * 0.5
 
-assert es.info() == nanoeigenpy.ComputationInfo.Success
+    es = nanoeigenpy.SelfAdjointEigenSolver(A)
 
-V = es.eigenvectors()
-D = es.eigenvalues()
+    assert es.info() == nanoeigenpy.ComputationInfo.Success
 
-AdotV = A @ V
-VdotD = V @ np.diag(D)
+    V = es.eigenvectors()
+    D = es.eigenvalues()
 
-assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-6)
+    AdotV = A @ V
+    VdotD = V @ np.diag(D)
+
+    assert nanoeigenpy.is_approx(AdotV, VdotD, 1e-6)
