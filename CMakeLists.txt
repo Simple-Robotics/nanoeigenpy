@@ -15,7 +15,7 @@ jrl_configure_defaults()
 
 jrl_option(BUILD_TESTING "Build the tests" OFF)
 
-jrl_option(BUILD_DOCUMENTATION "Build the Doxygen documentation" ON)
+jrl_option(BUILD_DOCUMENTATION "Build the Doxygen documentation" OFF)
 
 jrl_option(INSTALL_DOCUMENTATION "Install the documentation" ON
       CONDITION BUILD_DOCUMENTATION FALLBACK OFF

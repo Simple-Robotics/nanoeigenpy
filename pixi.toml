@@ -199,7 +199,6 @@ dependencies = { clangxx = "*", lld = "*" }
 [environments]
 default = { features = ["test", "python-latest"], solve-group = "py-latest" }
 clang = { features = ["clang", "test", "python-latest"] }
-lint = { features = ["lint"], no-default-feature = true }
 cholmod = { features = [
   "test",
   "python-latest",
