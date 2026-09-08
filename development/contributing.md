@@ -86,10 +86,10 @@ In your pull request:
 
 ### Keeping the pull request up-to-date
 
-You must rebase your work on the upstream `devel` branch.
+You must rebase your work on the upstream `main` branch.
 
 ```bash
-git pull --rebase origin devel
+git pull --rebase origin main
 ```
 
 Don't omit the `--rebase` argument or a merge commit will be created.
