@@ -45,13 +45,13 @@ With the **all** environment, all these options are ON.
 To turn one off, pass the corresponding `-D` flag to `cmake`:
 
 ```bash
-cmake -B build -DGENERATE_PYTHON_STUBS=OFF
+cmake -B build -DBUILD_WITH_CHOLMOD_SUPPORT=OFF
 ```
 
 ## Faster build
 
 When you work on a single feature with one associated test,build and run the corresponding test:
 ```bash
-ninja -C build nanoeigenpy-test-cpp-<name>
-ctest --test-dir build --output-on-failure -R nanoeigenpy-test-cpp-<name>
+ninja -C build nanoeigenpy-test-<name>
+ctest --test-dir build --output-on-failure -R nanoeigenpy-test-<name>
 ```
