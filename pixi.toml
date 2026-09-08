@@ -92,6 +92,10 @@ clean = { cmd = "rm -rf build" }
 [feature.eigen3.dependencies]
 eigen = "3.4.*"
 
+[feature.lint]
+dependencies = { pre-commit = ">=3.6.2" }
+tasks = { lint = { cmd = "pre-commit run --all" } }
+
 # Increment the version number with NANOEIGENPY_VERSION variable
 [feature.new-version.dependencies]
 tomlkit = ">=0.13.2"
@@ -166,6 +170,7 @@ dependencies = { clangxx = "*", lld = "*" }
 [environments]
 default = { features = ["test", "python-latest"], solve-group = "py-latest" }
 clang = { features = ["clang", "test", "python-latest"] }
+lint = { features = ["lint"], no-default-feature = true }
 cholmod = { features = [
   "test",
   "python-latest",
@@ -203,15 +208,6 @@ new-version = { features = [
   "new-version",
   "python-latest",
 ], solve-group = "py-latest" }
-eigen3-all = { features = [
-  "test",
-  "python-latest",
-  "cholmod",
-  "eigen3"
-]}
-eigen3-python-oldest = { features = [
-  "test",
-  "python-oldest",
-  "eigen3"
-]}
+eigen3-all = { features = ["test", "python-latest", "cholmod", "eigen3"] }
+eigen3-python-oldest = { features = ["test", "python-oldest", "eigen3"] }
 # test-pixi-build = { features = ["test-pixi-build"], no-default-feature = true }
