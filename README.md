@@ -9,6 +9,23 @@ This is a collection of tools for using Eigen together with nanobind, as a succe
 
 It reintroduces a few features (e.g. bindings for Eigen matrix decompositions) which are not in [nanobind](https://github.com/wjakob/nanobind) at time of writing.
 
+## Table of contents
+
+- [nanoeigenpy](#nanoeigenpy)
+   * [Rationale](#rationale)
+   * [Features](#features)
+      + [Optional features](#optional-features)
+   * [Example usage](#example-usage)
+      + [Using the nanoeigenpy headers (with CMake)](#using-the-nanoeigenpy-headers-with-cmake)
+      + [Using the compiled Python module](#using-the-compiled-python-module)
+   * [Installation](#installation)
+      + [Dependencies](#dependencies)
+         - [Conda](#conda)
+         - [Building](#building)
+   * [Contribution](#contribution)
+   * [Core-dev team](#core-dev-team)
+   * [Credits](#credits)
+
 ## Rationale
 
 Eigenpy was based on Boost.Python, an aging, complex, heavily templated library with little community support.
@@ -131,13 +148,23 @@ cd build/
 cmake --build . --target install
 ```
 
+## Contribution
+
+If you want to ask a question, report a bug, request a new feature or contributing with a pull requests please, follow the [contribution guideline](./development/contributing.md).
+
+
+## Core-dev team
+
+The currently active core developers of **nanoeigenpy** are:
+
+* [Justin Carpentier](https://jcarpent.github.io) (Inria): main developer and manager of the project
+* [Guilhem Saurel](https://github.com/nim65s) (LAAS-CNRS): core maintainer
+* [Joris Vailant](https://github.com/jorisv) (Inria): core developer and manager of the project
+* [Lucas Haubert](https://www.linkedin.com/in/lucas-haubert-b668a421a/) (Inria): core developer
+* [Jeanne Matheron](https://github.com/j-matheron) (Inria): core developer
+
+
 ## Credits
 
-The following people have been involved in the development of **nanoeigenpy**:
-
-- [Wilson Jallet](https://manifoldfr.github.io/) (Inria): core developer and manager of the project
-- [Lucas Haubert](https://www.linkedin.com/in/lucas-haubert-b668a421a/) (Inria): core developer
-- [Justin Carpentier](https://jcarpent.github.io) (Inria): core developer
-- [Joris Vailant](https://github.com/jorisv) (Inria): windows support
-
-If you have taken part in the development of **nanoeigenpy**, feel free to add your name and contribution here.
+In addition to the core dev team, the following people have also been involved in the development of **nanoeigenpy** and are warmly thanked for their contributions:
+* [Wilson Jallet](https://manifoldfr.github.io/) : core developer
