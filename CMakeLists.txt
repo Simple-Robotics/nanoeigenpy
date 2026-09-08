@@ -62,7 +62,7 @@ if(POLICY CMP0177)
   set(CMAKE_POLICY_DEFAULT_CMP0177 NEW)
 endif()
 include("${JRL_CMAKE_MODULES}/base.cmake")
-compute_project_args(PROJECT_ARGS LANGUAGES CXX)
+COMPUTE_PROJECT_ARGS(PROJECT_ARGS LANGUAGES CXX)
 include("${JRL_CMAKE_MODULES}/ide.cmake")
 include("${JRL_CMAKE_MODULES}/apple.cmake")
 project(${PROJECT_NAME} ${PROJECT_ARGS})
@@ -98,7 +98,7 @@ if(APPLE)
 endif(APPLE)
 
 # Find dependencies
-add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
+ADD_PROJECT_DEPENDENCY(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.3.1")
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development)
 # On Windows Python_SITELIB contains \ that can create installation issues
@@ -145,7 +145,7 @@ if(BUILD_WITH_CHOLMOD_SUPPORT)
     ${JRL_CMAKE_MODULES}/find-external/CHOLMOD
     ${CMAKE_MODULE_PATH}
   )
-  add_project_dependency(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
+  ADD_PROJECT_DEPENDENCY(CHOLMOD REQUIRED FIND_EXTERNAL "CHOLMOD")
   message(
     STATUS
     "Build with CHOLMOD support (LGPL). See CHOLMOD/Doc/License.txt for further details."
@@ -241,7 +241,7 @@ install(
   LIBRARY DESTINATION ${Python_SITELIB}
 )
 
-add_header_group(${PROJECT_NAME}_HEADERS)
-add_source_group(${PROJECT_NAME}_SOURCES)
+ADD_HEADER_GROUP(${PROJECT_NAME}_HEADERS)
+ADD_SOURCE_GROUP(${PROJECT_NAME}_SOURCES)
 
-setup_project_finalize()
+SETUP_PROJECT_FINALIZE()
