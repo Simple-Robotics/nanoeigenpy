@@ -16,7 +16,6 @@ If the pull request fixes an issue, link it with "Fixes #issue_number".
 - [ ] I have read the [contributing guidelines](../development/contributing.md)
 - [ ] I have run `pre-commit run --all-files` or `pixi run lint`
 - [ ] I have reviewed my own code
-- [ ] I have followed the [code convention](../development/convention.md)
 - [ ] I have commented my code where necessary
 - [ ] I have made corresponding changes to the Doxygen documentation
 - [ ] I have added tests that prove my fix or feature works
