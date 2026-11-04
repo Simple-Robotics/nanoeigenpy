@@ -36,8 +36,8 @@ repos:
         args: [ --fix ]
       # Run the formatter.
       - id: ruff-format
-  - repo: https://github.com/BlankSpruce/gersemi
-    rev: 0.19.2
+  - repo: https://github.com/BlankSpruce/gersemi-pre-commit
+    rev: 0.28.0
     hooks:
       - id: gersemi
   - repo: https://github.com/Lucas-C/pre-commit-hooks
